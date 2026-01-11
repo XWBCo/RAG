@@ -1,0 +1,159 @@
+components:
+  schemas:
+    MifidFullAsyncRequestBody:
+      type: "object"
+      properties:
+        metricIds:
+          uniqueItems: true
+          type: "array"
+          items:
+            type: "string"
+        securityIdsType:
+          type: "string"
+          description: "Defines whether the security IDs passed in the 'securityIds' parameter are of type ISIN or CUSIP."
+          example: "CUSIP"
+          default: "ISIN"
+          enum:
+            - "ISIN"
+            - "CUSIP"
+        securityIds:
+          uniqueItems: true
+          type: "array"
+          description: "List of security ids to retrieve"
+          example: "US0378331005"
+          items:
+            type: "string"
+            description: "List of security ids to retrieve"
+            example: "US0378331005"
+    CreateJobResource:
+      type: "object"
+      properties:
+        uuid:
+          type: "string"
+    APIError:
+      type: "object"
+      properties:
+        code:
+          type: "integer"
+          format: "int32"
+        message:
+          type: "string"
+    MifidClassifierAsyncRequestBody:
+      type: "object"
+      properties:
+        metricIds:
+          uniqueItems: true
+          type: "array"
+          items:
+            type: "string"
+            default: "[]"
+          default: []
+        securityIdsType:
+          type: "string"
+          description: "Defines whether the security IDs passed in the 'securityIds' parameter are of type ISIN or CUSIP."
+          example: "CUSIP"
+          default: "ISIN"
+          enum:
+            - "ISIN"
+            - "CUSIP"
+        securityIds:
+          uniqueItems: true
+          type: "array"
+          description: "List of security ids to retrieve"
+          example: "US0378331005"
+          items:
+            type: "string"
+            description: "List of security ids to retrieve"
+            example: "US0378331005"
+  securitySchemes:
+    JWT:
+      type: "http"
+      scheme: "bearer"
+      bearerFormat: "JWT"
+info:
+  title: "Clarity AI API - MiFID II"
+  description: "API to access Clarity AI data services."
+  termsOfService: "https://static.clarity.ai/Clarity_AI_TermsAndConditions.pdf"
+  contact:
+    name: "Clarity AI"
+    url: "https://www.clarity.ai"
+    email: "support@clarity.ai"
+  version: "1.0.0"
+openapi: "3.0.1"
+paths:
+  /public/securities/mifid/full/metric-by-id/async:
+    post:
+      tags:
+        - "Universe download - Asynchronous jobs"
+      summary: "MiFID II Full Data - Async Job"
+      description: "This endpoint will make a request to asynchronously retrieve extensive MiFID II information.\n\nThe asynchronous process will generate a file with full MiFID II information for the whole universe of securities.\n\n<b>Please note</b>:\n\nThis call will only return the identifier (uuid) for this task. You'll need this value to:\n - Know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>)\n - Download your file when ready (see <a href=\"./asyncdownloadcompressedfile\">Async Job - Download compressed result file</a>)\n\nPlease refer to <a href=\"/docs/universe-api-async-jobs\">Universe API's Technical documentation</a> for a complete explanation of the workflow for these asynchronous job endpoints.\n"
+      operationId: "fullMifid"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MifidFullAsyncRequestBody"
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/securities/mifid/classifier/metric-by-id/async:
+    post:
+      tags:
+        - "Universe download - Asynchronous jobs"
+      summary: "MiFID II Classifier Data - Async Job"
+      description: "This endpoint will make an asynchronous request to retrieve simplified MiFID II information.\n\nThe asynchronous process will generate a file containing simplified MiFID II information for the entire universe of securities.\n\n<b>Please note</b>:\n\nThis call will only return the identifier (uuid) for this task. You'll need this value to:\n - Know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>)\n - Download your file when ready (see <a href=\"./asyncdownloadcompressedfile\">Async Job - Download compressed result file</a>)\n\nPlease refer to <a href=\"/docs/universe-api-async-jobs\">Universe API's Technical documentation</a> for a complete explanation of the workflow for these asynchronous job endpoints.\n"
+      operationId: "classifierMifid"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MifidClassifierAsyncRequestBody"
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+servers:
+  - url: "https://api.clarity.ai/clarity/v1"
+  - url: "https://api.dev.clarity.ai/clarity/v1"
+tags:
+  - name: "Universe download - Asynchronous jobs"
+    description: "MiFID II Async Jobs"
+  - name: "Universe download - Asynchronous jobs"
+    description: "MiFID II Asynchronous Jobs"
+security:
+  - JWT: []

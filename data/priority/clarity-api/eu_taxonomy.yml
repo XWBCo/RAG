@@ -1,0 +1,1361 @@
+components:
+  schemas:
+    AsyncSecurityRequest:
+      type: "object"
+      properties:
+        metricIds:
+          type: "array"
+          description: "Requested Metric IDs"
+          example:
+            - "AFFORESTATION"
+            - "DIRECT_AIR_CAPTURE_CO2"
+            - "EXISTING_FOREST_MANAGEMENT"
+            - "TOTAL"
+          items:
+            type: "string"
+        securityTypes:
+          type: "array"
+          description: "The security types requested. Allowed values: FUND, EQUITY, FIXED_INCOME"
+          example:
+            - "FUND"
+            - "EQUITY"
+            - "FIXED_INCOME"
+          items:
+            type: "string"
+          enum:
+            - "EQUITY"
+            - "FIXED_INCOME"
+            - "FUND"
+        securityIds:
+          type: "array"
+          description: "List of security ids (ISIN) to retrieve"
+          example:
+            - "USXXXXXXXXXX"
+            - "ESXXXXXXXXXX"
+            - "JPXXXXXXXXXX"
+            - "GBXXXXXXXXXX"
+          items:
+            type: "string"
+        includeSovereignBonds:
+          type: "boolean"
+          description: "Include sovereign bonds"
+          example: true
+        optionalColumns:
+          type: "array"
+          description: "Requested Optional columns. Allowed values: DISCLOSURE, NFRD, GROUPED_NUCLEAR_FOSSILGAS, METRIC_YEAR, FLAG_SUSTAINABLE_BOND."
+          example:
+            - "DISCLOSURE"
+            - "NFRD"
+            - "GROUPED_NUCLEAR_FOSSILGAS"
+            - "METRIC_YEAR"
+            - "FLAG_SUSTAINABLE_BOND"
+          items:
+            type: "string"
+          enum:
+            - "DISCLOSURE"
+            - "GROUPED_NUCLEAR_FOSSILGAS"
+            - "NFRD"
+            - "METRIC_YEAR"
+            - "FLAG_SUSTAINABLE_BOND"
+        kpi:
+          type: "string"
+          description: "Requested Kpi. Allowed values: TURNOVER, CAPEX, OPEX"
+          example: "TURNOVER"
+    CreateJobResource:
+      type: "object"
+      properties:
+        uuid:
+          type: "string"
+    APIError:
+      type: "object"
+      properties:
+        code:
+          type: "integer"
+          format: "int32"
+        message:
+          type: "string"
+    AsyncGirSecurityRequest:
+      type: "object"
+      properties:
+        metricIds:
+          type: "array"
+          description: "Requested Metric IDs"
+          example:
+            - "FLAG_DERIVATIVE"
+            - "AGGREGATION_TURNOVER_ALIGNED"
+            - "MITIGATION_CAPEX_TRANSITION_ALIGNED"
+            - "RATIO_WATER_TURNOVER_ALIGNED"
+          items:
+            type: "string"
+        securityTypes:
+          type: "array"
+          description: "The security types requested. Allowed values: FUND, EQUITY, FIXED_INCOME, SUSTAINABLE_BOND, REST"
+          example:
+            - "FUND"
+            - "EQUITY"
+            - "FIXED_INCOME"
+            - "SUSTAINABLE_BOND"
+            - "REST"
+          items:
+            type: "string"
+          enum:
+            - "EQUITY"
+            - "FIXED_INCOME"
+            - "FUND"
+            - "SUSTAINABLE_BOND"
+            - "REST"
+        securityIds:
+          type: "array"
+          description: "List of security ids (ISIN) to retrieve"
+          example:
+            - "USXXXXXXXXXX"
+            - "ESXXXXXXXXXX"
+            - "JPXXXXXXXXXX"
+            - "GBXXXXXXXXXX"
+          items:
+            type: "string"
+    PortfolioValueResponse:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+          example: "Name"
+        updateDate:
+          type: "string"
+          format: "date-time"
+          example: "2020-05-20T08:17:53.141Z"
+        totalOrganizations:
+          type: "integer"
+          format: "int32"
+          example: 1957
+          enum:
+            - null
+        coverageOrganizations:
+          type: "integer"
+          format: "int32"
+          example: 344
+          enum:
+            - null
+        coverageWeight:
+          type: "number"
+          format: "double"
+          example: 99
+          enum:
+            - null
+        metrics:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/PortfolioValueResult"
+    PortfolioValueResult:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          example: "MANUFACTURE_HYDROGEN"
+        step1:
+          $ref: "#/components/schemas/Step1"
+        step2:
+          $ref: "#/components/schemas/Step2"
+        step5:
+          $ref: "#/components/schemas/Step5"
+    Step1:
+      type: "object"
+      properties:
+        eligible:
+          $ref: "#/components/schemas/MetricResult"
+        potentiallyEligible:
+          $ref: "#/components/schemas/MetricResult"
+        notEligible:
+          $ref: "#/components/schemas/MetricResult"
+    MetricResult:
+      type: "object"
+      properties:
+        value:
+          type: "number"
+          format: "float"
+          example: 45
+          enum:
+            - null
+        units:
+          type: "string"
+          example: "%"
+        metadata:
+          type: "string"
+          example: "NONE"
+          enum:
+            - "NONE"
+            - "ASSIGNED"
+            - "LIMITED_INFO"
+            - "NOT_AVAILABLE"
+            - "NOT_IMPORTANT"
+            - "NOT_APPLICABLE"
+            - "OUT_OF_UNIVERSE"
+    Step2:
+      type: "object"
+      properties:
+        contribution:
+          $ref: "#/components/schemas/MetricResult"
+        potentialContribution:
+          $ref: "#/components/schemas/MetricResult"
+        potentialNotContribution:
+          $ref: "#/components/schemas/MetricResult"
+        notContribution:
+          $ref: "#/components/schemas/MetricResult"
+    Step5:
+      type: "object"
+      properties:
+        aligned:
+          $ref: "#/components/schemas/MetricResult"
+        potentiallyAligned:
+          $ref: "#/components/schemas/MetricResult"
+        potentiallyNotAligned:
+          $ref: "#/components/schemas/MetricResult"
+        notAligned:
+          $ref: "#/components/schemas/MetricResult"
+    PortfolioRequest:
+      type: "object"
+      properties:
+        metricIds:
+          type: "array"
+          description: "Requested Metric IDs"
+          example:
+            - "AFFORESTATION"
+            - "DIRECT_AIR_CAPTURE_CO2"
+            - "EXISTING_FOREST_MANAGEMENT"
+            - "TOTAL"
+          items:
+            type: "string"
+        includeSovereignBonds:
+          type: "boolean"
+          description: "Include sovereign bonds"
+          example: true
+        nfrdOnly:
+          type: "boolean"
+          description: "Include only nfrd companies"
+          example: false
+    AsyncOrganizationRequest:
+      type: "object"
+      properties:
+        optionalColumns:
+          type: "array"
+          description: "Requested Optional columns. Allowed values: DISCLOSURE, NFRD, METRIC_YEAR."
+          example:
+            - "DISCLOSURE"
+            - "NFRD"
+            - "METRIC_YEAR"
+          items:
+            type: "string"
+          enum:
+            - "DISCLOSURE"
+            - "NFRD"
+            - "METRIC_YEAR"
+        metricIds:
+          type: "array"
+          description: "Requested Metric IDs"
+          example:
+            - "AFFORESTATION"
+            - "DIRECT_AIR_CAPTURE_CO2"
+            - "EXISTING_FOREST_MANAGEMENT"
+            - "TOTAL"
+          items:
+            type: "string"
+        permIds:
+          type: "array"
+          description: "List of permIds to retrieve"
+          example:
+            - "5000008406"
+            - "5000038958"
+            - "4295882319"
+          items:
+            type: "string"
+        kpi:
+          type: "string"
+          description: "Requested Kpi. Allowed values: TURNOVER, CAPEX, OPEX"
+          example: "TURNOVER"
+    AsyncAnnexXIIOrganizationRequest:
+      type: "object"
+      properties:
+        metricIds:
+          type: "array"
+          description: "Requested Metric IDs"
+          example:
+            - "FLAG_FINANCIAL"
+            - "REFERRED_TO_OPEX_PROD_ELECTRICITY_GAS_NOT_ELIGIBLE"
+            - "MITIGATION_TURNOVER_NUCLEAR_RESEARCH_ALIGNED"
+          items:
+            type: "string"
+        permIds:
+          type: "array"
+          description: "List of permIds to retrieve"
+          example:
+            - "5000008406"
+            - "5000038958"
+            - "4295882319"
+          items:
+            type: "string"
+    FundValueResponse:
+      type: "object"
+      properties:
+        isin:
+          type: "string"
+          example: "ES0105093001"
+        name:
+          type: "string"
+          example: "Gigas Hosting SA ORD"
+        allocationDate:
+          type: "string"
+          format: "date-time"
+          example: "2020-05-20T08:17:53.141Z"
+        totalOrganizations:
+          type: "integer"
+          format: "int32"
+          example: 2339
+          enum:
+            - null
+        coverageOrganizations:
+          type: "integer"
+          format: "int32"
+          example: 67
+        coverageWeight:
+          type: "number"
+          format: "double"
+          example: 81
+          enum:
+            - null
+        metrics:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/FundValueResult"
+    FundValueResult:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          example: "MANUFACTURE_HYDROGEN"
+        step1:
+          $ref: "#/components/schemas/Step1"
+        step2:
+          $ref: "#/components/schemas/Step2"
+        step5:
+          $ref: "#/components/schemas/Step5"
+    FundRequest:
+      required:
+        - "metricIds"
+      type: "object"
+      properties:
+        metricIds:
+          type: "array"
+          description: "Requested Metric IDs"
+          example:
+            - "AFFORESTATION"
+            - "DIRECT_AIR_CAPTURE_CO2"
+            - "EXISTING_FOREST_MANAGEMENT"
+            - "TOTAL"
+          items:
+            type: "string"
+        includeSovereignBonds:
+          type: "boolean"
+          description: "Include sovereign bonds"
+          example: true
+    AsyncFundRequest:
+      type: "object"
+      properties:
+        metricIds:
+          type: "array"
+          description: "Requested Metric IDs"
+          example:
+            - "AFFORESTATION"
+            - "DIRECT_AIR_CAPTURE_CO2"
+            - "EXISTING_FOREST_MANAGEMENT"
+            - "TOTAL"
+          items:
+            type: "string"
+            description: "Requested Metric IDs"
+            example: "[\"AFFORESTATION\",\"DIRECT_AIR_CAPTURE_CO2\",\"EXISTING_FOREST_MANAGEMENT\",\"TOTAL\"]"
+        securityIds:
+          type: "array"
+          description: "List of security ids (ISIN) to retrieve"
+          example:
+            - "USXXXXXXXXXX"
+            - "ESXXXXXXXXXX"
+            - "JPXXXXXXXXXX"
+            - "GBXXXXXXXXXX"
+          items:
+            type: "string"
+        includeSovereignBonds:
+          type: "boolean"
+          description: "Include sovereign bonds"
+          example: true
+        onlyOneSecurityPerFundGroupId:
+          type: "boolean"
+          description: "Include only one Fund Share Class for each fund group in the response"
+          example: false
+        optionalColumns:
+          type: "array"
+          description: "Requested Optional columns. Allowed values: FUND_GROUP_ID"
+          example:
+            - "FUND_GROUP_ID"
+          items:
+            type: "string"
+          enum:
+            - "FUND_GROUP_ID"
+        kpi:
+          type: "string"
+          description: "Requested Kpi. Allowed values: TURNOVER, CAPEX, OPEX"
+          example: "TURNOVER"
+    AsyncAnnexXIIFundRequest:
+      type: "object"
+      properties:
+        metricIds:
+          type: "array"
+          description: "Requested Metric IDs"
+          example:
+            - "PRESENCE_NUCLEAR_RESEARCH"
+            - "RATIO_MITIGATION_TURNOVER_PROD_HEATCOOL_GAS_ALIGNED"
+            - "RATIO_ADAPTATION_CAPEX_NUCLEAR_CONSTRUCTION_ELIGIBLE_NOT_ALIGNED"
+            - "RATIO_REFERRED_TO_OPEX_NOT_ELIGIBLE"
+          items:
+            type: "string"
+        securityIds:
+          type: "array"
+          description: "List of security ids (ISIN) to retrieve"
+          example:
+            - "USXXXXXXXXXX"
+            - "ESXXXXXXXXXX"
+            - "JPXXXXXXXXXX"
+            - "GBXXXXXXXXXX"
+          items:
+            type: "string"
+    OrganizationRequest:
+      type: "object"
+      properties:
+        metricIds:
+          type: "array"
+          description: "Requested Metric IDs"
+          example:
+            - "AFFORESTATION"
+            - "DIRECT_AIR_CAPTURE_CO2"
+            - "EXISTING_FOREST_MANAGEMENT"
+            - "TOTAL"
+          items:
+            type: "string"
+    OrganizationValueResponse:
+      type: "object"
+      properties:
+        isin:
+          type: "string"
+          example: "US0231351067"
+        clarityOrgId:
+          type: "string"
+          example: "a1b2c3d4e5"
+        orgName:
+          type: "string"
+          example: "Organization Name"
+        metrics:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrganizationValueResult"
+    OrganizationValueResult:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          example: "MANUFACTURE_HYDROGEN"
+        step1:
+          $ref: "#/components/schemas/Step1"
+        step2:
+          $ref: "#/components/schemas/Step2"
+        step5:
+          $ref: "#/components/schemas/Step5"
+  securitySchemes:
+    JWT:
+      type: "http"
+      scheme: "bearer"
+      bearerFormat: "JWT"
+info:
+  title: "Clarity AI API - EU Taxonomy"
+  description: "API to access Clarity AI data services."
+  termsOfService: "https://static.clarity.ai/Clarity_AI_TermsAndConditions.pdf"
+  contact:
+    name: "Clarity AI"
+    url: "https://www.clarity.ai"
+    email: "support@clarity.ai"
+  version: "1.0.0"
+openapi: "3.0.1"
+paths:
+  /public/securities/eu-taxonomy/{objective}/metric-by-id/async:
+    post:
+      tags:
+        - "EU Taxonomy Async Jobs"
+      summary: "Async Job - Request EU Tax Values for Securities"
+      description: "This endpoint will make a request to asynchronously retrieve extensive EU Tax information.\n\nThe asynchronous process will generate a file with EU Tax values for the whole universe of securities or a subset of it if a list of ISINs is included in 'securityIds' parameter.\n\nThese metrics are dependent on the objective and kpi passed in the request.\nThe metrics required must be added to 'metricIds' attribute.  If left empty, all available metrics will be returned.\nThere is also additional information that can be requested using 'optionalColumns' parameter, like NFRD, DISCLOSURE (equities, fixed incomes), METRIC_YEAR, FLAG_SUSTAINABLE_BOND or GROUPED_NUCLEAR_FOSSILGAS aggregated values.\n\nIt is also possible to include sovereign bonds by setting the parameter 'includeSovereignBonds' to true.\n\n<b>Please note</b>:\n\nThis call will only return the identifier (uuid) for this task. You'll need this value to:\n - Know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>)\n - Download your file when ready (see <a href=\"./asyncdownloadcompressedfile\">Async Job - Download compressed result file</a>)\n\nPlease refer to <a href=\"/docs/universe-api-async-jobs\">Universe API's Technical documentation</a> for a complete explanation of the workflow for these asynchronous job endpoints.\n"
+      operationId: "asyncEutaxSecuritiesGetValues"
+      parameters:
+        - name: "objective"
+          in: "path"
+          description: "EU Taxonomy objective. Allowed values: adaptation,aggregation,biodiversity,circular,mitigation,pollution,water"
+          required: true
+          schema:
+            type: "string"
+            enum:
+              - "mitigation"
+              - "adaptation"
+              - "aggregation"
+              - "biodiversity"
+              - "pollution"
+              - "water"
+              - "circular"
+          example: "mitigation"
+        - name: "headerPrefix"
+          in: "query"
+          description: "Adds a custom prefix to the exported column names"
+          required: false
+          schema:
+            type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AsyncSecurityRequest"
+        required: true
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it\n\n7000 - Objective is not valid."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/securities/eu-taxonomy/green-investment/ratio/metric-by-id/async:
+    post:
+      tags:
+        - "EU Taxonomy Async Jobs"
+      summary: "Async Job - Request Green Investment ratio Values for Securities"
+      description: "This endpoint makes an asynchronous request to generate a file with EU Taxonomy Green Investment Ratio (GIR) metrics and can be used for reporting under Article 8 of the Taxonomy Regulation.\n - Use the securityIds parameter to specify a list of ISINs to include in the response. If left empty, the response will include the entire universe of securities.\n - Use the securityTypes parameter to filter by asset class: FUND, EQUITY, FIXED_INCOME, SUSTAINABLE_BOND, or REST. If left empty, all asset classes will be included.\n - Use the metricIds parameter to request specific metrics. If left empty, all available metrics will be returned.\n\nThe metrics applicable to funds have the prefix RATIO and are calculated excluding sovereign bonds.\n\n<b>Please note</b>:\n\nThis call will only return the identifier (uuid) for this task. You'll need this value to:\n - Know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>)\n - Download your file when ready (see <a href=\"./asyncdownloadcompressedfile\">Async Job - Download compressed result file</a>)\n\nPlease refer to <a href=\"/docs/universe-api-async-jobs\">Universe API's Technical documentation</a> for a complete explanation of the workflow for these asynchronous job endpoints.\n"
+      operationId: "asyncEutaxSecuritiesGreenInvestmentRatioValues"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AsyncGirSecurityRequest"
+        required: true
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it\n\n7000 - Objective is not valid."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/portfolios/{portfolioId}/eu-taxonomy/{objective}/steps-by-id:
+    get:
+      tags:
+        - "Portfolio EU Taxonomy"
+      summary: "Get portfolio values"
+      description: "Given a portfolio id, returns mitigation objective values, Coverage in number of organizations, Coverage in portfolio weight, for the requested metrics."
+      operationId: "getPortfolioValues"
+      parameters:
+        - name: "portfolioId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "objective"
+          in: "path"
+          description: "objective"
+          required: true
+          schema:
+            type: "string"
+            enum:
+              - "mitigation"
+              - "adaptation"
+              - "aggregation"
+          example: "mitigation"
+        - name: "metricIds"
+          in: "query"
+          description: "The metrics identifiers"
+          required: true
+          schema:
+            type: "array"
+            items:
+              type: "string"
+          example: "TOTAL"
+      responses:
+        200:
+          description: "EU Taxonomy values for the requested metrics"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortfolioValueResponse"
+        400:
+          description: "Invalid request:\n\n2004 - Portfolio id requested not valid or empty\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it\n\n7000 - Objective is not valid."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n2007 - The portfolio id does not exist or does not belong to the user"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        412:
+          description: "Invalid portfolio:\n\n2011 - The portfolio is not valid"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      deprecated: true
+      security:
+        - JWT: []
+    post:
+      tags:
+        - "Portfolio EU Taxonomy"
+      summary: "Get portfolio values by objective and kpi"
+      description: "Given a portfolio id, an objective and a list of metrics, it returns values for the objective, coverage in number of organizations, coverage in portfolio weight, for the requested metrics."
+      operationId: "getPortfolioValues_1"
+      parameters:
+        - name: "portfolioId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+          example: "93aabf311870dcfbfa3c00c1"
+        - name: "objective"
+          in: "path"
+          description: "EU Taxonomy objective. Allowed values: adaptation,aggregation,biodiversity,circular,mitigation,pollution,water"
+          required: true
+          schema:
+            type: "string"
+            enum:
+              - "mitigation"
+              - "adaptation"
+              - "aggregation"
+              - "biodiversity"
+              - "pollution"
+              - "water"
+              - "circular"
+          example: "mitigation"
+        - name: "kpi"
+          in: "query"
+          description: "KPI. Allowed values: turnover,capex,opex"
+          required: false
+          schema:
+            type: "string"
+            enum:
+              - "turnover"
+              - "capex"
+              - "opex"
+          example: "turnover"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PortfolioRequest"
+        required: true
+      responses:
+        200:
+          description: "EU Taxonomy values for the requested metrics"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortfolioValueResponse"
+        400:
+          description: "Invalid request:\n\n2004 - Portfolio id requested not valid or empty\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it\n\n7000 - Objective is not valid."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n2007 - The portfolio id does not exist or does not belong to the user"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        412:
+          description: "Invalid portfolio:\n\n2011 - The portfolio is not valid"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/organizations/eu-taxonomy/{objective}/metric-by-id/async:
+    post:
+      tags:
+        - "EU Taxonomy Async Jobs"
+      summary: "Async Job - Request EU Tax Values for Organizations"
+      description: "This endpoint will make a request to asynchronously retrieve extensive EU Tax information.\n\nThe asynchronous process will generate a file with EU Tax values for the whole universe of organizations or a subset of it if a list of Perm Ids is included in 'permIds' parameter.\nThese metrics are dependent on the objective and kpi passed in the request\nThe metrics required must be added to 'metricIds' attribute and if none are requested, the process will return all of them.\nThere is also additional information that can be requested using 'optionalColumns' parameter, like NFRD, DISCLOSURE or METRIC_YEAR\n\n\n<b>Please note</b>:\n\nThis call will only return the identifier (uuid) for this task. You'll need this value to:\n - Know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>)\n - Download your file when ready (see <a href=\"./asyncdownloadcompressedfile\">Async Job - Download compressed result file</a>)\n\nPlease refer to <a href=\"/docs/universe-api-async-jobs\">Universe API's Technical documentation</a> for a complete explanation of the workflow for these asynchronous job endpoints.\n"
+      operationId: "asyncEutaxOrganizatonsGetValues"
+      parameters:
+        - name: "objective"
+          in: "path"
+          description: "EU Taxonomy objective. Allowed values: adaptation,aggregation,biodiversity,circular,mitigation,pollution,water"
+          required: true
+          schema:
+            type: "string"
+            enum:
+              - "mitigation"
+              - "adaptation"
+              - "aggregation"
+              - "biodiversity"
+              - "pollution"
+              - "water"
+              - "circular"
+          example: "mitigation"
+        - name: "headerPrefix"
+          in: "query"
+          description: "Adds a custom prefix to the exported column names"
+          required: false
+          schema:
+            type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AsyncOrganizationRequest"
+        required: true
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it\n\n7000 - Objective is not valid."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        413:
+          description: "Invalid request:\n\n2101 - The limit of 25.000 ids in the same request has been exceeded"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/organizations/eu-taxonomy/annex/xii/metric-by-id/async:
+    post:
+      tags:
+        - "EU Taxonomy Async Jobs"
+      summary: "Async Job - Request Annex XII Values for Organizations"
+      description: "This endpoint will make a request to asynchronously retrieve EU Tax - Annex XII metrics related to nuclear energy and fossil gas activities, at organisation level.\n\nThe asynchronous process will generate a file with EU Tax - Annex XII values for organizations.\n - Use the permIds parameter to specify a list of permIds to include in the response. If left empty, the response will include the entire universe of organizations.\n - Use the metricIds parameter to request specific metrics. If left empty, all available metrics will be returned.\n\n<b>Please note</b>:\n\nThis call will only return the identifier (uuid) for this task. You'll need this value to:\n - Know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>)\n - Download your file when ready (see <a href=\"./asyncdownloadcompressedfile\">Async Job - Download compressed result file</a>)\n\nPlease refer to <a href=\"/docs/universe-api-async-jobs\">Universe API's Technical documentation</a> for a complete explanation of the workflow for these asynchronous job endpoints.\n"
+      operationId: "asyncOrganizatonsAnnexXIIGetValues"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AsyncAnnexXIIOrganizationRequest"
+        required: true
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it\n\n7000 - Objective is not valid."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/funds/{fundId}/eu-taxonomy/{objective}/steps-by-id:
+    get:
+      tags:
+        - "Funds EU Taxonomy"
+      summary: "Get Fund values by objective"
+      description: "Given a fund ISIN, objective and metrics ids, returns values, coverage in number of organizations, coverage in fund weight, for the requested metrics."
+      operationId: "getFundValues"
+      parameters:
+        - name: "fundId"
+          in: "path"
+          description: "ISIN"
+          required: true
+          schema:
+            type: "string"
+          example: "ES0105093001"
+        - name: "objective"
+          in: "path"
+          description: "objective"
+          required: true
+          schema:
+            type: "string"
+            enum:
+              - "mitigation"
+              - "adaptation"
+          example: "adaptation"
+        - name: "metricIds"
+          in: "query"
+          description: "The metrics identifiers"
+          required: true
+          schema:
+            type: "array"
+            items:
+              type: "string"
+          example: "TOTAL"
+      responses:
+        200:
+          description: "EU Taxonomy values for the requested metrics"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FundValueResponse"
+        400:
+          description: "Invalid request:\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it\n\n7000 - Objective is not valid."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n3001 - Fund ID not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      deprecated: true
+      security:
+        - JWT: []
+    post:
+      tags:
+        - "Funds EU Taxonomy"
+      summary: "Get Fund values by objective and kpi"
+      description: "Given a fund ISIN, an objective and a list of metrics, it returns values, coverage in number of organizations and coverage in fund weight."
+      operationId: "getFundValues_1"
+      parameters:
+        - name: "fundId"
+          in: "path"
+          description: "fund ISIN"
+          required: true
+          schema:
+            type: "string"
+          example: "ES0105093001"
+        - name: "objective"
+          in: "path"
+          description: "EU Taxonomy objective. Allowed values: adaptation,aggregation,biodiversity,circular,mitigation,pollution,water"
+          required: true
+          schema:
+            type: "string"
+            enum:
+              - "mitigation"
+              - "adaptation"
+              - "aggregation"
+              - "biodiversity"
+              - "pollution"
+              - "water"
+              - "circular"
+          example: "adaptation"
+        - name: "kpi"
+          in: "query"
+          description: "KPI. Allowed values: turnover,capex,opex"
+          required: false
+          schema:
+            type: "string"
+            enum:
+              - "turnover"
+              - "capex"
+              - "opex"
+          example: "turnover"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FundRequest"
+        required: true
+      responses:
+        200:
+          description: "EU Taxonomy values for the requested metrics"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FundValueResponse"
+        400:
+          description: "Invalid request:\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it\n\n7000 - Objective is not valid."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n3001 - Fund ID not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/funds/{fundId}/eu-taxonomy/steps-by-id:
+    post:
+      tags:
+        - "Funds EU Taxonomy"
+      summary: "Get Fund values by kpi for mitigation objective"
+      description: "Given a fund ISIN, a list of objectives and kpis, returns values, coverage in number of organizations, coverage in fund weight, for all the metrics."
+      operationId: "getFundValuesAll"
+      parameters:
+        - name: "fundId"
+          in: "path"
+          description: "ISIN"
+          required: true
+          schema:
+            type: "string"
+          example: "ES0105093001"
+        - name: "kpi"
+          in: "query"
+          description: "objective"
+          required: true
+          schema:
+            type: "array"
+            items:
+              type: "string"
+              example: "[mitigation, adaptation]"
+              enum:
+                - "mitigation"
+                - "adaptation"
+                - "aggregation"
+                - "biodiversity"
+                - "pollution"
+                - "water"
+                - "circular"
+          example: "[turnover, capex]"
+        - name: "includeSovereigns"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+            enum:
+              - "true"
+              - "false"
+          example: true
+      responses:
+        400:
+          description: "Invalid request:\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it\n\n7000 - Objective is not valid."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n3001 - Fund ID not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      deprecated: true
+      security:
+        - JWT: []
+  /public/funds/eu-taxonomy/{objective}/metric-by-id/async:
+    post:
+      tags:
+        - "EU Taxonomy Async Jobs"
+      summary: "Async Job - Request EU Tax Values for Funds"
+      description: "<b>This endpoint is deprecated. Please use <a href=\"https://developer.clarity.ai/reference/asynceutaxsecuritiesgetvalues\">this other endpoint</a> instead to retrieve fund values for the EU taxonomy product.</b>\n\nThis endpoint will make a request to asynchronously retrieve extensive EU Tax information.\n\nThe asynchronous process will generate a file with EU Tax values for the whole universe of funds or a subset of it if a list of ISINs is included in 'securityIds' parameter.\nThese metrics are dependent on the objective and kpi passed in the request\nThe metrics required must be added to 'metricIds' attribute and if none are requested, the process will return all of them.\nThere is also the option to include sovereigns bonds in the fund calculation process by setting the parameter 'includeSovereignBonds' to true\n\n\n<b>Please note</b>:\n\nThis call will only return the identifier (uuid) for this task. You'll need this value to:\n - Know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>)\n - Download your file when ready (see <a href=\"./asyncdownloadcompressedfile\">Async Job - Download compressed result file</a>)\n\nPlease refer to <a href=\"/docs/universe-api-async-jobs\">Universe API's Technical documentation</a> for a complete explanation of the workflow for these asynchronous job endpoints.\n"
+      operationId: "asyncEutaxFundsGetValues"
+      parameters:
+        - name: "objective"
+          in: "path"
+          description: "objective"
+          required: true
+          schema:
+            type: "string"
+            enum:
+              - "mitigation"
+              - "adaptation"
+              - "aggregation"
+              - "biodiversity"
+              - "pollution"
+              - "water"
+              - "circular"
+          example: "mitigation"
+        - name: "headerPrefix"
+          in: "query"
+          description: "headerPrefix"
+          required: false
+          schema:
+            type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AsyncFundRequest"
+        required: true
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it\n\n7000 - Objective is not valid."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      deprecated: true
+      security:
+        - JWT: []
+  /public/funds/eu-taxonomy/annex/xii/metric-by-id/async:
+    post:
+      tags:
+        - "EU Taxonomy Async Jobs"
+      summary: "Async Job - Request Annex XII ratio Values for Funds"
+      description: "This endpoint will make a request to asynchronously retrieve EU Tax - Annex XII ratio metrics related to nuclear energy and fossil gas activities, at fund level.\n\nThe asynchronous process will generate a file with EU Tax - Annex XII ratio values.\n - Use the securityIds parameter to specify a list ISINs to include in the response. If left empty, the response will include the entire universe of securities.\n - Use the metricIds parameter to request specific metrics. If left empty, all available metrics will be returned.\n\nThe information related to funds doesn't include sovereign bonds.\n\n<b>Please note</b>:\n\nThis call will only return the identifier (uuid) for this task. You'll need this value to:\n - Know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>)\n - Download your file when ready (see <a href=\"./asyncdownloadcompressedfile\">Async Job - Download compressed result file</a>)\n\nPlease refer to <a href=\"/docs/universe-api-async-jobs\">Universe API's Technical documentation</a> for a complete explanation of the workflow for these asynchronous job endpoints.\n"
+      operationId: "asyncFundsAnnexXIIGetValues"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AsyncAnnexXIIFundRequest"
+        required: true
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it\n\n7000 - Objective is not valid."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/eu-taxonomy/{objective}/organizations/{orgIdType}/{orgId}/steps-by-id:
+    post:
+      tags:
+        - "Organizations EU Taxonomy"
+      summary: "Get metrics information by organization and objective"
+      description: "Given an ISIN, an objective and a list of metrics, it returns the values for all the steps of the metrics requested associated to the objective for the ISIN issuer organization"
+      operationId: "getOrganizationValues"
+      parameters:
+        - name: "orgIdType"
+          in: "path"
+          description: "Type of identifier. Allowed values: by-isin"
+          required: true
+          schema:
+            type: "string"
+          example: "by-isin"
+        - name: "orgId"
+          in: "path"
+          description: "Organization identifier"
+          required: true
+          schema:
+            type: "string"
+          example: "KR7025750001"
+        - name: "objective"
+          in: "path"
+          description: "EU Taxonomy objective. Allowed values: adaptation,aggregation,biodiversity,circular,mitigation,pollution,water"
+          required: true
+          schema:
+            type: "string"
+            enum:
+              - "mitigation"
+              - "adaptation"
+              - "aggregation"
+              - "biodiversity"
+              - "pollution"
+              - "water"
+              - "circular"
+          example: "mitigation"
+        - name: "version"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+        - name: "kpi"
+          in: "query"
+          description: "KPI. Allowed values: turnover,capex,opex"
+          required: false
+          schema:
+            type: "string"
+            enum:
+              - "turnover"
+              - "capex"
+              - "opex"
+          example: "turnover"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrganizationRequest"
+        required: true
+      responses:
+        200:
+          description: "EU Taxonomy values for the requested metrics"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrganizationValueResponse"
+        400:
+          description: "Invalid request:\n\n1019 - Isin isn't valid\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it\n\n7000 - Objective is not valid."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n2009 - ISIN not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        412:
+          description: "Invalid portfolio:\n\n1019 - Isin isn't valid"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/portfolios/{portfolioId}/eu-taxonomy/sfdr/product-level:
+    get:
+      tags:
+        - "SFDR Product level report"
+      summary: "Get product level reports for a given portfolio, annex and language"
+      description: "This endpoint will return product level reports attached to the response for the specified portfolio. The report will be provided in .docx format.\nThese reports are pre-contractual and periodic reports for Article 8 or Article 9 funds classified under SFDR (Annex II-V). \n"
+      operationId: "getReport"
+      parameters:
+        - name: "portfolioId"
+          in: "path"
+          description: "portfolio identifier"
+          required: true
+          schema:
+            type: "string"
+          example: "93aabf311870dcfbfa3c00c1"
+        - name: "annexType"
+          in: "query"
+          description: "Specifies which SFDR Annex template to generate. These are the allowed values and its corresponding reports:\n2 – Annex II: Article 8 Pre-contractual report\n3 – Annex III: Article 9 Pre-contractual report\n4 – Annex IV: Article 8 Periodic report\n5 – Annex V: Article 9 Periodic report\n"
+          required: true
+          schema:
+            type: "string"
+            enum:
+              - "2"
+              - "3"
+              - "4"
+              - "5"
+          example: 2
+        - name: "language"
+          in: "query"
+          description: "Specifies the language of the Annex template. These are the allowed values and its corresponding languages:\nEN – English [Default]\nES – Spanish\nDE – German\nIT – Italian\nFR – French\nSV – Swedish\nNL – Dutch\n"
+          required: false
+          schema:
+            type: "string"
+            enum:
+              - "EN"
+              - "ES"
+              - "DE"
+              - "IT"
+              - "FR"
+              - "SV"
+              - "NL"
+          example: "EN"
+      responses:
+        200:
+          description: "Product level report returned for the given portfolio, annex type and language"
+          content:
+            application/octet-stream:
+              schema:
+                $ref: "#/components/schemas/OrganizationValueResponse"
+        400:
+          description: "Invalid request:\n\nUnknown annex code\n\nUnknown Language"
+          content:
+            application/octet-stream:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/octet-stream:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/octet-stream:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n2009 - ISIN not found"
+          content:
+            application/octet-stream:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        412:
+          description: "Invalid portfolio:\n\n9002 - Invalid portfolio Id"
+          content:
+            application/octet-stream:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+servers:
+  - url: "https://api.clarity.ai/clarity/v1"
+  - url: "https://api.dev.clarity.ai/clarity/v1"
+tags:
+  - name: "Portfolio EU Taxonomy"
+    description: "Portfolio EU Taxonomy API"
+  - name: "Funds EU Taxonomy"
+    description: "Funds EU Taxonomy API"
+security:
+  - JWT: []

@@ -1,0 +1,139 @@
+components:
+  schemas:
+    RawDataAsyncRequest:
+      required:
+        - "metricIds"
+      type: "object"
+      properties:
+        metricIds:
+          type: "array"
+          description: "The list of metrics that will be returned with their corresponding values"
+          example:
+            - "CO2INDIRECTSCOPE2"
+          items:
+            type: "string"
+        idColumns:
+          type: "array"
+          description: "The companies identifier/s in the resulting file"
+          example:
+            - "PERMID"
+          items:
+            type: "string"
+            enum:
+              - "PERMID"
+              - "LEI"
+          enum:
+            - "PERMID"
+            - "LEI"
+        filters:
+          $ref: "#/components/schemas/RawDataFilterAsyncRequest"
+        omitUnits:
+          type: "boolean"
+          description: "Omit or include the UNITS column"
+          example: false
+          default: false
+        metadata:
+          type: "array"
+          description: "Choose which metadata columns with extra information about the metrics to include in the result"
+          example:
+            - "DISCLOSURE"
+          items:
+            type: "string"
+          default: []
+    RawDataFilterAsyncRequest:
+      type: "object"
+      properties:
+        permId:
+          type: "array"
+          description: "The list of permIds that will appear in the resulting file"
+          example:
+            - "4295905573"
+          items:
+            type: "string"
+        years:
+          type: "array"
+          description: "The years for which the values will appear in the resulting file"
+          example:
+            - "2022"
+          items:
+            type: "string"
+      description: "Filters to receive a narrowed result"
+    CreateJobResource:
+      type: "object"
+      properties:
+        uuid:
+          type: "string"
+    APIError:
+      type: "object"
+      properties:
+        code:
+          type: "integer"
+          format: "int32"
+        message:
+          type: "string"
+  securitySchemes:
+    JWT:
+      type: "http"
+      scheme: "bearer"
+      bearerFormat: "JWT"
+info:
+  title: "Clarity AI API - Raw Data"
+  description: "API to access Clarity AI data services."
+  termsOfService: "https://static.clarity.ai/Clarity_AI_TermsAndConditions.pdf"
+  contact:
+    name: "Clarity AI"
+    url: "https://www.clarity.ai"
+    email: "support@clarity.ai"
+  version: "1.0.0"
+openapi: "3.0.1"
+paths:
+  /public/organizations/raw-data/metric-by-id/async:
+    post:
+      tags:
+        - "Universe download - Asynchronous jobs"
+      summary: "Async Job -  Request Raw Data Values"
+      description: "This endpoint will make a request for an async Job to retrieve the entire universe of <a href=\"https://clarity.ai\">Clarity.AI</a> Raw data metrics for given security types and score Ids.<br>You can request the securities using securityTypes or provide a list of security ids (usually isins) with securityIds, <b>but NOT both</b>.<b>Please note</b>: This call will only return the identifier (uuid) for this task. You'll need this value later on further calls to know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>) or download your file when ready (see &laquo;Async Job - Download result file&raquo;)<br>Check <a href=\"/docs/universe-api-async-jobs\">this document</a> for a complete explanation of the flow for these Async jobs endpoints"
+      operationId: "rawDataGetMetrics"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RawDataAsyncRequest"
+        required: true
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it\n\n2202 - The value 'ALL' can not be used in conjunction with other identifier types\n\n2203 - 'idColumns' must match 'securityIdTypes' when requesting by specific IDs\n\n"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        413:
+          description: "Invalid request:\n\n2101 - The limit of 25.000 ids in the same request has been exceeded"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+servers:
+  - url: "https://api.clarity.ai/clarity/v1"
+  - url: "https://api.dev.clarity.ai/clarity/v1"
+tags:
+  - name: "Universe download - Asynchronous jobs"
+    description: "Raw Data Async Jobs"

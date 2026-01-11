@@ -1,0 +1,1033 @@
+components:
+  schemas:
+    SdgAsyncRequest:
+      type: "object"
+      properties:
+        scoreIds:
+          type: "array"
+          description: "Requested Score IDs"
+          example:
+            - "P_01_POVERTY"
+            - "P_02_END_HUNGER"
+            - "M_01_04_SANITATION_ACCESS_REVENUES"
+            - "TOTAL_SDG"
+          items:
+            type: "string"
+        securityTypes:
+          type: "array"
+          description: "The security types requested"
+          example:
+            - "FUND"
+          items:
+            type: "string"
+          enum:
+            - "EQUITY"
+            - "FIXED_INCOME"
+            - "FUND"
+        securityIdsType:
+          type: "string"
+          description: "Defines whether the security IDs passed in the 'securityIds' parameter are of type ISIN or CUSIP."
+          example: "ISIN"
+          default: "ISIN"
+          enum:
+            - "ISIN"
+            - "CUSIP"
+        securityIds:
+          type: "array"
+          description: "List of security ids to retrieve"
+          example:
+            - "US88165GAF72"
+            - "AU000000QBE9"
+            - "JP3918000005"
+            - "CA15135U1093"
+          items:
+            type: "string"
+        idColumns:
+          type: "array"
+          description: "Allows you to specify a list of security ID types that will be included in the response. Only the securities that have an identifier type matching 'idColumns' will be returned. If you want to retrieve all the securities, you can set 'idColumns' to \"ALL\" and no securities will be filtered out. Take into account that when using the \"ALL\" parameter whenever a new security identifier type is available in the Clarity AI platform it will be included in the response."
+          example:
+            - "ISIN"
+            - "CUSIP"
+          items:
+            type: "string"
+          default: "ISIN"
+          enum:
+            - "ISIN"
+            - "CUSIP"
+            - "ALL"
+    CreateJobResource:
+      type: "object"
+      properties:
+        uuid:
+          type: "string"
+    APIError:
+      type: "object"
+      properties:
+        code:
+          type: "integer"
+          format: "int32"
+        message:
+          type: "string"
+    SdgOrganizationsAsyncRequest:
+      type: "object"
+      properties:
+        scoreIds:
+          type: "array"
+          description: "Request desired scoreIds"
+          example:
+            - "P_01_POVERTY"
+            - "P_02_END_HUNGER"
+            - "M_01_04_SANITATION_ACCESS_REVENUES"
+            - "TOTAL_SDG"
+          items:
+            type: "string"
+        permIds:
+          type: "array"
+          description: "List of organizations, identified by permId, to retrieve information from. If this parameter is not present, all available organizations will be returned"
+          example:
+            - "5000008406"
+            - "5000038958"
+            - "4295882319"
+          items:
+            type: "string"
+    SdgFundsAsyncRequest:
+      type: "object"
+      properties:
+        scoreIds:
+          type: "array"
+          description: "Requested Score IDs"
+          example:
+            - "P_01_POVERTY"
+            - "P_02_END_HUNGER"
+            - "M_01_04_SANITATION_ACCESS_REVENUES"
+            - "TOTAL_SDG"
+          items:
+            type: "string"
+        optionalColumns:
+          type: "array"
+          description: "Optional columns to return in CSV:\n* `FUND_GROUP_ID`: Internal ID representing the group fund ID of a group of fund share classes\n"
+          example:
+            - "FUND_GROUP_ID"
+          items:
+            type: "string"
+          enum:
+            - "FUND_GROUP_ID"
+        onlyOneSecurityPerFundGroupId:
+          type: "boolean"
+          description: "Include only one Fund Share Class for each fund group in the response"
+          example: false
+        idColumns:
+          type: "array"
+          description: "Allows you to specify a list of fund ID types that will be included in the response. Only the funds that have an identifier type matching 'idColumns' will be returned. If you want to retrieve all funds, you can set 'idColumns' to \"ALL\" and no funds will be filtered out. Take into account that when using the \"ALL\" parameter whenever a new fund identifier type is available in the Clarity AI platform it will be included in the response."
+          example:
+            - "CUSIP"
+          items:
+            type: "string"
+          default: "ISIN"
+          enum:
+            - "ISIN"
+            - "CUSIP"
+            - "ALL"
+    SdgTopOrganizationScoresResource:
+      type: "object"
+      properties:
+        organizations:
+          type: "array"
+          description: "The list of the top organizations total and goals score for SDG in the portfolio."
+          example:
+            organizations:
+              - orgName: "Acme"
+                portfolioWeight: 95.89
+                scores:
+                  - id: "TOTAL"
+                    treeLevel: "TOTAL"
+                    score: 78
+                    metadata: "APPLY"
+                    relevance: 69
+                    peersPercentile: 87
+                  - id: "P_15_LAND"
+                    treeLevel: "GOAL"
+                    score: 98
+                    metadata: "APPLY"
+                    relevance: 54
+                    peersPercentile: 56
+              - orgName: "Soylent Corp "
+                portfolioWeight: 89.76
+                scores:
+                  - id: "TOTAL"
+                    treeLevel: "TOTAL"
+                    score: 76
+                    metadata: "APPLY"
+                    relevance: 67
+                    peersPercentile: 76
+                  - id: "P_15_LAND"
+                    treeLevel: "GOAL"
+                    score: 59
+                    metadata: "APPLY"
+                    relevance: 19
+                    peersPercentile: 54
+          items:
+            $ref: "#/components/schemas/SdgOrganizationScoreResource"
+    SdgOrganizationScoreResource:
+      type: "object"
+      properties:
+        orgName:
+          type: "string"
+          description: "The name of the organization."
+          example: "Microsoft"
+        portfolioWeight:
+          type: "number"
+          description: "The weight of the organization in the portfolio."
+          format: "double"
+          example: 23.43
+        scores:
+          type: "array"
+          description: "The list of the total and goals score for SDG for the organization."
+          example:
+            - id: "ESG"
+              treeLevel: "TOTAL"
+              score: 73
+              metadata: "APPLY"
+              relevance: 92
+              peersPercentile: 89
+            - id: "P_01_POVERTY"
+              treeLevel: "GOAL"
+              score: 55
+              metadata: "APPLY"
+              relevance: 91
+              peersPercentile: 76
+            - id: "P_02_END_HUNGER"
+              treeLevel: "GOAL"
+              score: 11
+              metadata: "APPLY"
+              relevance: 39
+              peersPercentile: 43
+          items:
+            $ref: "#/components/schemas/SdgOrganizationGoalsResource"
+      description: "The list of the top organizations total and goals score for SDG in the portfolio."
+      example:
+        organizations:
+          - orgName: "Acme"
+            portfolioWeight: 95.89
+            scores:
+              - id: "TOTAL"
+                treeLevel: "TOTAL"
+                score: 78
+                metadata: "APPLY"
+                relevance: 69
+                peersPercentile: 87
+              - id: "P_15_LAND"
+                treeLevel: "GOAL"
+                score: 98
+                metadata: "APPLY"
+                relevance: 54
+                peersPercentile: 56
+          - orgName: "Soylent Corp "
+            portfolioWeight: 89.76
+            scores:
+              - id: "TOTAL"
+                treeLevel: "TOTAL"
+                score: 76
+                metadata: "APPLY"
+                relevance: 67
+                peersPercentile: 76
+              - id: "P_15_LAND"
+                treeLevel: "GOAL"
+                score: 59
+                metadata: "APPLY"
+                relevance: 19
+                peersPercentile: 54
+    SdgOrganizationGoalsResource:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          description: "Id of the metric/target/goal/total behind the score."
+          example: "M_02_03_AGRICULTURE_MACHINERY_MANUFACTURING"
+        goal:
+          type: "string"
+          description: "Goal of the requested metric/target/goal/total behind the score."
+          example: "P_02_END_HUNGER"
+        target:
+          type: "string"
+          description: "Target of the requested metric behind the score."
+          example: "C_02_03_SMALLHOLDER_FARMS"
+        treeLevel:
+          type: "string"
+          description: "Level on the SDG tree the metric/target/goal/total belongs to"
+          enum:
+            - "TOTAL"
+            - "GOAL"
+            - "TARGET"
+            - "METRIC"
+        score:
+          type: "integer"
+          description: "Score for a specific scoring profile."
+          format: "int32"
+          example: 78
+        metadata:
+          type: "string"
+          description: "Metadata for the score"
+          example: "NONE"
+          enum:
+            - "NONE"
+            - "ASSIGNED"
+            - "LIMITED_INFO"
+            - "NOT_AVAILABLE"
+            - "NOT_IMPORTANT"
+            - "NOT_APPLICABLE"
+            - "OUT_OF_UNIVERSE"
+        relevance:
+          type: "integer"
+          description: "Data Relevance is the total importance of all applicable metrics with raw data available. Depending on the configuration of the Scoring Profile, scores may be assigned for applicable metrics when raw data is not available."
+          format: "int32"
+          example: 98
+        peersPercentile:
+          maximum: 100
+          minimum: 0
+          type: "integer"
+          description: "Percentile in which is classified comparing the SDG score with its owner's peers"
+          format: "int32"
+        categoryScore:
+          maximum: 3
+          minimum: -3
+          type: "integer"
+          description: "Category score bucket (from minus 3 to 3)"
+          format: "int32"
+        impactUnits:
+          type: "integer"
+          description: "Impact units"
+          format: "int64"
+    SdgPortfolioScoresResource:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+          description: "The name of the portfolio"
+          example: "Portfolio name"
+        updateDate:
+          type: "integer"
+          description: "The date of the last update "
+          format: "int64"
+          example: 1588897240648
+        totalOrganizations:
+          type: "integer"
+          description: "The number of organizations in the portfolio."
+          format: "int32"
+          example: 1344
+        totalCompanies:
+          type: "integer"
+          description: "The number of companies in the portfolio."
+          format: "int32"
+          example: 1100
+        coverageOrganizations:
+          type: "integer"
+          description: "The number of organizations in the portfolio for which we have data."
+          format: "int32"
+          example: 1274
+        sdgCoverage:
+          type: "number"
+          description: "The weight of the organizations in the portfolio for which we have data."
+          format: "float"
+          example: 94.7
+        coverageWeight:
+          type: "number"
+          description: "The sdg coverage of the portfolio."
+          format: "float"
+          example: 43.6
+        scores:
+          type: "array"
+          description: "The list of the total and goals score for SDG for the portfolio."
+          example:
+            - id: "TOTAL"
+              treeLevel: "TOTAL"
+              score: 73
+              metadata: "APPLY"
+              relevance: 92
+            - id: "P_01_POVERTY"
+              treeLevel: "GOAL"
+              score: 55
+              metadata: "APPLY"
+              relevance: 91
+            - id: "P_02_END_HUNGER"
+              treeLevel: "GOAL"
+              score: 11
+              metadata: "APPLY"
+              relevance: 39
+          items:
+            $ref: "#/components/schemas/SdgGoalsPortfolioResource"
+    SdgGoalsPortfolioResource:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          description: "Id of the metric/target/goal/total behind the score."
+          example: "M_02_03_AGRICULTURE_MACHINERY_MANUFACTURING"
+        goal:
+          type: "string"
+          description: "Goal for the requested metric/target/goal/total"
+          example: "p_02_end_hunger"
+        treeLevel:
+          type: "string"
+          description: "Level on the SDG tree the metric/category/goal belongs to"
+          enum:
+            - "TOTAL"
+            - "GOAL"
+            - "TARGET"
+            - "METRIC"
+        score:
+          type: "integer"
+          description: "Score for a specific scoring profile."
+          format: "int32"
+          example: 78
+        metadata:
+          type: "string"
+          description: "Metadata for the score"
+          example: "NONE"
+          enum:
+            - "NONE"
+            - "ASSIGNED"
+            - "LIMITED_INFO"
+            - "NOT_AVAILABLE"
+            - "NOT_IMPORTANT"
+            - "NOT_APPLICABLE"
+            - "OUT_OF_UNIVERSE"
+        relevance:
+          type: "integer"
+          description: "Data Relevance is the total importance of all applicable metrics with raw data available. Depending on the configuration of the Scoring Profile, scores may be assigned for applicable metrics when raw data is not available."
+          format: "int32"
+          example: 98
+      description: "The list of scores of requested metrics for SDG for the portfolio."
+      example:
+        - id: "TOTAL"
+          treeLevel: "TOTAL"
+          score: 73
+          metadata: "APPLY"
+          relevance: 92
+        - id: "P_01_POVERTY"
+          treeLevel: "GOAL"
+          score: 55
+          metadata: "APPLY"
+          relevance: 91
+        - id: "P_02_END_HUNGER"
+          treeLevel: "GOAL"
+          score: 11
+          metadata: "APPLY"
+          relevance: 39
+    SdgPortfolioScoresByIdResource:
+      type: "object"
+      properties:
+        scores:
+          type: "array"
+          description: "The list of scores of requested metrics for SDG for the portfolio."
+          example:
+            - id: "TOTAL"
+              treeLevel: "TOTAL"
+              score: 73
+              metadata: "APPLY"
+              relevance: 92
+            - id: "P_01_POVERTY"
+              treeLevel: "GOAL"
+              score: 55
+              metadata: "APPLY"
+              relevance: 91
+            - id: "P_02_END_HUNGER"
+              treeLevel: "GOAL"
+              score: 11
+              metadata: "APPLY"
+              relevance: 39
+          items:
+            $ref: "#/components/schemas/SdgGoalsPortfolioResource"
+    VersionsResource:
+      type: "object"
+      properties:
+        current:
+          $ref: "#/components/schemas/VersionResource"
+        versions:
+          type: "array"
+          description: "Latest two versions"
+          items:
+            $ref: "#/components/schemas/VersionResource"
+    VersionResource:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          description: "Version id"
+          example: "5201d475-277c-4808-8607-a99e588696b0"
+        date:
+          type: "string"
+          description: "Version activation date"
+          format: "date-time"
+          example: "2022-01-27T15:04:42.726Z"
+      description: "Latest two versions"
+    FundSummaryByIsinResource:
+      type: "object"
+      properties:
+        isin:
+          type: "string"
+          example: "ES0105093001"
+        name:
+          type: "string"
+          example: "Gigas Hosting SA ORD"
+        allocationDate:
+          type: "string"
+          format: "date"
+          example: "2020-05-20"
+        sdgCoverage:
+          maximum: 100
+          minimum: 0
+          type: "number"
+          format: "float"
+          example: 24.45
+        coverageWeight:
+          maximum: 100
+          minimum: 0
+          type: "number"
+          format: "float"
+          example: 87
+        peersGroup:
+          $ref: "#/components/schemas/PeersGroupResource"
+        scores:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/SdgFundGoalsResource"
+    PeersGroupResource:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          example: "5689"
+        count:
+          minimum: 0
+          type: "integer"
+          format: "int32"
+          example: 15
+    SdgFundGoalsResource:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          description: "Id of the metric/target/goal/total behind the score."
+          example: "M_02_03_AGRICULTURE_MACHINERY_MANUFACTURING"
+        goal:
+          type: "string"
+          description: "Goal of the requested metric/target/goal/total behind the score."
+          example: "P_02_END_HUNGER"
+        target:
+          type: "string"
+          description: "Target of the requested metric behind the score."
+          example: "C_02_03_SMALLHOLDER_FARMS"
+        treeLevel:
+          type: "string"
+          description: "Level on the SDG tree the metric/target/goal/total belongs to"
+          enum:
+            - "TOTAL"
+            - "GOAL"
+            - "TARGET"
+            - "METRIC"
+        score:
+          type: "integer"
+          description: "Score for a specific scoring profile."
+          format: "int32"
+          example: 78
+        metadata:
+          type: "string"
+          description: "Metadata for the score"
+          example: "NONE"
+          enum:
+            - "NONE"
+            - "ASSIGNED"
+            - "LIMITED_INFO"
+            - "NOT_AVAILABLE"
+            - "NOT_IMPORTANT"
+            - "NOT_APPLICABLE"
+            - "OUT_OF_UNIVERSE"
+        relevance:
+          type: "integer"
+          description: "Data Relevance is the total importance of all applicable metrics with raw data available. Depending on the configuration of the Scoring Profile, scores may be assigned for applicable metrics when raw data is not available."
+          format: "int32"
+          example: 98
+        peersPercentile:
+          maximum: 100
+          minimum: 0
+          type: "integer"
+          description: "Percentile in which is classified comparing the SDG score with its owner's peers"
+          format: "int32"
+    FundScoresByIdResource:
+      type: "object"
+      properties:
+        scores:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/SdgFundGoalsResource"
+  securitySchemes:
+    JWT:
+      type: "http"
+      scheme: "bearer"
+      bearerFormat: "JWT"
+info:
+  title: "Clarity AI API - SDG (Deprecated)"
+  description: "API to access Clarity AI data services."
+  termsOfService: "https://static.clarity.ai/Clarity_AI_TermsAndConditions.pdf"
+  contact:
+    name: "Clarity AI"
+    url: "https://www.clarity.ai"
+    email: "support@clarity.ai"
+  version: "1.0.0"
+openapi: "3.0.1"
+paths:
+  /public/securities/sdg/scores-by-id/async:
+    post:
+      tags:
+        - "Universe download - Asynchronous jobs"
+      summary: "Async Job -  Request SDG Scores"
+      description: "This endpoint will make a request for an async Job to retrieve the entire universe of <a href=\"https://clarity.ai\">Clarity.AI</a> SDG scores for given security types and score Ids.<br>You can request the securities using securityTypes or provide a list of security ids (usually isins) with securityIds, <b>but NOT both</b>.<b>Please note</b>: This call will only return the identifier (uuid) for this task. You'll need this value later on further calls to know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>) or download your file when ready (see &laquo;Async Job - Download result file&raquo;)<br>Check <a href=\"/docs/universe-api-async-jobs\">this document</a> for a complete explanation of the flow for these Async jobs endpoints"
+      operationId: "sdgGetScores"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SdgAsyncRequest"
+        required: true
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it\n\n2202 - The value 'ALL' can not be used in conjunction with other identifier types\n\n2203 - 'idColumns' must match 'securityIdTypes' when requesting by specific IDs\n\n"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        413:
+          description: "Invalid request:\n\n2101 - The limit of 25.000 ids in the same request has been exceeded"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      deprecated: true
+      security:
+        - JWT: []
+  /public/organizations/sdg/scores-by-id/async:
+    post:
+      tags:
+        - "Universe download - Asynchronous jobs"
+      summary: "Async Job - Organizations scores"
+      description: "This endpoint will make a request for an async job to retrieve the entire universe of <a href=\"https://clarity.ai\">Clarity.AI</a> securities through their ISINs with their respective issuer, identified using the PermId (see: <a href=\"https://permid.org/\">permid.org</a> )<br>If no permIds are set, the entire mapping table will be returned.<b>Please note</b>: This call will only returns the identifier (uuid) for this task. You'll need this value later on further calls to know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>) or download your file when ready (see &laquo;Async Job - Download result file&raquo;)<br>Check <a href=\"/docs/universe-api-async-jobs\">this document</a> for a complete explanation of the flow for these Async jobs endpoints"
+      operationId: "sdgOrganizationsGetScores"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SdgOrganizationsAsyncRequest"
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        413:
+          description: "Invalid request:\n\n2101 - The limit of 25.000 ids in the same request has been exceeded"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      deprecated: true
+      security:
+        - JWT: []
+  /public/funds/sdg/scores-by-id/async:
+    post:
+      tags:
+        - "Universe download - Asynchronous jobs"
+      summary: "Async Job -  Request SDG Funds Scores for funds"
+      description: "This endpoint will make a request for an async Job to retrieve the entire universe of <a href=\"https://clarity.ai\">Clarity.AI</a> SDG scores for all funds and given score Ids.<br><b>Please note</b>: This call will only return the identifier (uuid) for this task. You'll need this value later on further calls to know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>) or download your file when ready (see &laquo;Async Job - Download result file&raquo;)<br>Check <a href=\"/docs/universe-api-async-jobs\">this document</a> for a complete explanation of the flow for these Async jobs endpoints"
+      operationId: "sdgFundsGetScores"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SdgFundsAsyncRequest"
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it\n\n2202 - The value 'ALL' can not be used in conjunction with other identifier types"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      deprecated: true
+      security:
+        - JWT: []
+  /public/portfolios/{portfolioId}/sdg/top-organizations:
+    get:
+      tags:
+        - "Portfolio SDG"
+      summary: "Get Portfolio top 10 organizations SDG scores by weight"
+      description: "Given a portfolio id returns the top 10 organizations by portfolio weight and the Total SDG score, goals score, its relevance and peers percentile respectively along with SDG Coverage (number of companies and % of the portfolio with SDG data)"
+      operationId: "portfolioSummaryTopOrganizations"
+      parameters:
+        - name: "portfolioId"
+          in: "path"
+          description: "Portfolio Id"
+          required: true
+          schema:
+            type: "string"
+          example: "9a2f825g00013311c3b93699"
+        - name: "version"
+          in: "query"
+          description: "Dataset version"
+          required: false
+          schema:
+            type: "string"
+          example: "2e6b4b6a-835d-11ec-a8a3-0242ac120002"
+      responses:
+        200:
+          description: "SDG portfolio top organizations scores"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SdgTopOrganizationScoresResource"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n2007 - The portfolio id does not exist or does not belong to the user\n\n1022 - The version does not exist or is obsolete"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      deprecated: true
+      security:
+        - JWT: []
+  /public/portfolios/{portfolioId}/sdg/summary:
+    get:
+      tags:
+        - "Portfolio SDG"
+      summary: "Get SDG Total and Goals Portfolio Scores"
+      description: "Given a portfolio id, returns the Total SDG score, goals score and its relevance respectively for a specific Portfolio (portfolioId) along SDG Coverage (number of companies and % of the portfolio with SDG data)."
+      operationId: "portfolioSummary"
+      parameters:
+        - name: "portfolioId"
+          in: "path"
+          description: "Portfolio Id"
+          required: true
+          schema:
+            type: "string"
+          example: "9a2f825g00013311c3b93699"
+        - name: "version"
+          in: "query"
+          description: "Dataset version"
+          required: false
+          schema:
+            type: "string"
+          example: "2e6b4b6a-835d-11ec-a8a3-0242ac120002"
+      responses:
+        200:
+          description: "SDG portfolio scores"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SdgPortfolioScoresResource"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n2007 - The portfolio id does not exist or does not belong to the user\n\n1022 - The version does not exist or is obsolete\n\n"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      deprecated: true
+      security:
+        - JWT: []
+  /public/portfolios/{portfolioId}/sdg/scores-by-id:
+    get:
+      tags:
+        - "Portfolio SDG"
+      summary: "Get Specific SDG Scores for Portfolio"
+      description: "Return the requested scores for a given portfolioId."
+      operationId: "getSDGPortfolioMetricsScores"
+      parameters:
+        - name: "portfolioId"
+          in: "path"
+          description: "The portfolio id you are looking for"
+          required: true
+          schema:
+            type: "string"
+          example: "9a2f825g00013311c3b93699"
+        - name: "scoreId"
+          in: "query"
+          description: "The score id identifiers"
+          required: true
+          schema:
+            type: "array"
+            items:
+              type: "string"
+          example:
+            - "P_01_POVERTY"
+            - "M_01_04_SANITATION_ACCESS_REVENUES"
+            - "TOTAL_SDG"
+        - name: "version"
+          in: "query"
+          description: "Dataset version"
+          required: false
+          schema:
+            type: "string"
+          example: "2e6b4b6a-835d-11ec-a8a3-0242ac120002"
+      responses:
+        200:
+          description: "The score for the requested scores of the portfolio"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SdgPortfolioScoresByIdResource"
+        400:
+          description: "Invalid request:\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it\n\n5001 - List cannot be empty. At least one score id is required"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n2007 - The portfolio id does not exist or does not belong to the user\n\n1022 - The version does not exist or is obsolete"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      deprecated: true
+      security:
+        - JWT: []
+  /public/organizations/sdg/version:
+    get:
+      tags:
+        - "Versions"
+      operationId: "organizationsVersion"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VersionsResource"
+        404:
+          description: "Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      deprecated: true
+      security:
+        - JWT: []
+  /public/funds/{fundId}/sdg/summary:
+    get:
+      tags:
+        - "Fund SDG"
+      summary: "Get SDG Total and Goals Fund Scores"
+      description: "Given a Fund ISIN, returns the Total SDG score and the SDG Goals scores and its relevance for a specific Fund (isin) along with SDG Coverage (number of companies and % of the fund with SDG data)."
+      operationId: "sdgFundsSummary"
+      parameters:
+        - name: "fundId"
+          in: "path"
+          description: "ISIN"
+          required: true
+          schema:
+            type: "string"
+          example: "ES0105093001"
+        - name: "scoringProfileId"
+          in: "query"
+          description: "Scoring Profile ID"
+          required: false
+          schema:
+            type: "string"
+        - name: "version"
+          in: "query"
+          description: "Dataset version"
+          required: false
+          schema:
+            type: "string"
+          example: "2e6b4b6a-835d-11ec-a8a3-0242ac120002"
+      responses:
+        200:
+          description: "SDG Total and Goals Fund Scores"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FundSummaryByIsinResource"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n3001 - Fund ID not found\n\n1022 - The version does not exist or is obsolete"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      deprecated: true
+      security:
+        - JWT: []
+  /public/funds/{fundId}/sdg/scores-by-id:
+    get:
+      tags:
+        - "Fund SDG"
+      summary: "Get SDG Scores for a given Fund"
+      description: "Given a Fund ISIN, returns the scores for a specific Fund (isin) along with SDG Coverage (number of companies and % of the fund with SDG data)."
+      operationId: "sdgFundsScoreById"
+      parameters:
+        - name: "fundId"
+          in: "path"
+          description: "ISIN"
+          required: true
+          schema:
+            type: "string"
+          example: "ES0105093001"
+        - name: "scoreId"
+          in: "query"
+          required: true
+          schema:
+            type: "array"
+            items:
+              type: "string"
+          example: "TOTAL_SDG"
+        - name: "version"
+          in: "query"
+          description: "Dataset version"
+          required: false
+          schema:
+            type: "string"
+          example: "2e6b4b6a-835d-11ec-a8a3-0242ac120002"
+      responses:
+        200:
+          description: "SDG fund scores"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FundScoresByIdResource"
+        400:
+          description: "Invalid request:\n\n5001 - List cannot be empty. At least one score id is required"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n3001 - Fund ID not found\n\n1022 - The version does not exist or is obsolete"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      deprecated: true
+      security:
+        - JWT: []
+servers:
+  - url: "https://api.clarity.ai/clarity/v1"
+  - url: "https://api.dev.clarity.ai/clarity/v1"
+tags:
+  - name: "Fund SDG"
+    description: "Fund Controller"
+  - name: "Portfolio SDG"
+    description: "SDG Portfolio Scores API"
+  - name: "Universe download - Asynchronous jobs"
+    description: "Sdg Async Jobs Controller"
+security:
+  - JWT: []

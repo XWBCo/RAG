@@ -1,0 +1,80 @@
+{
+  "metadata": {
+    "timestamp": "2026-01-09T19:56:54.869724",
+    "total_queries": 38,
+    "tags_filter": null
+  },
+  "v1_summary": {
+    "total": 38,
+    "good_count": 0,
+    "fair_count": 18,
+    "poor_count": 20,
+    "good_pct": 0.0,
+    "fair_pct": 47.368421052631575,
+    "poor_pct": 52.63157894736842,
+    "avg_retrieval_score": 0.3583324978668759,
+    "avg_topic_coverage": 0.47149122807017535,
+    "avg_latency_ms": 2793.2723333938875,
+    "worst_queries": [
+      [
+        "risk_correlation",
+        0.0
+      ],
+      [
+        "general_data_frequency",
+        0.0
+      ],
+      [
+        "general_export",
+        0.0
+      ],
+      [
+        "edge_out_of_domain",
+        0.0
+      ],
+      [
+        "monte_carlo_num_simulations",
+        0.31812700133062166
+      ]
+    ]
+  },
+  "v2_summary": {
+    "total": 38,
+    "good_count": 2,
+    "fair_count": 0,
+    "poor_count": 36,
+    "good_pct": 5.263157894736842,
+    "fair_pct": 0.0,
+    "poor_pct": 94.73684210526315,
+    "avg_retrieval_score": 0.043421052631578944,
+    "avg_topic_coverage": 0.5394736842105262,
+    "avg_latency_ms": 22050.95836613289,
+    "worst_queries": [
+      [
+        "monte_carlo_5th_percentile",
+        0.0
+      ],
+      [
+        "monte_carlo_50th_percentile",
+        0.0
+      ],
+      [
+        "monte_carlo_95th_percentile",
+        0.0
+      ],
+      [
+        "monte_carlo_num_simulations",
+        0.0
+      ],
+      [
+        "monte_carlo_assumptions",
+        0.0
+      ]
+    ]
+  },
+  "comparison": {
+    "retrieval_diff": -0.3149114452352969,
+    "latency_diff_ms": 19257.686032739002,
+    "topic_coverage_diff": 0.06798245614035087
+  }
+}

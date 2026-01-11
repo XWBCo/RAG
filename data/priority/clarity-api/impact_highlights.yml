@@ -1,0 +1,772 @@
+components:
+  schemas:
+    SecuritiesAsyncRequest:
+      type: "object"
+      properties:
+        metricIds:
+          type: "array"
+          description: "Requested Metric IDs"
+          example:
+            - "IHL_M_TOTAL_CO2_ESTIMATED"
+            - "IHL_M_ENERGY_USE"
+          items:
+            type: "string"
+        securityTypes:
+          type: "array"
+          description: "The security types requested"
+          example:
+            - "FUND"
+          items:
+            type: "string"
+          enum:
+            - "EQUITY"
+            - "FIXED_INCOME"
+            - "FUND"
+        securityIdsType:
+          type: "string"
+          description: "Defines whether the security IDs passed in the 'securityIds' parameter are of type ISIN or CUSIP."
+          example: "ISIN"
+          default: "ISIN"
+          enum:
+            - "ISIN"
+            - "CUSIP"
+        securityIds:
+          type: "array"
+          description: "List of security ids to retrieve"
+          example:
+            - "US88165GAF72"
+            - "AU000000QBE9"
+            - "JP3918000005"
+            - "CA15135U1093"
+          items:
+            type: "string"
+        idColumns:
+          type: "array"
+          description: "Allows you to specify a list of security ID types that will be included in the response. Only the securities that have an identifier type matching 'idColumns' will be returned. If you want to retrieve all the securities, you can set 'idColumns' to \"ALL\" and no securities will be filtered out. Take into account that when using the \"ALL\" parameter whenever a new security identifier type is available in the Clarity AI platform it will be included in the response."
+          example:
+            - "ISIN"
+            - "CUSIP"
+          items:
+            type: "string"
+          default: "ISIN"
+          enum:
+            - "ISIN"
+            - "CUSIP"
+            - "ALL"
+    CreateJobResource:
+      type: "object"
+      properties:
+        uuid:
+          type: "string"
+    APIError:
+      type: "object"
+      properties:
+        code:
+          type: "integer"
+          format: "int32"
+        message:
+          type: "string"
+    OrganizationsAsyncRequest:
+      type: "object"
+      properties:
+        metricIds:
+          type: "array"
+          description: "Request desired  Metric Ids"
+          example:
+            - "IHL_M_TOTAL_CO2_ESTIMATED"
+            - "IHL_M_ENERGY_USE"
+          items:
+            type: "string"
+        permIds:
+          type: "array"
+          description: "List of organizations, identified by permId, to retrieve information from. If this parameter is not present, all available organizations will be returned"
+          example:
+            - "5000008406"
+            - "5000038958"
+            - "4295882319"
+          items:
+            type: "string"
+    FundsAsyncRequest:
+      type: "object"
+      properties:
+        metricIds:
+          type: "array"
+          description: "Requested Metric IDs"
+          example:
+            - "IHL_M_TOTAL_CO2_ESTIMATED"
+            - "IHL_M_ENERGY_USE"
+          items:
+            type: "string"
+        optionalColumns:
+          type: "array"
+          description: "Optional columns to return in CSV:\n* `FUND_GROUP_ID`: Internal ID representing the group fund ID of a group of fund share classes\n"
+          example:
+            - "FUND_GROUP_ID"
+          items:
+            type: "string"
+          enum:
+            - "FUND_GROUP_ID"
+        onlyOneSecurityPerFundGroupId:
+          type: "boolean"
+          description: "Include only one Fund Share Class for each fund group in the response"
+          example: false
+        idColumns:
+          type: "array"
+          description: "Allows you to specify a list of fund ID types that will be included in the response. Only the funds that have an identifier type matching 'idColumns' will be returned. If you want to retrieve all funds, you can set 'idColumns' to \"ALL\" and no funds will be filtered out. Take into account that when using the \"ALL\" parameter whenever a new fund identifier type is available in the Clarity AI platform it will be included in the response."
+          example:
+            - "CUSIP"
+          items:
+            type: "string"
+          default: "ISIN"
+          enum:
+            - "ISIN"
+            - "CUSIP"
+            - "ALL"
+    OrganizationsHighlightsResource:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+          description: "Name of the requested portfolio"
+          example: "My very own portfolio"
+        updateDate:
+          type: "string"
+          description: "Last updated date"
+          example: "2021-01-25T18:26:29.053"
+        totalOrganizations:
+          type: "integer"
+          description: "Total number of organizations included"
+          format: "int32"
+          example: 123
+        metrics:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/MetricResource"
+      description: "IHL summary"
+    MetricResource:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          description: "Metric identifier"
+          example: "IHL_M_WATER_WITHDRAWAL"
+        value:
+          type: "number"
+          description: "Raw value for that metric"
+          format: "double"
+          example: 1000000
+        valueUnit:
+          type: "string"
+          description: "Units (code for the units) for value"
+          example: "Tons of CO2"
+        convertedValue:
+          type: "number"
+          description: "Converted value for original raw data."
+          format: "double"
+          example: 23
+        convertedValueUnit:
+          type: "string"
+          description: "Units (code for the units) for converted value"
+          example: "Flights around the world"
+        coverageOrganizations:
+          type: "integer"
+          description: "Number of organizations used for calculations"
+          format: "int32"
+          example: 25
+        coverageWeight:
+          type: "number"
+          description: "Weight in portfolio for organizations used on calculations"
+          format: "double"
+          example: 98.2
+        ihlCoverage:
+          type: "number"
+          format: "double"
+          example: 98.2
+    PortfolioHighlightsPortfolioBenchmarkResource:
+      type: "object"
+      properties:
+        amount:
+          $ref: "#/components/schemas/AmountResource"
+        portfolio:
+          $ref: "#/components/schemas/OrganizationsHighlightsResource"
+        benchmark:
+          $ref: "#/components/schemas/OrganizationsHighlightsResource"
+    AmountResource:
+      type: "object"
+      properties:
+        value:
+          type: "number"
+          description: "Amount value"
+          format: "double"
+        currency:
+          type: "string"
+          description: "Currency"
+      description: "Amount invested"
+    PortfolioAndBenchmarkHighlightsResource:
+      type: "object"
+      properties:
+        amount:
+          $ref: "#/components/schemas/AmountResource"
+        portfolio:
+          $ref: "#/components/schemas/SummaryBenchmarkResource"
+        benchmark:
+          $ref: "#/components/schemas/SummaryBenchmarkResource"
+    SummaryBenchmarkResource:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+          example: "Gigas Hosting SA ORD"
+        totalOrganizations:
+          type: "integer"
+          description: "Total number of organizations included"
+          format: "int32"
+          example: 123
+        metrics:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/MetricResource"
+      description: "IHL summary"
+    FundAndBenchmarkHighlightsResource:
+      type: "object"
+      properties:
+        amount:
+          $ref: "#/components/schemas/AmountResource"
+        fund:
+          $ref: "#/components/schemas/SummaryBenchmarkResource"
+        benchmark:
+          $ref: "#/components/schemas/SummaryBenchmarkResource"
+    FundSummaryIsinResource:
+      type: "object"
+      properties:
+        isin:
+          type: "string"
+          example: "ES0105093001"
+        name:
+          type: "string"
+          example: "Gigas Hosting SA ORD"
+        allocationDate:
+          type: "string"
+          format: "date-time"
+          example: "2020-05-20T08:17:53.141Z"
+        metrics:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/FundMetricResource"
+    FundMetricResource:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          example: "impact_highlights_co2emissions"
+        coverageWeight:
+          maximum: 100
+          minimum: 0
+          type: "number"
+          format: "float"
+          example: 64.3
+        value:
+          type: "number"
+          format: "double"
+          example: 180
+        valueUnit:
+          type: "string"
+          example: "tons of CO2"
+        convertedValue:
+          type: "number"
+          format: "double"
+          example: 36
+        convertedValueUnit:
+          type: "string"
+          example: "Flights around the world"
+  securitySchemes:
+    JWT:
+      type: "http"
+      scheme: "bearer"
+      bearerFormat: "JWT"
+info:
+  title: "Clarity AI API - Impact Highlights"
+  description: "API to access Clarity AI data services."
+  termsOfService: "https://static.clarity.ai/Clarity_AI_TermsAndConditions.pdf"
+  contact:
+    name: "Clarity AI"
+    url: "https://www.clarity.ai"
+    email: "support@clarity.ai"
+  version: "1.0.0"
+openapi: "3.0.1"
+paths:
+  /public/securities/impact-highlights/metric-by-id/async:
+    post:
+      tags:
+        - "Universe download - Asynchronous jobs"
+      summary: "Async Job -  Request Impact Highlights metric values"
+      description: "This endpoint will make a request for an async Job to retrieve the entire universe of <a href=\"https://clarity.ai\">Clarity.AI</a> Impact Highlights metric values for given security types and metric Ids.<br>You can request the securities using securityTypes or provide a list of security ids (usually isins) with securityIds, <b>but NOT both</b>.<br><p>Please note the following metrics are not aggregatable due to the nature of their numeric type (percentage): IHL_WOMEN_EMPLOYEES and IHL_EMPLOYMENT_CREATION<br><p>This call will <b>only return the identifier</b> (uuid) for this task. You'll need this value later on further calls to know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>) or download your file when ready (see &laquo;Async Job - Download result file&raquo;)<br>Check <a href=\"/docs/universe-api-async-jobs\">this document</a> for a complete explanation of the flow for these Async jobs endpoints"
+      operationId: "ihlSecuritiesGetMetricValues"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SecuritiesAsyncRequest"
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it\n\n2202 - The value 'ALL' can not be used in conjunction with other identifier types\n\n2203 - 'idColumns' must match 'securityIdTypes' when requesting by specific IDs\n\n"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        413:
+          description: "Invalid request:\n\n2101 - The limit of 25.000 ids in the same request has been exceeded"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/organizations/impact-highlights/metric-by-id/async:
+    post:
+      tags:
+        - "Universe download - Asynchronous jobs"
+      summary: "Async Job - Organizations metric values"
+      description: "This endpoint will make a request for an async job to retrieve the entire universe of <a href=\"https://clarity.ai\">Clarity.AI</a>  securities through their ISINs with their respective issuer, identified using the PermId (see: <a href=\"https://permid.org/\">permid.org</a> )If no permIds are set, the entire mapping table will be returned.<br>Please note the following metrics are not aggregatable due to the nature of their numeric type (percentage): IHL_WOMEN_EMPLOYEES and IHL_EMPLOYMENT_CREATION<br><p>This call will <b>only returns the identifier</b> (uuid) for this task. You'll need this value later on further calls to know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>) or download your file when ready (see &laquo;Async Job - Download result file&raquo;)<br>Check <a href=\"/docs/universe-api-async-jobs\">this document</a> for a complete explanation of the flow for these Async jobs endpoints"
+      operationId: "ihlOrganizationsGetMetricValues"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrganizationsAsyncRequest"
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        413:
+          description: "Invalid request:\n\n2101 - The limit of 25.000 ids in the same request has been exceeded"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/funds/impact-highlights/metric-by-id/async:
+    post:
+      tags:
+        - "Universe download - Asynchronous jobs"
+      summary: "Async Job -  Request Impact Highlights Funds Metric Values for funds"
+      description: "This endpoint will make a request for an async Job to retrieve the entire universe of <a href=\"https://clarity.ai\">Clarity.AI</a> Impact Highlights metric values for all funds and given metric Ids.<br><p>Please note that the coverage only applies to the applicable universe (e.g. fund with 30% governments and 70% equities, having a coverage of 100% on equities, would have 100% as coverage).<br><p>This call will <b>only return the identifier</b> (uuid) for this task. You'll need this value later on further calls to know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>) or download your file when ready (see &laquo;Async Job - Download result file&raquo;)<br>Check <a href=\"/docs/universe-api-async-jobs\">this document</a> for a complete explanation of the flow for these Async jobs endpoints"
+      operationId: "ihlFundsGetMetricValues"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FundsAsyncRequest"
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it\n\n2202 - The value 'ALL' can not be used in conjunction with other identifier types"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/portfolios/{portfolioId}/impact-highlights/summary:
+    get:
+      tags:
+        - "Portfolio Impact Highlights"
+      summary: "Get the portfolio impact highlights summary"
+      description: "Returns the top level data of the impact highlights of the given portfolio"
+      operationId: "getHighlightsForPortfolio"
+      parameters:
+        - name: "portfolioId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        200:
+          description: "Returns the portfolio summary"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrganizationsHighlightsResource"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n2007 - The portfolio id does not exist or does not belong to the user"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        422:
+          description: "Unprocessable Entity:\n\n10004 - Sorry, this portfolio does not meet the conditions to show the Impact Highlights. Please ensure there are at least 5 relevant organizations in this portfolio AND that no one organization accounts for more than 80% of the total weight of this portfolio"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/portfolios/{portfolioId}/impact-highlights/benchmark-portfolio/{portfolioBenchmarkId}:
+    get:
+      tags:
+        - "Portfolio Impact Highlights"
+      summary: "Get the Impact highlights summary comparison between two portfolios"
+      description: "Returns the top level data of the impact highlights for two portfolios, one taken as main portfolio and other as benchmark to compare"
+      operationId: "getHighlightsForPortfolioAndPortfolio"
+      parameters:
+        - name: "portfolioId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+          example: "61dfe33fe3168b65e12a5499"
+        - name: "portfolioBenchmarkId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+          example: "61dfe33fe3168b65e12a5499"
+      responses:
+        200:
+          description: "Returns the portfolio and benchmark summary"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortfolioHighlightsPortfolioBenchmarkResource"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found, one of the portfolios doesn't exists:\n\n2007 - The portfolio id does not exist or does not belong to the user"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        422:
+          description: "Unprocessable Entity:\n\n10006 - Benchmark coverage is zero"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/portfolios/{portfolioId}/impact-highlights/benchmark-fund/{fundId}:
+    get:
+      tags:
+        - "Portfolio Impact Highlights"
+      summary: "Get the Impact highlights summary comparison between a portfolio and a fund"
+      description: "Returns the top level data of the impact highlights of the given portfolio and a fund"
+      operationId: "getHighlightsForPortfolioAndFund"
+      parameters:
+        - name: "portfolioId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+          example: "61dfe33fe3168b65e12a5499"
+        - name: "fundId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+          example: "ES0113900J37"
+      responses:
+        200:
+          description: "Returns the portfolio and benchmark summary"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortfolioAndBenchmarkHighlightsResource"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Benchmark Id not found:\n\n3001 - Fund ID not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        406:
+          description: "Unfortunately, there is insufficient information to enable an accurate comparison between the chosen portfolio/fund and benchmark. If possible, please choose a different portfolio or fund. If the issue persists, please contact our support team.:\n\n1021 - Not enough information to display this result"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        422:
+          description: "Unprocessable Entity:\n\n10004 - Sorry, this portfolio does not meet the conditions to show the Impact Highlights. Please ensure there are at least 5 relevant organizations in this portfolio AND that no one organization accounts for more than 80% of the total weight of this portfolio"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/funds/{idType}/{id}/impact-highlights/benchmark-fund/{benchmarkIdType}/{benchmarkId}:
+    get:
+      tags:
+        - "Funds Impact Highlights"
+      summary: "Get the fund and another fund as benchmark impact highlights summary"
+      description: "Returns the impact highlights values for two funds"
+      operationId: "getHighlightsForFundAndFund"
+      parameters:
+        - name: "idType"
+          in: "path"
+          description: "Fund Identifier type"
+          required: true
+          schema:
+            type: "string"
+            enum:
+              - "ISIN"
+              - "CUSIP"
+          example: "ISIN"
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+          example: "ES0113900J37"
+        - name: "benchmarkIdType"
+          in: "path"
+          description: "Benchmark Identifier type"
+          required: true
+          schema:
+            type: "string"
+            enum:
+              - "ISIN"
+              - "CUSIP"
+          example: "ISIN"
+        - name: "benchmarkId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+          example: "ES0113900J37"
+        - name: "amount"
+          in: "query"
+          required: false
+          schema:
+            type: "number"
+            format: "double"
+            default: 1000000
+          example: 3465265.33
+        - name: "currency"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+            default: "USD"
+          example: "USD"
+      responses:
+        200:
+          description: "Returns the fund and benchmark summary"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FundAndBenchmarkHighlightsResource"
+        400:
+          description: "Bad request:\n\n1020 - Invalid request parameter"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Currency not supported or does not exist:\n\n1017 - The currency does not exist or is not supported"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/funds/{fundId}/impact-highlights/summary:
+    get:
+      tags:
+        - "Funds Impact Highlights"
+      summary: "Get the fund impact highlights summary"
+      description: "Returns the impact highlights values for the given fund"
+      operationId: "getHighlightsForFund_1"
+      parameters:
+        - name: "fundId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+          example: "ES0113900J37"
+        - name: "amount"
+          in: "query"
+          required: false
+          schema:
+            type: "number"
+            format: "double"
+            default: 1000000
+          example: 3465265.33
+        - name: "currency"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+            default: "USD"
+          example: "USD"
+      responses:
+        200:
+          description: "Returns the fund summary"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FundSummaryIsinResource"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Currency not supported or does not exist:\n\n1017 - The currency does not exist or is not supported"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/funds/{fundId}/impact-highlights/benchmark-fund/{benchmarkId}:
+    get:
+      tags:
+        - "Funds Impact Highlights"
+      summary: "Get the fund and another fund as benchmark impact highlights summary"
+      description: "Returns the impact highlights values for two funds"
+      operationId: "getHighlightsForFundAndFund_1"
+      parameters:
+        - name: "fundId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+          example: "ES0113900J37"
+        - name: "benchmarkId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+          example: "ES0113900J37"
+        - name: "amount"
+          in: "query"
+          required: false
+          schema:
+            type: "number"
+            format: "double"
+            default: 1000000
+          example: 3465265.33
+        - name: "currency"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+            default: "USD"
+          example: "USD"
+      responses:
+        200:
+          description: "Returns the fund and benchmark summary"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FundAndBenchmarkHighlightsResource"
+        400:
+          description: "Bad request:\n\n1020 - Invalid request parameter"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Currency not supported or does not exist:\n\n1017 - The currency does not exist or is not supported"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+servers:
+  - url: "https://api.clarity.ai/clarity/v1"
+  - url: "https://api.dev.clarity.ai/clarity/v1"
+tags:
+  - name: "Portfolio Impact Highlights"
+    description: "Portfolio Impact Highlights API"
+  - name: "Funds Impact Highlights"
+    description: "Funds Impact Highlights API"
+  - name: "Universe download - Asynchronous jobs"
+    description: "Impact Highlights Async Jobs Controller"
+security:
+  - JWT: []

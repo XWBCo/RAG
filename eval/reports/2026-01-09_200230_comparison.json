@@ -1,0 +1,82 @@
+{
+  "metadata": {
+    "timestamp": "2026-01-09T20:02:30.720760",
+    "total_queries": 6,
+    "tags_filter": [
+      "v2_test"
+    ]
+  },
+  "v1_summary": {
+    "total": 6,
+    "good_count": 0,
+    "fair_count": 5,
+    "poor_count": 1,
+    "good_pct": 0.0,
+    "fair_pct": 83.33333333333334,
+    "poor_pct": 16.666666666666664,
+    "avg_retrieval_score": 0.4639651590802664,
+    "avg_topic_coverage": 0.6666666666666666,
+    "avg_latency_ms": 3288.9030000005732,
+    "worst_queries": [
+      [
+        "inv_us_vs_international",
+        0.37346395144384026
+      ],
+      [
+        "inv_risk_levels",
+        0.41097017754530885
+      ],
+      [
+        "inv_climate_model",
+        0.4660536817167385
+      ],
+      [
+        "inv_fund_search",
+        0.48792438625170076
+      ],
+      [
+        "inv_ibi_allocation",
+        0.5037175473171212
+      ]
+    ]
+  },
+  "v2_summary": {
+    "total": 6,
+    "good_count": 5,
+    "fair_count": 0,
+    "poor_count": 1,
+    "good_pct": 83.33333333333334,
+    "fair_pct": 0.0,
+    "poor_pct": 16.666666666666664,
+    "avg_retrieval_score": 0.7733333333333334,
+    "avg_topic_coverage": 0.8888888888888888,
+    "avg_latency_ms": 26107.769048833386,
+    "worst_queries": [
+      [
+        "inv_us_vs_international",
+        0.0
+      ],
+      [
+        "inv_fund_search",
+        0.9
+      ],
+      [
+        "inv_impact_allocation",
+        0.9299999999999999
+      ],
+      [
+        "inv_risk_levels",
+        0.9299999999999999
+      ],
+      [
+        "inv_climate_model",
+        0.93
+      ]
+    ]
+  },
+  "comparison": {
+    "retrieval_diff": 0.309368174253067,
+    "latency_diff_ms": 22818.866048832813,
+    "topic_coverage_diff": 0.2222222222222222
+  }
+}

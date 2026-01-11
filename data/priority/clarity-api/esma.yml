@@ -1,0 +1,130 @@
+components:
+  schemas:
+    AsyncEsmaSecurityRequest:
+      type: "object"
+      properties:
+        idColumns:
+          uniqueItems: true
+          type: "array"
+          description: "Allows you to specify a list of security ID types that will be included in the response. Only the securities that have an identifier type matching 'idColumns' will be returned."
+          example:
+            - "ISIN"
+            - "CUSIP"
+          items:
+            type: "string"
+          default: "ISIN"
+          enum:
+            - "ISIN"
+            - "CUSIP"
+        securityIdsType:
+          type: "string"
+          description: "Defines whether the security IDs passed in the 'securityIds' parameter are of type ISIN or CUSIP."
+          example: "ISIN"
+          default: "ISIN"
+          enum:
+            - "ISIN"
+            - "CUSIP"
+        securityIds:
+          uniqueItems: true
+          type: "array"
+          description: "List of security ids to retrieve"
+          example:
+            - "USXXXXXXXXX"
+            - "ESXXXXXXXXX"
+          items:
+            type: "string"
+        securityTypes:
+          uniqueItems: true
+          type: "array"
+          description: "The security types requested"
+          example:
+            - "FIXED_INCOME"
+          items:
+            type: "string"
+          enum:
+            - "EQUITY"
+            - "FIXED_INCOME"
+        metricIds:
+          uniqueItems: true
+          type: "array"
+          description: "Requested Metric IDs"
+          example:
+            - "PAB_EXCLUSION"
+            - "PAB_EXCLUSION_TOBACCO"
+          items:
+            type: "string"
+    CreateJobResource:
+      type: "object"
+      properties:
+        uuid:
+          type: "string"
+    APIError:
+      type: "object"
+      properties:
+        code:
+          type: "integer"
+          format: "int32"
+        message:
+          type: "string"
+  securitySchemes:
+    JWT:
+      type: "http"
+      scheme: "bearer"
+      bearerFormat: "JWT"
+info:
+  title: "Clarity AI API - ESMA Naming Rule"
+  description: "API to access Clarity AI data services."
+  termsOfService: "https://static.clarity.ai/Clarity_AI_TermsAndConditions.pdf"
+  contact:
+    name: "Clarity AI"
+    url: "https://www.clarity.ai"
+    email: "support@clarity.ai"
+  version: "1.0.0"
+openapi: "3.0.1"
+paths:
+  /public/securities/esma/metric-by-id/async:
+    post:
+      tags:
+        - "ESMA Async Jobs"
+      summary: "Async Job - Request PAB Values for Securities"
+      description: "The ESMA Securities ASYNC API will return a unique identifier for the task (uuid), which can then be used to call the <a href=\"/docs/universe-api-async-jobs\">Job ASYNC APIs</a> to download a CSV response file.\n\nThis API provides metrics for securities compliance or non-compliance with the Paris Aligned Benchmark (PAB), including detailed metrics for each PAB criterion. You can specify the metrics you want using the MetricIds parameter.\n\nYou can request securities using securityTypes (FIXED_INCOME, EQUITY) <b>or</b> provide a list of securityIds (ISINs or CUSIPs) with securityIdsType, <b>but NOT both</b> in the same request.\n\nCheck <a href=\"/docs/universe-api-async-jobs\">this document</a> for a complete explanation of the flow for these Async jobs endpoints.\n"
+      operationId: "asyncEsmaSecuritiesGetValues"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AsyncEsmaSecurityRequest"
+        required: true
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it\n\n5006 - Only one of these params can be present: %s. Please provide only one of them\n\n2203 - 'idColumns' must match 'securityIdTypes' when requesting by specific IDs"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+servers:
+  - url: "https://api.clarity.ai/clarity/v1"
+  - url: "https://api.dev.clarity.ai/clarity/v1"
+tags: []
+security:
+  - JWT: []

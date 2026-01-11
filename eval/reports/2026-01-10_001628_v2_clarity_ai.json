@@ -1,0 +1,593 @@
+{
+  "metadata": {
+    "timestamp": "2026-01-10T00:16:28.944607",
+    "endpoint": "v2",
+    "tags_filter": [
+      "clarity_ai"
+    ],
+    "total_queries": 18
+  },
+  "summary": {
+    "total": 18,
+    "good_count": 7,
+    "fair_count": 0,
+    "poor_count": 11,
+    "good_pct": 38.88888888888889,
+    "fair_pct": 0.0,
+    "poor_pct": 61.111111111111114,
+    "avg_retrieval_score": 0.32129629629629625,
+    "avg_top_retrieval_score": 0.3222222222222222,
+    "avg_topic_coverage": 0.5879629629629629,
+    "avg_latency_ms": 5943.91180794547,
+    "worst_queries": [
+      [
+        "clarity_financed_intensity_calc",
+        0.0
+      ],
+      [
+        "clarity_carbon_vs_financed",
+        0.0
+      ],
+      [
+        "clarity_scope_123",
+        0.0
+      ],
+      [
+        "clarity_environmental_score",
+        0.0
+      ],
+      [
+        "clarity_water_recycled",
+        0.0
+      ]
+    ]
+  },
+  "results": [
+    {
+      "query_id": "clarity_temp_rating_scope12",
+      "query": "What is Temperature Rating Scope 1+2 and how do I interpret it?",
+      "retrieval_score": 0.8,
+      "retrieval_grade": "good",
+      "topic_coverage": 1.0,
+      "topic_matches": [
+        {
+          "topic": "Paris Agreement",
+          "found": true
+        },
+        {
+          "topic": "1.5\u00b0C",
+          "found": true
+        },
+        {
+          "topic": "emissions",
+          "found": true
+        },
+        {
+          "topic": "climate",
+          "found": true
+        }
+      ],
+      "latency_ms": 5688.418917008676,
+      "answer_preview": "Temperature Rating Scope 1+2 measures the alignment of a fund's investments with global temperature goals, specifically the Paris Agreement's target of limiting warming to 1.5\u00b0C or 2\u00b0C. It is calculated based on the carbon emissions of the companies within the fund, expressed in degrees Celsius. A lower temperature rating indicates better alignment with climate goals, while a higher rating suggests greater risk of exceeding these targets.",
+      "sources": [
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.8
+        }
+      ]
+    },
+    {
+      "query_id": "clarity_temp_rating_scope3",
+      "query": "What does a company's Scope 3 temperature rating tell me?",
+      "retrieval_score": 0.85,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.6666666666666666,
+      "topic_matches": [
+        {
+          "topic": "value chain",
+          "found": true
+        },
+        {
+          "topic": "supply chain",
+          "found": false
+        },
+        {
+          "topic": "emissions",
+          "found": true
+        }
+      ],
+      "latency_ms": 6100.883374994737,
+      "answer_preview": "A company's Scope 3 temperature rating indicates the alignment of its value chain emissions with global temperature goals, typically reflecting the potential impact of indirect emissions from upstream and downstream activities. It is calculated based on the company's projected emissions trajectory and its alignment with TCFD temperature scenarios.",
+      "sources": [
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.85
+        }
+      ]
+    },
+    {
+      "query_id": "clarity_net_zero_score",
+      "query": "How do I interpret the Net Zero Target score?",
+      "retrieval_score": 0.85,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.5,
+      "topic_matches": [
+        {
+          "topic": "target",
+          "found": true
+        },
+        {
+          "topic": "SBTi",
+          "found": false
+        },
+        {
+          "topic": "implementation",
+          "found": false
+        },
+        {
+          "topic": "score",
+          "found": true
+        }
+      ],
+      "latency_ms": 5010.241957992548,
+      "answer_preview": "The Net Zero Target score indicates a portfolio's alignment with net-zero emissions goals, reflecting its commitment to reducing greenhouse gas emissions to net-zero by a specified date. A higher score suggests stronger alignment with net-zero targets, while a lower score indicates potential gaps in achieving these goals.",
+      "sources": [
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.85
+        }
+      ]
+    },
+    {
+      "query_id": "clarity_financed_intensity_calc",
+      "query": "How do I calculate financed emissions intensity?",
+      "retrieval_score": 0.0,
+      "retrieval_grade": "poor",
+      "topic_coverage": 0.25,
+      "topic_matches": [
+        {
+          "topic": "ownership",
+          "found": false
+        },
+        {
+          "topic": "investment",
+          "found": true
+        },
+        {
+          "topic": "tCO2e",
+          "found": false
+        },
+        {
+          "topic": "calculation",
+          "found": false
+        }
+      ],
+      "latency_ms": 5982.95833299926,
+      "answer_preview": "Financed emissions intensity measures the greenhouse gas emissions associated with a financial institution's lending and investment activities relative to the amount of capital financed. It is calculated using the formula:\n\n\\[ \\text{Financed Emissions Intensity} = \\frac{\\text{Total Financed Emissions}}{\\text{Total Capital Financed}} \\]\n\nwhere Total Financed Emissions is the sum of emissions from all financed activities, and Total Capital Financed is the total amount of capital provided.",
+      "sources": []
+    },
+    {
+      "query_id": "clarity_carbon_vs_financed",
+      "query": "What's the difference between carbon intensity and financed intensity?",
+      "retrieval_score": 0.0,
+      "retrieval_grade": "poor",
+      "topic_coverage": 0.3333333333333333,
+      "topic_matches": [
+        {
+          "topic": "revenue",
+          "found": false
+        },
+        {
+          "topic": "investment",
+          "found": true
+        },
+        {
+          "topic": "ownership",
+          "found": false
+        }
+      ],
+      "latency_ms": 6659.9016660038615,
+      "answer_preview": "Carbon intensity measures the amount of carbon dioxide (CO2) emissions produced per unit of energy or economic output, typically expressed as grams of CO2 per kilowatt-hour (gCO2/kWh) or tons of CO2 per million dollars of GDP. Financed intensity, on the other hand, refers to the carbon emissions associated with the investments made by financial institutions, calculated as the total financed emissions divided by the total assets under management.",
+      "sources": []
+    },
+    {
+      "query_id": "clarity_scope_123",
+      "query": "What are Scope 1, 2, and 3 emissions?",
+      "retrieval_score": 0.0,
+      "retrieval_grade": "poor",
+      "topic_coverage": 0.75,
+      "topic_matches": [
+        {
+          "topic": "direct",
+          "found": true
+        },
+        {
+          "topic": "indirect",
+          "found": true
+        },
+        {
+          "topic": "value chain",
+          "found": true
+        },
+        {
+          "topic": "energy",
+          "found": false
+        }
+      ],
+      "latency_ms": 5738.771459000418,
+      "answer_preview": "Scope 1 emissions are direct greenhouse gas emissions from owned or controlled sources, such as fuel combustion in company vehicles. Scope 2 emissions are indirect emissions from the generation of purchased electricity, steam, heating, and cooling consumed by the reporting company. Scope 3 emissions are all other indirect emissions that occur in a company's value chain, including both upstream and downstream activities.",
+      "sources": []
+    },
+    {
+      "query_id": "clarity_environmental_score",
+      "query": "What does the Environmental Score measure?",
+      "retrieval_score": 0.0,
+      "retrieval_grade": "poor",
+      "topic_coverage": 0.25,
+      "topic_matches": [
+        {
+          "topic": "climate",
+          "found": false
+        },
+        {
+          "topic": "natural capital",
+          "found": false
+        },
+        {
+          "topic": "pollution",
+          "found": false
+        },
+        {
+          "topic": "score",
+          "found": true
+        }
+      ],
+      "latency_ms": 6278.470208999352,
+      "answer_preview": "The Environmental Score measures a company's environmental impact and sustainability practices. It typically evaluates factors such as carbon emissions, resource usage, waste management, and compliance with environmental regulations. The score can be derived from various metrics, but there is no single formula as it varies by assessment framework.",
+      "sources": []
+    },
+    {
+      "query_id": "clarity_water_recycled",
+      "query": "How do I interpret the water recycled ratio?",
+      "retrieval_score": 0.0,
+      "retrieval_grade": "poor",
+      "topic_coverage": 0.5,
+      "topic_matches": [
+        {
+          "topic": "water",
+          "found": true
+        },
+        {
+          "topic": "recycled",
+          "found": true
+        },
+        {
+          "topic": "efficiency",
+          "found": false
+        },
+        {
+          "topic": "scarcity",
+          "found": false
+        }
+      ],
+      "latency_ms": 5624.554124995484,
+      "answer_preview": "The water recycled ratio measures the proportion of water that is reused compared to the total water used. It is calculated as: \n\n\\[ \\text{Water Recycled Ratio} = \\frac{\\text{Water Recycled}}{\\text{Total Water Used}} \\]\n\nA higher ratio indicates better water management and sustainability practices.",
+      "sources": []
+    },
+    {
+      "query_id": "clarity_social_score",
+      "query": "What is the Social Score and what does it measure?",
+      "retrieval_score": 0.0,
+      "retrieval_grade": "poor",
+      "topic_coverage": 0.5,
+      "topic_matches": [
+        {
+          "topic": "employees",
+          "found": true
+        },
+        {
+          "topic": "human rights",
+          "found": false
+        },
+        {
+          "topic": "labor",
+          "found": false
+        },
+        {
+          "topic": "stakeholder",
+          "found": true
+        }
+      ],
+      "latency_ms": 5873.505417010165,
+      "answer_preview": "The Social Score is a metric that evaluates a company's social performance, including its impact on stakeholders, community engagement, and social responsibility practices. It typically measures factors like employee treatment, diversity and inclusion, and community contributions. There is no universal formula, as it varies by organization, but it often aggregates various social indicators into a single score.",
+      "sources": []
+    },
+    {
+      "query_id": "clarity_gender_pay_gap",
+      "query": "How do I interpret the gender pay gap metric?",
+      "retrieval_score": 0.0,
+      "retrieval_grade": "poor",
+      "topic_coverage": 0.3333333333333333,
+      "topic_matches": [
+        {
+          "topic": "pay equity",
+          "found": false
+        },
+        {
+          "topic": "women",
+          "found": true
+        },
+        {
+          "topic": "remuneration",
+          "found": false
+        }
+      ],
+      "latency_ms": 7102.251707998221,
+      "answer_preview": "The gender pay gap measures the difference in earnings between men and women, often expressed as a percentage of men's earnings. It is calculated using the formula: \n\n\\[\n\\text{Gender Pay Gap} = \\frac{\\text{Average Male Salary} - \\text{Average Female Salary}}{\\text{Average Male Salary}} \\times 100\n\\]\n\nA positive percentage indicates that men earn more than women, while a negative percentage indicates the opposite.",
+      "sources": []
+    },
+    {
+      "query_id": "clarity_board_diversity",
+      "query": "What percentage of female board members is considered good?",
+      "retrieval_score": 0.8,
+      "retrieval_grade": "good",
+      "topic_coverage": 1.0,
+      "topic_matches": [
+        {
+          "topic": "30%",
+          "found": true
+        },
+        {
+          "topic": "diversity",
+          "found": true
+        },
+        {
+          "topic": "governance",
+          "found": true
+        },
+        {
+          "topic": "board",
+          "found": true
+        }
+      ],
+      "latency_ms": 5778.2245419948595,
+      "answer_preview": "A good percentage of female board members is typically considered to be at least 30%. This benchmark aligns with various diversity initiatives and recommendations aimed at promoting gender equality in corporate governance.",
+      "sources": [
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.8
+        }
+      ]
+    },
+    {
+      "query_id": "clarity_governance_score",
+      "query": "What is the Governance Score and why does it matter?",
+      "retrieval_score": 0.0,
+      "retrieval_grade": "poor",
+      "topic_coverage": 0.75,
+      "topic_matches": [
+        {
+          "topic": "board",
+          "found": true
+        },
+        {
+          "topic": "ethics",
+          "found": false
+        },
+        {
+          "topic": "transparency",
+          "found": true
+        },
+        {
+          "topic": "shareholder",
+          "found": true
+        }
+      ],
+      "latency_ms": 5299.096207992989,
+      "answer_preview": "The Governance Score evaluates a company's governance practices, including board structure, shareholder rights, and transparency. It is typically derived from various factors such as board diversity, executive compensation, and regulatory compliance. A higher score indicates better governance, which can lead to reduced risk and improved investor confidence.",
+      "sources": []
+    },
+    {
+      "query_id": "clarity_board_independence",
+      "query": "What's the difference between non-executive and independent board members?",
+      "retrieval_score": 0.0,
+      "retrieval_grade": "poor",
+      "topic_coverage": 1.0,
+      "topic_matches": [
+        {
+          "topic": "executive",
+          "found": true
+        },
+        {
+          "topic": "independent",
+          "found": true
+        },
+        {
+          "topic": "relationship",
+          "found": true
+        },
+        {
+          "topic": "oversight",
+          "found": true
+        }
+      ],
+      "latency_ms": 5159.722583004623,
+      "answer_preview": "Non-executive board members are not part of the company's management team and may have ties to the company, while independent board members have no material relationship with the company and are free from any conflicts of interest. Independent members are typically seen as more objective in their oversight role.",
+      "sources": []
+    },
+    {
+      "query_id": "clarity_anti_bribery",
+      "query": "What does the Anti-Bribery Score tell me?",
+      "retrieval_score": 0.0,
+      "retrieval_grade": "poor",
+      "topic_coverage": 0.5,
+      "topic_matches": [
+        {
+          "topic": "bribery",
+          "found": true
+        },
+        {
+          "topic": "ethics",
+          "found": true
+        },
+        {
+          "topic": "incidents",
+          "found": false
+        },
+        {
+          "topic": "compliance",
+          "found": false
+        }
+      ],
+      "latency_ms": 6682.841667003231,
+      "answer_preview": "The Anti-Bribery Score measures a company's commitment to preventing bribery and corruption within its operations and supply chain. It typically evaluates policies, practices, and transparency related to anti-bribery measures. A higher score indicates stronger anti-bribery controls and ethical standards.",
+      "sources": []
+    },
+    {
+      "query_id": "clarity_frameworks",
+      "query": "What ESG frameworks do Clarity AI metrics align with?",
+      "retrieval_score": 0.85,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.25,
+      "topic_matches": [
+        {
+          "topic": "PCAF",
+          "found": false
+        },
+        {
+          "topic": "SFDR",
+          "found": true
+        },
+        {
+          "topic": "SBTi",
+          "found": false
+        },
+        {
+          "topic": "ISSB",
+          "found": false
+        }
+      ],
+      "latency_ms": 5996.428709011525,
+      "answer_preview": "Clarity AI metrics align with several ESG frameworks, including the Sustainable Finance Disclosure Regulation (SFDR) and the Task Force on Climate-related Financial Disclosures (TCFD). These frameworks guide the assessment of sustainability and climate-related risks in investment portfolios.",
+      "sources": [
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.85
+        }
+      ]
+    },
+    {
+      "query_id": "clarity_data_limitations",
+      "query": "What are the data limitations of ESG metrics?",
+      "retrieval_score": 0.0,
+      "retrieval_grade": "poor",
+      "topic_coverage": 0.3333333333333333,
+      "topic_matches": [
+        {
+          "topic": "self-reported",
+          "found": false
+        },
+        {
+          "topic": "disclosure",
+          "found": false
+        },
+        {
+          "topic": "limitations",
+          "found": true
+        }
+      ],
+      "latency_ms": 5058.798041995033,
+      "answer_preview": "ESG metrics often suffer from data limitations such as lack of standardization, inconsistent reporting practices, and varying methodologies across companies. This can lead to difficulties in comparability and reliability of the data. Additionally, many ESG factors are qualitative and subjective, making quantification challenging.",
+      "sources": []
+    },
+    {
+      "query_id": "clarity_temp_interpretation",
+      "query": "My portfolio has a temperature rating of 2.5\u00b0C. Is that good or bad?",
+      "retrieval_score": 0.8000000000000002,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.6666666666666666,
+      "topic_matches": [
+        {
+          "topic": "Paris Agreement",
+          "found": true
+        },
+        {
+          "topic": "alignment",
+          "found": true
+        },
+        {
+          "topic": "laggard",
+          "found": false
+        }
+      ],
+      "latency_ms": 7267.147125006886,
+      "answer_preview": "A temperature rating of 2.5\u00b0C indicates a higher alignment with climate risk compared to the 1.5\u00b0C target set by the Paris Agreement. Generally, lower temperature ratings are preferred for better climate alignment, so 2.5\u00b0C is considered less favorable.",
+      "sources": [
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.8
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.8
+        },
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.8
+        }
+      ]
+    },
+    {
+      "query_id": "clarity_esg_combined",
+      "query": "How should I use E, S, and G scores together to assess a company?",
+      "retrieval_score": 0.8333333333333334,
+      "retrieval_grade": "good",
+      "topic_coverage": 1.0,
+      "topic_matches": [
+        {
+          "topic": "environmental",
+          "found": true
+        },
+        {
+          "topic": "social",
+          "found": true
+        },
+        {
+          "topic": "governance",
+          "found": true
+        },
+        {
+          "topic": "holistic",
+          "found": true
+        }
+      ],
+      "latency_ms": 5688.1965000065975,
+      "answer_preview": "To assess a company using E (Environmental), S (Social), and G (Governance) scores, evaluate each score individually to identify strengths and weaknesses. Compare the scores against industry benchmarks to gauge relative performance, and analyze how they interact to understand potential trade-offs. A holistic view will help in making informed investment decisions based on sustainability and ethical considerations.",
+      "sources": [
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.85
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.85
+        },
+        {
+          "file": "RPC_UseCases (1).pptx",
+          "type": "presentation_slide",
+          "score": 0.8
+        }
+      ]
+    }
+  ]
+}

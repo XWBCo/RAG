@@ -1,0 +1,270 @@
+components:
+  schemas:
+    PTRiskSecuritiesAsyncRequest:
+      type: "object"
+      properties:
+        idColumns:
+          uniqueItems: true
+          type: "array"
+          description: "Requested Security Id columns show in result file"
+          example:
+            - "CUSIP"
+            - "ISIN"
+          items:
+            type: "string"
+          enum:
+            - "ISIN"
+            - "CUSIP"
+        metricIds:
+          type: "array"
+          description: "Requested Climate Scenario Analysis Metric IDs for securities"
+          example:
+            - "TOTAL_ACUTE_PHYSICAL_HW_5"
+            - "TOTAL_CHRONIC_PHYSICAL_HW_10"
+            - "TOTAL_HW_20"
+            - "TOTAL_SENTIMENT_SHOCK_HW_40"
+          items:
+            type: "string"
+        securityTypes:
+          uniqueItems: true
+          type: "array"
+          description: "Requested Security Types"
+          example:
+            - "FUND"
+            - "EQUITY"
+            - "FIXED_INCOME"
+          items:
+            type: "string"
+          enum:
+            - "FUND"
+            - "EQUITY"
+            - "FIXED_INCOME"
+        securityIdsType:
+          type: "string"
+          description: "Requested Security Id Type"
+          example: "ISIN"
+          enum:
+            - "ISIN"
+            - "CUSIP"
+        securityIds:
+          type: "array"
+          description: "Requested Security Ids"
+          example:
+            - "US0378331005"
+            - "US64110L1061"
+          items:
+            type: "string"
+    CreateJobResource:
+      type: "object"
+      properties:
+        uuid:
+          type: "string"
+    APIError:
+      type: "object"
+      properties:
+        code:
+          type: "integer"
+          format: "int32"
+        message:
+          type: "string"
+        details:
+          type: "array"
+          items:
+            type: "string"
+    PortfolioResponse:
+      type: "object"
+      properties:
+        portfolioName:
+          type: "string"
+          example: "Portfolio name"
+        totalOrganizations:
+          minimum: 0
+          type: "integer"
+          format: "int32"
+          example: 1957
+        metrics:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/MetricValueResponse"
+    MetricValueResponse:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          example: "WEIGHTED_AVERAGE_CARBON_INTENSITY"
+        value:
+          minimum: 0
+          type: "number"
+          format: "double"
+          example: 742.51
+        units:
+          type: "string"
+          example: "tons CO2e"
+        metadata:
+          type: "string"
+          example: "NONE"
+          enum:
+            - "NONE"
+            - "ASSIGNED"
+            - "LIMITED_INFO"
+            - "NOT_AVAILABLE"
+            - "NOT_IMPORTANT"
+            - "NOT_APPLICABLE"
+            - "OUT_OF_UNIVERSE"
+        coverageOrganizations:
+          minimum: 0
+          type: "integer"
+          format: "int32"
+          example: 1344
+        coverageSecurities:
+          minimum: 0
+          type: "integer"
+          format: "int32"
+          example: 1344
+        coverageWeight:
+          maximum: 100
+          minimum: 0
+          type: "number"
+          format: "double"
+          example: 87.4
+        weight:
+          maximum: 100
+          minimum: 0
+          type: "number"
+          format: "double"
+          example: 87.4
+        PCAFQualityScore:
+          maximum: 5
+          minimum: 0
+          type: "number"
+          format: "float"
+          example: 3.5
+  securitySchemes:
+    JWT:
+      type: "http"
+      scheme: "bearer"
+      bearerFormat: "JWT"
+info:
+  title: "Clarity AI API - TCFD"
+  description: "API to access Clarity AI data services."
+  termsOfService: "https://static.clarity.ai/Clarity_AI_TermsAndConditions.pdf"
+  contact:
+    name: "Clarity AI"
+    url: "https://www.clarity.ai"
+    email: "support@clarity.ai"
+  version: "1.0.0"
+openapi: "3.0.1"
+paths:
+  /public/securities/climate-scenario-analysis/metric-by-id/async:
+    post:
+      tags:
+        - "Universe download - Asynchronous jobs"
+      summary: "Async Job, get Climate Scenario Analysis Security metric values"
+      description: "This endpoint will make a request for an async Job to retrieve the whole universe of <a href=\"https://clarity.ai\">Clarity.AI</a> Climate Scenario Analysis for given metrics ids <br><b>Please note</b>: This call will only return the identifier (uuid) for this task. You'll need this value later on further calls to know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>) or download your file when ready (see &laquo;Async Job - Download result file&raquo;)<br>Check <a href=\"/docs/universe-api-async-jobs\">this document</a> for a complete explanation of the flow for these Async jobs endpoints"
+      operationId: "asyncJobScenarioAnalysisSecurities"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PTRiskSecuritiesAsyncRequest"
+        required: true
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        413:
+          description: "Exceeded ids limit:\n\n2101 - The limit of 25.000 ids in the same request has been exceeded"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/portfolios/{portfolioId}/tcfd/values-by-id:
+    get:
+      tags:
+        - "Portfolio TCFD"
+      summary: "get Portfolio tcfd scores"
+      description: "Given a portfolio id and metric id, returns the Score, Coverage in number of organizations, Coverage in portfolio weight, unit"
+      operationId: "getPortfolioValues"
+      parameters:
+        - name: "portfolioId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "metricIds"
+          in: "query"
+          required: true
+          schema:
+            type: "array"
+            items:
+              type: "string"
+      responses:
+        200:
+          description: "The values of the tcfd metrics"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortfolioResponse"
+        400:
+          description: "Invalid request:\n\n2004 - Portfolio id requested not valid or empty"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n2007 - The portfolio id does not exist or does not belong to the user"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        412:
+          description: "Invalid portfolio:\n\n2011 - The portfolio is not valid"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+servers:
+  - url: "https://api.clarity.ai/clarity/v1"
+  - url: "https://api.dev.clarity.ai/clarity/v1"
+tags:
+  - name: "Portfolio TCFD"
+    description: "Portfolio TCFD API"
+security:
+  - JWT: []

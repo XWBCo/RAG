@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG Playground | AlTi</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1a365d 0%, #2d5a87 100%);
+            color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        header p {
+            opacity: 0.8;
+            font-size: 14px;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .panel-header {
+            background: #f8f9fa;
+            padding: 12px 16px;
+            border-bottom: 1px solid #e9ecef;
+            font-weight: 600;
+            font-size: 14px;
+            color: #495057;
+        }
+
+        .panel-body {
+            padding: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #495057;
+            margin-bottom: 6px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 120px;
+            transition: border-color 0.15s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #2d5a87;
+            box-shadow: 0 0 0 3px rgba(45, 90, 135, 0.1);
+        }
+
+        select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #2d5a87;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .toggle-group {
+            display: flex;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .toggle-btn {
+            flex: 1;
+            padding: 10px 16px;
+            border: none;
+            background: white;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .toggle-btn:first-child {
+            border-right: 1px solid #dee2e6;
+        }
+
+        .toggle-btn.active {
+            background: #2d5a87;
+            color: white;
+        }
+
+        .toggle-btn:hover:not(.active) {
+            background: #f8f9fa;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px 24px;
+            background: #2d5a87;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .submit-btn:hover {
+            background: #1a365d;
+        }
+
+        .submit-btn:disabled {
+            background: #adb5bd;
+            cursor: not-allowed;
+        }
+
+        .submit-btn.loading {
+            position: relative;
+            color: transparent;
+        }
+
+        .submit-btn.loading::after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            margin-left: -10px;
+            margin-top: -10px;
+            border: 2px solid white;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Response Panel */
+        .response-panel {
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .response-panel .panel-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .empty-state {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #adb5bd;
+            font-size: 14px;
+        }
+
+        .response-content {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .answer-section {
+            margin-bottom: 20px;
+        }
+
+        .answer-section h3 {
+            font-size: 13px;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .answer-text {
+            font-size: 14px;
+            line-height: 1.7;
+            color: #212529;
+            white-space: pre-wrap;
+        }
+
+        .metrics-bar {
+            display: flex;
+            gap: 16px;
+            padding: 12px 16px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .metric {
+            font-size: 12px;
+        }
+
+        .metric-label {
+            color: #6c757d;
+            margin-right: 4px;
+        }
+
+        .metric-value {
+            font-weight: 600;
+            color: #212529;
+        }
+
+        .metric-value.good {
+            color: #28a745;
+        }
+
+        .metric-value.warn {
+            color: #ffc107;
+        }
+
+        .metric-value.bad {
+            color: #dc3545;
+        }
+
+        /* Sources */
+        .sources-section {
+            border-top: 1px solid #e9ecef;
+            padding-top: 16px;
+        }
+
+        .sources-section h3 {
+            font-size: 13px;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .source-card {
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            overflow: hidden;
+        }
+
+        .source-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            background: #f8f9fa;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .source-header:hover {
+            background: #e9ecef;
+        }
+
+        .source-name {
+            font-weight: 500;
+            color: #212529;
+        }
+
+        .source-score {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        .source-score.high {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .source-score.medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .source-body {
+            padding: 12px;
+            font-size: 13px;
+            color: #495057;
+            background: white;
+            display: none;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .source-body.expanded {
+            display: block;
+        }
+
+        .source-chunk {
+            white-space: pre-wrap;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 12px;
+            line-height: 1.5;
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 4px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .source-meta {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+            font-size: 11px;
+            color: #6c757d;
+        }
+
+        /* Error state */
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 16px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        /* Health indicator */
+        .health-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .health-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #adb5bd;
+        }
+
+        .health-dot.healthy {
+            background: #28a745;
+        }
+
+        .health-dot.unhealthy {
+            background: #dc3545;
+        }
+
+        /* Keyboard shortcut hint */
+        .shortcut-hint {
+            font-size: 11px;
+            color: #6c757d;
+            margin-top: 8px;
+            text-align: right;
+        }
+
+        kbd {
+            display: inline-block;
+            padding: 2px 6px;
+            font-size: 11px;
+            font-family: inherit;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h1>RAG Playground</h1>
+                    <p>Test queries against the AlTi knowledge base</p>
+                </div>
+                <div class="health-indicator">
+                    <span class="health-dot" id="health-dot"></span>
+                    <span id="health-status">Checking...</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-grid">
+            <!-- Query Panel -->
+            <div class="panel">
+                <div class="panel-header">Query Configuration</div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label for="query">Question</label>
+                        <textarea id="query" placeholder="Ask a question about investments, portfolios, or risk..."
+                            >What are the key differences between the IBI and Impact 100% models?</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Endpoint</label>
+                        <div class="toggle-group">
+                            <button type="button" class="toggle-btn active" data-endpoint="v1" id="btn-v1">
+                                v1 (Basic RAG)
+                            </button>
+                            <button type="button" class="toggle-btn" data-endpoint="v2" id="btn-v2">
+                                v2 (LangGraph)
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div>
+                            <label for="domain">Domain</label>
+                            <select id="domain">
+                                <option value="investments" selected>Investments</option>
+                                <option value="app_education">App Education</option>
+                                <option value="estate_planning">Estate Planning</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="mode">Mode</label>
+                            <select id="mode">
+                                <option value="compact" selected>Compact</option>
+                                <option value="tree_summarize">Tree Summarize</option>
+                                <option value="refine">Refine</option>
+                                <option value="simple_summarize">Simple</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div>
+                            <label for="top_k">Top K Documents</label>
+                            <select id="top_k">
+                                <option value="3">3</option>
+                                <option value="5" selected>5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="min_similarity">Min Similarity</label>
+                            <select id="min_similarity">
+                                <option value="0.0">0.0 (All)</option>
+                                <option value="0.3" selected>0.3</option>
+                                <option value="0.5">0.5</option>
+                                <option value="0.7">0.7 (Strict)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="button" class="submit-btn" id="submit-btn">
+                            Run Query
+                        </button>
+                        <div class="shortcut-hint">
+                            <kbd>Ctrl</kbd> + <kbd>Enter</kbd> to submit
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Response Panel -->
+            <div class="panel response-panel">
+                <div class="panel-header">Response</div>
+                <div class="panel-body">
+                    <div id="response-area">
+                        <div class="empty-state">
+                            Run a query to see results
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State
+        let selectedEndpoint = 'v1';
+        let isLoading = false;
+
+        // Elements
+        const queryInput = document.getElementById('query');
+        const domainSelect = document.getElementById('domain');
+        const modeSelect = document.getElementById('mode');
+        const topKSelect = document.getElementById('top_k');
+        const minSimSelect = document.getElementById('min_similarity');
+        const submitBtn = document.getElementById('submit-btn');
+        const responseArea = document.getElementById('response-area');
+        const btnV1 = document.getElementById('btn-v1');
+        const btnV2 = document.getElementById('btn-v2');
+        const healthDot = document.getElementById('health-dot');
+        const healthStatus = document.getElementById('health-status');
+
+        // Endpoint toggle
+        btnV1.addEventListener('click', () => {
+            selectedEndpoint = 'v1';
+            btnV1.classList.add('active');
+            btnV2.classList.remove('active');
+        });
+
+        btnV2.addEventListener('click', () => {
+            selectedEndpoint = 'v2';
+            btnV2.classList.add('active');
+            btnV1.classList.remove('active');
+        });
+
+        // Submit handlers
+        submitBtn.addEventListener('click', runQuery);
+        queryInput.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'Enter') {
+                runQuery();
+            }
+        });
+
+        // Health check
+        async function checkHealth() {
+            try {
+                const start = Date.now();
+                const response = await fetch('/api/v1/health');
+                const latency = Date.now() - start;
+
+                if (response.ok) {
+                    const data = await response.json();
+                    healthDot.classList.add('healthy');
+                    healthDot.classList.remove('unhealthy');
+                    healthStatus.textContent = `Healthy (${data.collection_count} docs, ${latency}ms)`;
+                } else {
+                    throw new Error('Unhealthy');
+                }
+            } catch (err) {
+                healthDot.classList.add('unhealthy');
+                healthDot.classList.remove('healthy');
+                healthStatus.textContent = 'Unavailable';
+            }
+        }
+
+        // Run query
+        async function runQuery() {
+            if (isLoading) return;
+
+            const query = queryInput.value.trim();
+            if (!query) return;
+
+            isLoading = true;
+            submitBtn.classList.add('loading');
+            submitBtn.disabled = true;
+
+            const startTime = Date.now();
+
+            try {
+                let url, body;
+
+                if (selectedEndpoint === 'v1') {
+                    url = '/api/v1/query';
+                    body = {
+                        query: query,
+                        domain: domainSelect.value,
+                        mode: modeSelect.value,
+                        top_k: parseInt(topKSelect.value),
+                        min_similarity: parseFloat(minSimSelect.value)
+                    };
+                } else {
+                    // v2 endpoints are mounted at /api/v1/v2/* due to router setup
+                    url = '/api/v1/v2/query';
+                    body = {
+                        query: query,
+                        domain: domainSelect.value
+                    };
+                }
+
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+
+                const latency = Date.now() - startTime;
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                renderResponse(data, latency, selectedEndpoint);
+
+            } catch (err) {
+                renderError(err.message);
+            } finally {
+                isLoading = false;
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = false;
+            }
+        }
+
+        // Render response
+        function renderResponse(data, latency, endpoint) {
+            const sources = data.sources || [];
+            const answer = data.answer || data.response || 'No answer generated';
+
+            // Determine latency color
+            let latencyClass = 'good';
+            if (latency > 10000) latencyClass = 'bad';
+            else if (latency > 5000) latencyClass = 'warn';
+
+            let metricsHtml = `
+                <div class="metrics-bar">
+                    <div class="metric">
+                        <span class="metric-label">Latency:</span>
+                        <span class="metric-value ${latencyClass}">${(latency/1000).toFixed(2)}s</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Sources:</span>
+                        <span class="metric-value">${sources.length}</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Endpoint:</span>
+                        <span class="metric-value">${endpoint}</span>
+                    </div>
+            `;
+
+            // Add v2-specific metrics
+            if (endpoint === 'v2') {
+                if (data.intent) {
+                    metricsHtml += `
+                        <div class="metric">
+                            <span class="metric-label">Intent:</span>
+                            <span class="metric-value">${data.intent}</span>
+                        </div>
+                    `;
+                }
+                if (data.retrieval_quality) {
+                    const qualityClass = data.retrieval_quality === 'good' ? 'good' :
+                                        data.retrieval_quality === 'poor' ? 'bad' : '';
+                    metricsHtml += `
+                        <div class="metric">
+                            <span class="metric-label">Retrieval:</span>
+                            <span class="metric-value ${qualityClass}">${data.retrieval_quality}</span>
+                        </div>
+                    `;
+                }
+            }
+
+            metricsHtml += '</div>';
+
+            // Sources HTML
+            let sourcesHtml = '';
+            if (sources.length > 0) {
+                sourcesHtml = `
+                    <div class="sources-section">
+                        <h3>Sources (${sources.length})</h3>
+                        ${sources.map((source, i) => {
+                            const score = source.relevance_score || source.score || 0;
+                            const scorePercent = (score * 100).toFixed(1);
+                            const scoreClass = score >= 0.7 ? 'high' : score >= 0.4 ? 'medium' : '';
+                            const fileName = source.file_name || source.filename || 'Unknown';
+                            const docType = source.document_type || source.doc_type || 'Unknown';
+                            const chunk = source.chunk_text || source.text || source.content || '';
+
+                            return `
+                                <div class="source-card">
+                                    <div class="source-header" onclick="toggleSource(${i})">
+                                        <span class="source-name">${fileName}</span>
+                                        <span class="source-score ${scoreClass}">${scorePercent}%</span>
+                                    </div>
+                                    <div class="source-body" id="source-body-${i}">
+                                        <div class="source-meta">
+                                            <span>Type: ${docType}</span>
+                                            ${source.page_number ? `<span>Page: ${source.page_number}</span>` : ''}
+                                            ${source.priority ? `<span>Priority: ${source.priority}</span>` : ''}
+                                        </div>
+                                        <div class="source-chunk">${escapeHtml(chunk)}</div>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+            }
+
+            responseArea.innerHTML = `
+                <div class="response-content">
+                    ${metricsHtml}
+                    <div class="answer-section">
+                        <h3>Answer</h3>
+                        <div class="answer-text">${escapeHtml(answer)}</div>
+                    </div>
+                    ${sourcesHtml}
+                </div>
+            `;
+        }
+
+        // Render error
+        function renderError(message) {
+            responseArea.innerHTML = `
+                <div class="error-message">
+                    <strong>Error:</strong> ${escapeHtml(message)}
+                </div>
+            `;
+        }
+
+        // Toggle source expansion
+        function toggleSource(index) {
+            const body = document.getElementById(`source-body-${index}`);
+            body.classList.toggle('expanded');
+        }
+
+        // Escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Initialize
+        checkHealth();
+        setInterval(checkHealth, 30000); // Check every 30s
+    </script>
+</body>
+</html>

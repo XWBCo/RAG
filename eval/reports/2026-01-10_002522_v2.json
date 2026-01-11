@@ -1,0 +1,2491 @@
+{
+  "metadata": {
+    "timestamp": "2026-01-10T00:25:22.902339",
+    "endpoint": "v2",
+    "tags_filter": null,
+    "total_queries": 62
+  },
+  "summary": {
+    "total": 62,
+    "good_count": 57,
+    "fair_count": 0,
+    "poor_count": 5,
+    "good_pct": 91.93548387096774,
+    "fair_pct": 0.0,
+    "poor_pct": 8.064516129032258,
+    "avg_retrieval_score": 0.8215188172043012,
+    "avg_top_retrieval_score": 0.8459677419354843,
+    "avg_topic_coverage": 0.6491935483870968,
+    "avg_latency_ms": 6003.949311871697,
+    "worst_queries": [
+      [
+        "risk_max_drawdown",
+        0.0
+      ],
+      [
+        "risk_factor_explained",
+        0.0
+      ],
+      [
+        "risk_effective_n",
+        0.0
+      ],
+      [
+        "edge_out_of_domain",
+        0.0
+      ],
+      [
+        "inv_us_vs_international",
+        0.0
+      ]
+    ]
+  },
+  "results": [
+    {
+      "query_id": "monte_carlo_5th_percentile",
+      "query": "What does the 5th percentile mean in my Monte Carlo simulation?",
+      "retrieval_score": 0.9,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.5,
+      "topic_matches": [
+        {
+          "topic": "pessimistic",
+          "found": true
+        },
+        {
+          "topic": "probability",
+          "found": false
+        },
+        {
+          "topic": "worst-case",
+          "found": true
+        },
+        {
+          "topic": "planning",
+          "found": false
+        }
+      ],
+      "latency_ms": 5529.011790989898,
+      "answer_preview": "The 5th percentile represents your pessimistic but plausible scenario, indicating that 95% of simulated outcomes are better and only 5% are worse. It reflects a \"bad luck\" scenario, showing the minimum expected outcome you might face after a specified period, which should be compared to your client's minimum required outcome.",
+      "sources": [
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.95
+        },
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.85
+        }
+      ]
+    },
+    {
+      "query_id": "monte_carlo_50th_percentile",
+      "query": "How should I interpret the 50th percentile result?",
+      "retrieval_score": 0.8833333333333333,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.3333333333333333,
+      "topic_matches": [
+        {
+          "topic": "median",
+          "found": true
+        },
+        {
+          "topic": "typical",
+          "found": false
+        },
+        {
+          "topic": "expected",
+          "found": false
+        }
+      ],
+      "latency_ms": 5059.037333994638,
+      "answer_preview": "The 50th percentile result indicates the median value of a dataset, meaning that 50% of the observations fall below this value and 50% are above it. It serves as a benchmark for comparing individual data points against the overall distribution.",
+      "sources": [
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.85
+        },
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.9
+        }
+      ]
+    },
+    {
+      "query_id": "monte_carlo_95th_percentile",
+      "query": "What does the 95th percentile tell me about my portfolio?",
+      "retrieval_score": 0.9,
+      "retrieval_grade": "good",
+      "topic_coverage": 1.0,
+      "topic_matches": [
+        {
+          "topic": "optimistic",
+          "found": true
+        },
+        {
+          "topic": "best-case",
+          "found": true
+        },
+        {
+          "topic": "upside",
+          "found": true
+        }
+      ],
+      "latency_ms": 4933.003417012515,
+      "answer_preview": "The 95th percentile indicates the optimistic scenario for your portfolio, meaning only 5% of simulations yielded better results. It highlights the potential upside, but should not be relied upon for planning, as it assumes exceptional market conditions.",
+      "sources": [
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.9
+        }
+      ]
+    },
+    {
+      "query_id": "monte_carlo_num_simulations",
+      "query": "Why does the simulation run 1000 times? Would more be better?",
+      "retrieval_score": 0.8500000000000001,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.3333333333333333,
+      "topic_matches": [
+        {
+          "topic": "convergence",
+          "found": false
+        },
+        {
+          "topic": "accuracy",
+          "found": true
+        },
+        {
+          "topic": "statistical",
+          "found": false
+        }
+      ],
+      "latency_ms": 5022.423040994909,
+      "answer_preview": "The simulation runs 1,000 times to generate a robust range of potential outcomes while balancing computational efficiency. More runs could provide greater accuracy and detail in the results, but they would also require significantly more processing time and resources.",
+      "sources": [
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.9
+        },
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.8
+        }
+      ]
+    },
+    {
+      "query_id": "monte_carlo_assumptions",
+      "query": "What assumptions does the Monte Carlo simulation make?",
+      "retrieval_score": 0.9,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.6666666666666666,
+      "topic_matches": [
+        {
+          "topic": "returns",
+          "found": true
+        },
+        {
+          "topic": "distribution",
+          "found": true
+        },
+        {
+          "topic": "correlation",
+          "found": false
+        }
+      ],
+      "latency_ms": 4944.391625002027,
+      "answer_preview": "The Monte Carlo simulation assumes that markets behave according to statistical distributions, relies on expected annual return and volatility (risk) inputs, and that historical returns may not predict future outcomes. It also assumes that the input assumptions are accurate, as poor assumptions can lead to unreliable results.",
+      "sources": [
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.9
+        }
+      ]
+    },
+    {
+      "query_id": "monte_carlo_inflation",
+      "query": "How does inflation affect my Monte Carlo results?",
+      "retrieval_score": 0.8625,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.3333333333333333,
+      "topic_matches": [
+        {
+          "topic": "purchasing power",
+          "found": true
+        },
+        {
+          "topic": "real returns",
+          "found": false
+        },
+        {
+          "topic": "adjustment",
+          "found": false
+        }
+      ],
+      "latency_ms": 5456.404583004769,
+      "answer_preview": "Inflation impacts your Monte Carlo results by serving as a benchmark for evaluating your portfolio's real (inflation-adjusted) value. If your portfolio's growth does not outpace inflation, its purchasing power effectively decreases, which is critical for retirement planning and maintaining lifestyle. The simulation results will show how often your portfolio is likely to outperform inflation, indicating potential risks to your purchasing power over time.",
+      "sources": [
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.8
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.9
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.85
+        }
+      ]
+    },
+    {
+      "query_id": "monte_carlo_withdrawals",
+      "query": "How do withdrawals impact the simulation outcomes?",
+      "retrieval_score": 0.8699999999999999,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.0,
+      "topic_matches": [
+        {
+          "topic": "sequence",
+          "found": false
+        },
+        {
+          "topic": "depletion",
+          "found": false
+        },
+        {
+          "topic": "sustainability",
+          "found": false
+        }
+      ],
+      "latency_ms": 5238.742959001684,
+      "answer_preview": "Withdrawals significantly affect portfolio survival; higher withdrawal rates lead to lower ending values and a greater probability of running out of money. Front-loaded withdrawals are particularly detrimental due to reduced compounding time.",
+      "sources": [
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.85
+        },
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.85
+        },
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.85
+        }
+      ]
+    },
+    {
+      "query_id": "monte_carlo_prob_loss",
+      "query": "What does 'probability of 50% loss' mean?",
+      "retrieval_score": 0.9,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.6666666666666666,
+      "topic_matches": [
+        {
+          "topic": "risk",
+          "found": true
+        },
+        {
+          "topic": "likelihood",
+          "found": true
+        },
+        {
+          "topic": "scenario",
+          "found": false
+        }
+      ],
+      "latency_ms": 5780.372416993487,
+      "answer_preview": "The \"Probability of Loss Greater than 50%\" indicates the percentage of simulations where a portfolio lost more than half its value at any point during the projection period. It assesses the risk of severe drawdowns, with interpretations ranging from very low risk (below 5%) to significant risk (above 15%).",
+      "sources": [
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.9
+        }
+      ]
+    },
+    {
+      "query_id": "monte_carlo_client_conversation",
+      "query": "How should I explain Monte Carlo results to my client?",
+      "retrieval_score": 0.9,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.6666666666666666,
+      "topic_matches": [
+        {
+          "topic": "confidence",
+          "found": false
+        },
+        {
+          "topic": "range",
+          "found": true
+        },
+        {
+          "topic": "planning",
+          "found": true
+        }
+      ],
+      "latency_ms": 5700.450125004863,
+      "answer_preview": "Explain that Monte Carlo simulations provide a range of possible outcomes for their portfolio based on different assumptions. Highlight key percentiles, such as the 5th percentile for pessimistic scenarios and the 95th percentile for optimistic scenarios, emphasizing the probabilities associated with each. Discuss how these results can inform their risk tolerance and investment strategy, focusing on relative comparisons rather than absolute numbers.",
+      "sources": [
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.9
+        }
+      ]
+    },
+    {
+      "query_id": "monte_carlo_compare_scenarios",
+      "query": "How do I compare multiple simulation scenarios?",
+      "retrieval_score": 0.8800000000000001,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.6666666666666666,
+      "topic_matches": [
+        {
+          "topic": "percentiles",
+          "found": true
+        },
+        {
+          "topic": "risk",
+          "found": false
+        },
+        {
+          "topic": "tradeoff",
+          "found": true
+        }
+      ],
+      "latency_ms": 5859.373583007255,
+      "answer_preview": "To compare multiple simulation scenarios, look at the same percentile across simulations (e.g., all 5th percentiles) and assess which scenario has a better probability of meeting goals. Consider the tradeoff between higher median outcomes and lower 5th percentiles, as no scenario is universally \"best\"\u2014it depends on client priorities.",
+      "sources": [
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.9
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.85
+        },
+        {
+          "file": "FAQ_Risk_Analytics.md",
+          "type": "faq_section",
+          "score": 0.85
+        },
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.9
+        }
+      ]
+    },
+    {
+      "query_id": "risk_tracking_error",
+      "query": "What is tracking error and why does it matter?",
+      "retrieval_score": 0.9,
+      "retrieval_grade": "good",
+      "topic_coverage": 1.0,
+      "topic_matches": [
+        {
+          "topic": "volatility",
+          "found": true
+        },
+        {
+          "topic": "benchmark",
+          "found": true
+        },
+        {
+          "topic": "deviation",
+          "found": true
+        }
+      ],
+      "latency_ms": 5827.757291001035,
+      "answer_preview": "Tracking error (TE) measures the volatility of the difference between a portfolio's returns and its benchmark returns, expressed as an annualized percentage. It matters because it indicates how closely a portfolio follows its benchmark; higher TE suggests greater deviation, which can present both opportunities for outperformance and risks of underperformance.",
+      "sources": [
+        {
+          "file": "FAQ_Risk_Analytics.md",
+          "type": "faq_section",
+          "score": 0.95
+        },
+        {
+          "file": "FAQ_Risk_Analytics.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.85
+        }
+      ]
+    },
+    {
+      "query_id": "risk_tracking_error_interpretation",
+      "query": "My tracking error is 3.5%. Is that good or bad?",
+      "retrieval_score": 0.8666666666666667,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.6666666666666666,
+      "topic_matches": [
+        {
+          "topic": "benchmark",
+          "found": true
+        },
+        {
+          "topic": "active",
+          "found": true
+        },
+        {
+          "topic": "management",
+          "found": false
+        }
+      ],
+      "latency_ms": 5012.4961659894325,
+      "answer_preview": "A tracking error of 3.5% indicates significant active bets and meaningful deviation from the benchmark. This can present both opportunities for outperformance and risks of underperformance, depending on the portfolio's performance relative to the benchmark.",
+      "sources": [
+        {
+          "file": "FAQ_Risk_Analytics.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "FAQ_Risk_Analytics.md",
+          "type": "faq_section",
+          "score": 0.85
+        },
+        {
+          "file": "FAQ_Risk_Analytics.md",
+          "type": "faq_section",
+          "score": 0.85
+        }
+      ]
+    },
+    {
+      "query_id": "risk_beta",
+      "query": "How do I interpret the beta values in risk analytics?",
+      "retrieval_score": 0.95,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.3333333333333333,
+      "topic_matches": [
+        {
+          "topic": "market",
+          "found": true
+        },
+        {
+          "topic": "sensitivity",
+          "found": false
+        },
+        {
+          "topic": "systematic",
+          "found": false
+        }
+      ],
+      "latency_ms": 5728.711208997993,
+      "answer_preview": "Beta values indicate a portfolio's volatility relative to the market. A beta less than 1.0 suggests the portfolio is less volatile (defensive), a beta of 1.0 indicates it moves with the market, and a beta greater than 1.0 signifies higher volatility (aggressive). For example, a beta of 0.8 means if the market drops 10%, the portfolio is expected to drop about 8%.",
+      "sources": [
+        {
+          "file": "FAQ_Risk_Analytics.md",
+          "type": "faq_section",
+          "score": 0.95
+        }
+      ]
+    },
+    {
+      "query_id": "risk_sharpe_ratio",
+      "query": "What does the Sharpe ratio tell me about my portfolio?",
+      "retrieval_score": 0.8999999999999999,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.6666666666666666,
+      "topic_matches": [
+        {
+          "topic": "risk-adjusted",
+          "found": true
+        },
+        {
+          "topic": "return",
+          "found": true
+        },
+        {
+          "topic": "comparison",
+          "found": false
+        }
+      ],
+      "latency_ms": 6137.857291003456,
+      "answer_preview": "The Sharpe ratio measures the risk-adjusted return of your portfolio, indicating how much return you earn per unit of risk taken. A Sharpe ratio less than 0.5 suggests poor returns, 0.5-1.0 indicates acceptable returns, and above 1.0 signifies good to excellent returns.",
+      "sources": [
+        {
+          "file": "FAQ_Risk_Analytics.md",
+          "type": "faq_section",
+          "score": 0.95
+        },
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.85
+        }
+      ]
+    },
+    {
+      "query_id": "risk_max_drawdown",
+      "query": "What is maximum drawdown and how should I use it?",
+      "retrieval_score": 0.0,
+      "retrieval_grade": "poor",
+      "topic_coverage": 0.6666666666666666,
+      "topic_matches": [
+        {
+          "topic": "loss",
+          "found": true
+        },
+        {
+          "topic": "peak",
+          "found": true
+        },
+        {
+          "topic": "recovery",
+          "found": false
+        }
+      ],
+      "latency_ms": 6209.096499995212,
+      "answer_preview": "Maximum drawdown measures the largest peak-to-trough decline in the value of an investment over a specified period. It is calculated as: \n\n\\[ \\text{Maximum Drawdown} = \\frac{\\text{Peak Value} - \\text{Trough Value}}{\\text{Peak Value}} \\times 100 \\]\n\nUse it to assess the risk of an investment by understanding potential losses during downturns, helping in portfolio management and risk assessment.",
+      "sources": []
+    },
+    {
+      "query_id": "risk_factor_explained",
+      "query": "What does 'factor explained' percentage mean?",
+      "retrieval_score": 0.0,
+      "retrieval_grade": "poor",
+      "topic_coverage": 0.0,
+      "topic_matches": [
+        {
+          "topic": "systematic",
+          "found": false
+        },
+        {
+          "topic": "exposure",
+          "found": false
+        },
+        {
+          "topic": "attribution",
+          "found": false
+        }
+      ],
+      "latency_ms": 6076.1188750038855,
+      "answer_preview": "'Factor explained' percentage indicates the proportion of variance in a dependent variable that can be attributed to a specific factor in a statistical model. It is calculated as the ratio of the variance explained by the factor to the total variance, often expressed as a percentage: \n\n\\[ \\text{Factor Explained \\%} = \\left( \\frac{\\text{Variance Explained by Factor}}{\\text{Total Variance}} \\right) \\times 100 \\]",
+      "sources": []
+    },
+    {
+      "query_id": "risk_idiosyncratic",
+      "query": "What is idiosyncratic risk and why does it matter?",
+      "retrieval_score": 0.9,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.3333333333333333,
+      "topic_matches": [
+        {
+          "topic": "specific",
+          "found": true
+        },
+        {
+          "topic": "diversifiable",
+          "found": false
+        },
+        {
+          "topic": "security",
+          "found": false
+        }
+      ],
+      "latency_ms": 5507.862209007726,
+      "answer_preview": "Idiosyncratic risk refers to the risk unique to individual securities, not explained by common market factors. It matters because it can lead to significant losses if a concentrated portfolio is affected by negative events specific to those holdings; diversification is key to mitigating this risk.",
+      "sources": [
+        {
+          "file": "FAQ_Risk_Analytics.md",
+          "type": "faq_section",
+          "score": 0.9
+        }
+      ]
+    },
+    {
+      "query_id": "risk_correlation",
+      "query": "How do I interpret the correlation matrix?",
+      "retrieval_score": 0.9,
+      "retrieval_grade": "good",
+      "topic_coverage": 1.0,
+      "topic_matches": [
+        {
+          "topic": "relationship",
+          "found": true
+        },
+        {
+          "topic": "diversification",
+          "found": true
+        },
+        {
+          "topic": "co-movement",
+          "found": true
+        }
+      ],
+      "latency_ms": 5263.7672499986365,
+      "answer_preview": "The correlation matrix shows how asset returns move in relation to each other, with values ranging from -1 to +1. A value close to -1 indicates that the assets move inversely, providing diversification benefits, while a value close to +1 indicates they move in sync, which may increase portfolio risk.",
+      "sources": [
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.9
+        }
+      ]
+    },
+    {
+      "query_id": "risk_effective_n",
+      "query": "What is Effective N and what does it tell me about diversification?",
+      "retrieval_score": 0.0,
+      "retrieval_grade": "poor",
+      "topic_coverage": 0.3333333333333333,
+      "topic_matches": [
+        {
+          "topic": "diversification",
+          "found": true
+        },
+        {
+          "topic": "concentration",
+          "found": false
+        },
+        {
+          "topic": "holdings",
+          "found": false
+        }
+      ],
+      "latency_ms": 6064.899582997896,
+      "answer_preview": "Effective N (Effective Number of Investments) measures the diversity of a portfolio by quantifying the number of equally weighted investments that would provide the same level of risk as the actual portfolio. It is calculated as \\( \\text{Effective N} = \\frac{1}{\\sum (w_i^2)} \\), where \\( w_i \\) is the weight of each investment. A higher Effective N indicates better diversification, as it suggests a greater number of independent investments contributing to the portfolio's risk.",
+      "sources": []
+    },
+    {
+      "query_id": "risk_contributors",
+      "query": "How do I interpret the top risk contributors?",
+      "retrieval_score": 0.8833333333333333,
+      "retrieval_grade": "good",
+      "topic_coverage": 1.0,
+      "topic_matches": [
+        {
+          "topic": "allocation",
+          "found": true
+        },
+        {
+          "topic": "volatility",
+          "found": true
+        },
+        {
+          "topic": "concentration",
+          "found": true
+        }
+      ],
+      "latency_ms": 6096.927667007549,
+      "answer_preview": "Top risk contributors indicate which securities are adding the most to the overall portfolio risk. A high contribution relative to a security's weight suggests it is either very volatile or highly correlated with other holdings. Look for concentration risk if the top 5 holdings contribute over 50% of total risk, and identify diversification opportunities if similar securities are contributing significantly.",
+      "sources": [
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.85
+        },
+        {
+          "file": "FAQ_Risk_Analytics.md",
+          "type": "faq_section",
+          "score": 0.95
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.85
+        }
+      ]
+    },
+    {
+      "query_id": "risk_high_beta",
+      "query": "My growth beta is 1.3. What does that mean for my portfolio?",
+      "retrieval_score": 0.9,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.0,
+      "topic_matches": [
+        {
+          "topic": "sensitivity",
+          "found": false
+        },
+        {
+          "topic": "factor",
+          "found": false
+        },
+        {
+          "topic": "exposure",
+          "found": false
+        }
+      ],
+      "latency_ms": 7232.892999993055,
+      "answer_preview": "A growth beta of 1.3 indicates that your portfolio is more sensitive to equity market movements, meaning it is expected to be more volatile than the market. If the market drops by 10%, your portfolio could be expected to drop by approximately 13%. This suggests an aggressive investment strategy.",
+      "sources": [
+        {
+          "file": "FAQ_Risk_Analytics.md",
+          "type": "faq_section",
+          "score": 0.9
+        }
+      ]
+    },
+    {
+      "query_id": "risk_reduce_tracking_error",
+      "query": "How can I reduce tracking error without changing asset allocation significantly?",
+      "retrieval_score": 0.8166666666666668,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.3333333333333333,
+      "topic_matches": [
+        {
+          "topic": "rebalancing",
+          "found": false
+        },
+        {
+          "topic": "benchmark",
+          "found": true
+        },
+        {
+          "topic": "constraints",
+          "found": false
+        }
+      ],
+      "latency_ms": 7099.524582998129,
+      "answer_preview": "To reduce tracking error without significant asset allocation changes, consider adjusting individual security weights to align more closely with the benchmark, minimizing sector tilts, and managing concentration risk by diversifying holdings. Additionally, review and potentially reduce factor exposures that contribute to high tracking error.",
+      "sources": [
+        {
+          "file": "FAQ_Risk_Analytics.md",
+          "type": "faq_section",
+          "score": 0.85
+        },
+        {
+          "file": "FAQ_Risk_Analytics.md",
+          "type": "faq_section",
+          "score": 0.8
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.8
+        }
+      ]
+    },
+    {
+      "query_id": "portfolio_efficient_frontier",
+      "query": "What is the efficient frontier?",
+      "retrieval_score": 0.8875000000000001,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.0,
+      "topic_matches": [
+        {
+          "topic": "optimization",
+          "found": false
+        },
+        {
+          "topic": "risk-return",
+          "found": false
+        },
+        {
+          "topic": "tradeoff",
+          "found": false
+        }
+      ],
+      "latency_ms": 5368.380709012854,
+      "answer_preview": "The efficient frontier is a curve that represents the best possible portfolios, showing the highest expected return for each level of risk. Portfolios below the curve are considered suboptimal, as they offer less return for the same risk.",
+      "sources": [
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.95
+        },
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.85
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.85
+        }
+      ]
+    },
+    {
+      "query_id": "portfolio_frontier_interpretation",
+      "query": "How do I interpret the efficient frontier chart?",
+      "retrieval_score": 0.925,
+      "retrieval_grade": "good",
+      "topic_coverage": 1.0,
+      "topic_matches": [
+        {
+          "topic": "optimal",
+          "found": true
+        },
+        {
+          "topic": "risk",
+          "found": true
+        },
+        {
+          "topic": "return",
+          "found": true
+        }
+      ],
+      "latency_ms": 5447.880084000644,
+      "answer_preview": "The efficient frontier chart displays optimal portfolios that offer the highest expected return for each level of risk. The X-axis represents risk (volatility), while the Y-axis shows expected return. Portfolios on the curve are optimal, while those below are suboptimal. The steepness of the curve indicates the reward for taking on additional risk.",
+      "sources": [
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.95
+        },
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.9
+        }
+      ]
+    },
+    {
+      "query_id": "portfolio_optimal_point",
+      "query": "What is the optimal point on the efficient frontier?",
+      "retrieval_score": 0.8625,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.6666666666666666,
+      "topic_matches": [
+        {
+          "topic": "Sharpe",
+          "found": true
+        },
+        {
+          "topic": "tangent",
+          "found": false
+        },
+        {
+          "topic": "risk-adjusted",
+          "found": true
+        }
+      ],
+      "latency_ms": 5918.753541991464,
+      "answer_preview": "The optimal point on the efficient frontier is the maximum Sharpe ratio point, which represents the best risk-adjusted return. It is the portfolio that maximizes return per unit of risk, providing the most efficient use of the risk budget.",
+      "sources": [
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.85
+        },
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.85
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.85
+        }
+      ]
+    },
+    {
+      "query_id": "portfolio_constraints",
+      "query": "How do constraints affect portfolio optimization?",
+      "retrieval_score": 0.8875000000000001,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.6666666666666666,
+      "topic_matches": [
+        {
+          "topic": "allocation",
+          "found": true
+        },
+        {
+          "topic": "limits",
+          "found": true
+        },
+        {
+          "topic": "feasible",
+          "found": false
+        }
+      ],
+      "latency_ms": 5998.454207991017,
+      "answer_preview": "Constraints limit allocations during optimization, influencing the resulting portfolio's risk and return profile. Tighter constraints lead to more diversified portfolios with less deviation from benchmarks, while looser constraints allow for more concentrated positions and potentially higher volatility. Always review the resulting allocation to ensure it aligns with client preferences and practical considerations.",
+      "sources": [
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.85
+        }
+      ]
+    },
+    {
+      "query_id": "portfolio_caps_templates",
+      "query": "What are the different caps templates and when should I use each?",
+      "retrieval_score": 0.875,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.3333333333333333,
+      "topic_matches": [
+        {
+          "topic": "constraints",
+          "found": true
+        },
+        {
+          "topic": "allocation",
+          "found": false
+        },
+        {
+          "topic": "limits",
+          "found": false
+        }
+      ],
+      "latency_ms": 6701.128416010761,
+      "answer_preview": "The different caps templates are:\n\n1. **Standard Template**: Balanced constraints for most portfolios; good starting point.\n2. **Conservative Template**: Tighter constraints for risk-averse clients; results in a more diversified portfolio.\n3. **Aggressive Template**: Looser constraints for return-seeking clients; allows larger bets on high-conviction assets.\n\nUse the Conservative template for risk-averse clients, the Aggressive template for those seeking higher returns, and the Standard template...",
+      "sources": [
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.9
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.85
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.85
+        }
+      ]
+    },
+    {
+      "query_id": "portfolio_below_frontier",
+      "query": "Why is my current portfolio below the efficient frontier?",
+      "retrieval_score": 0.8700000000000001,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.3333333333333333,
+      "topic_matches": [
+        {
+          "topic": "suboptimal",
+          "found": false
+        },
+        {
+          "topic": "improvement",
+          "found": true
+        },
+        {
+          "topic": "reallocation",
+          "found": false
+        }
+      ],
+      "latency_ms": 6226.4741670078365,
+      "answer_preview": "Your portfolio may be below the efficient frontier due to historical allocation without optimization, constraints like tax considerations or liquidity needs, implementation costs, or estimation errors in the frontier's calculations. If it's significantly below, it\u2019s worth reviewing your allocation for potential improvements.",
+      "sources": [
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.95
+        },
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.85
+        },
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.85
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.8
+        }
+      ]
+    },
+    {
+      "query_id": "portfolio_private_vs_core",
+      "query": "What's the difference between the core and private frontiers?",
+      "retrieval_score": 0.925,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.3333333333333333,
+      "topic_matches": [
+        {
+          "topic": "asset class",
+          "found": false
+        },
+        {
+          "topic": "liquidity",
+          "found": false
+        },
+        {
+          "topic": "allocation",
+          "found": true
+        }
+      ],
+      "latency_ms": 5837.241167013417,
+      "answer_preview": "The Core Frontier is limited to traditional liquid assets like Global Equity and Global Aggregate Bonds, representing a simple, low-cost allocation. The Core + Private Frontier includes private market investments, typically showing higher returns for the same risk level, reflecting AlTi's full investment universe.",
+      "sources": [
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.95
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.9
+        }
+      ]
+    },
+    {
+      "query_id": "portfolio_rebalancing",
+      "query": "When should I recommend rebalancing based on the optimization results?",
+      "retrieval_score": 0.825,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.0,
+      "topic_matches": [
+        {
+          "topic": "drift",
+          "found": false
+        },
+        {
+          "topic": "threshold",
+          "found": false
+        },
+        {
+          "topic": "target",
+          "found": false
+        }
+      ],
+      "latency_ms": 6344.207832997199,
+      "answer_preview": "Recommend rebalancing when the optimal allocation significantly differs from the current allocation, indicating sensitivity to market assumptions. Additionally, consider rebalancing if the portfolio plots significantly below the efficient frontier, suggesting a more efficient allocation is available.",
+      "sources": [
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.85
+        },
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.8
+        }
+      ]
+    },
+    {
+      "query_id": "general_cma",
+      "query": "What are Capital Market Assumptions and how are they used?",
+      "retrieval_score": 0.8600000000000001,
+      "retrieval_grade": "good",
+      "topic_coverage": 1.0,
+      "topic_matches": [
+        {
+          "topic": "expected returns",
+          "found": true
+        },
+        {
+          "topic": "forecast",
+          "found": true
+        },
+        {
+          "topic": "assumptions",
+          "found": true
+        }
+      ],
+      "latency_ms": 6941.297917001066,
+      "answer_preview": "Capital Market Assumptions (CMA) are long-term forecasts of expected returns, volatilities, and correlations across asset classes, typically over a 10-year horizon. They are used to drive portfolio optimization, inform strategic asset allocation, and support client proposals by providing a consistent research foundation for decision-making across different scenarios and currencies.",
+      "sources": [
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.9
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.8
+        },
+        {
+          "file": "RPC_UseCases (1).pptx",
+          "type": "presentation_slide",
+          "score": 0.8
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.9
+        }
+      ]
+    },
+    {
+      "query_id": "general_data_frequency",
+      "query": "How often is the data updated?",
+      "retrieval_score": 0.9,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.6666666666666666,
+      "topic_matches": [
+        {
+          "topic": "frequency",
+          "found": false
+        },
+        {
+          "topic": "update",
+          "found": true
+        },
+        {
+          "topic": "refresh",
+          "found": true
+        }
+      ],
+      "latency_ms": 7400.676916004159,
+      "answer_preview": "Data updates typically occur once per year, but the app may include interim scenario refreshes when market conditions shift significantly.",
+      "sources": [
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.9
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.9
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.9
+        }
+      ]
+    },
+    {
+      "query_id": "general_export",
+      "query": "How do I export results from the dashboard?",
+      "retrieval_score": 0.875,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.6666666666666666,
+      "topic_matches": [
+        {
+          "topic": "download",
+          "found": true
+        },
+        {
+          "topic": "export",
+          "found": true
+        },
+        {
+          "topic": "CSV",
+          "found": false
+        }
+      ],
+      "latency_ms": 5019.709041996975,
+      "answer_preview": "To export results from the dashboard, click \"Download Results\" after generating your analysis. This will allow you to export allocations, frontiers, performance grids, holdings, summary metrics, and growth projections.",
+      "sources": [
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.9
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.9
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.8
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.9
+        }
+      ]
+    },
+    {
+      "query_id": "edge_vague_question",
+      "query": "Tell me about risk",
+      "retrieval_score": 0.8800000000000001,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.0,
+      "topic_matches": [
+        {
+          "topic": "volatility",
+          "found": false
+        },
+        {
+          "topic": "portfolio",
+          "found": false
+        }
+      ],
+      "latency_ms": 4913.75637499732,
+      "answer_preview": "I don't have that information.",
+      "sources": [
+        {
+          "file": "FAQ_Risk_Analytics.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "FAQ_Risk_Analytics.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "FAQ_Risk_Analytics.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.9
+        },
+        {
+          "file": "FAQ_Risk_Analytics.md",
+          "type": "faq_section",
+          "score": 0.8
+        }
+      ]
+    },
+    {
+      "query_id": "edge_out_of_domain",
+      "query": "What's the weather like today?",
+      "retrieval_score": 0.0,
+      "retrieval_grade": "poor",
+      "topic_coverage": 1.0,
+      "topic_matches": [],
+      "latency_ms": 3990.389167011017,
+      "answer_preview": "I don't have that information.",
+      "sources": []
+    },
+    {
+      "query_id": "edge_complex_question",
+      "query": "If my 5th percentile Monte Carlo result is below my minimum acceptable wealth and my tracking error is high, what should I do?",
+      "retrieval_score": 0.85,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.3333333333333333,
+      "topic_matches": [
+        {
+          "topic": "risk",
+          "found": true
+        },
+        {
+          "topic": "allocation",
+          "found": false
+        },
+        {
+          "topic": "adjustment",
+          "found": false
+        }
+      ],
+      "latency_ms": 5939.58575000579,
+      "answer_preview": "You should discuss the implications with your client, emphasizing the risk of falling below their minimum acceptable wealth. Consider adjusting the investment strategy to reduce tracking error and improve the 5th percentile outcome, ensuring it aligns with their goals and risk tolerance.",
+      "sources": [
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.85
+        }
+      ]
+    },
+    {
+      "query_id": "edge_typo_query",
+      "query": "What is trakcing eror?",
+      "retrieval_score": 0.9099999999999999,
+      "retrieval_grade": "good",
+      "topic_coverage": 1.0,
+      "topic_matches": [
+        {
+          "topic": "volatility",
+          "found": true
+        },
+        {
+          "topic": "benchmark",
+          "found": true
+        }
+      ],
+      "latency_ms": 6114.239832997555,
+      "answer_preview": "Tracking error (TE) measures how much a portfolio's returns deviate from its benchmark over time, expressed as an annualized percentage. A higher TE indicates that the portfolio behaves differently from the benchmark, which can present both opportunities for outperformance and risks of underperformance.",
+      "sources": [
+        {
+          "file": "FAQ_Risk_Analytics.md",
+          "type": "faq_section",
+          "score": 0.95
+        },
+        {
+          "file": "FAQ_Risk_Analytics.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "FAQ_Risk_Analytics.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.9
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.9
+        }
+      ]
+    },
+    {
+      "query_id": "edge_abbreviation",
+      "query": "What does TE mean in risk analytics?",
+      "retrieval_score": 0.8800000000000001,
+      "retrieval_grade": "good",
+      "topic_coverage": 1.0,
+      "topic_matches": [
+        {
+          "topic": "tracking error",
+          "found": true
+        },
+        {
+          "topic": "volatility",
+          "found": true
+        }
+      ],
+      "latency_ms": 5561.125792009989,
+      "answer_preview": "TE stands for Tracking Error, which measures the volatility of the difference between a portfolio's returns and its benchmark returns, expressed as an annualized percentage. It indicates how much a portfolio's performance deviates from its benchmark over time.",
+      "sources": [
+        {
+          "file": "FAQ_Risk_Analytics.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.9
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.85
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.85
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.9
+        }
+      ]
+    },
+    {
+      "query_id": "inv_ibi_allocation",
+      "query": "What is the allocation for Integrated Best Ideas model?",
+      "retrieval_score": 0.95,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.6666666666666666,
+      "topic_matches": [
+        {
+          "topic": "allocation",
+          "found": true
+        },
+        {
+          "topic": "risk level",
+          "found": true
+        },
+        {
+          "topic": "asset class",
+          "found": false
+        }
+      ],
+      "latency_ms": 9682.087958994089,
+      "answer_preview": "The allocation for the Integrated Best Ideas model is as follows: CIM Enterprise Loan Fund, L.P. (3.0% for CON, BAL, MG; 2.2% for GRO, LTG), Blackstone Infrastructure Strategies (4.0% for CON, BAL, MG; 3.0% for GRO, LTG), Wellington Impact Bond (22.0% for CON; 17.0% for BAL; 12.0% for MG; 7.0% for GRO; 2.0% for LTG), AlTi Alianz Private Credit (4.5% across all risk levels), iShares S&P 500 Paris-Aligned Climate UCITS ETF (4.0% for CON; 5.0% for BAL; 6.0% for MG; 7.0% for GRO; 8.0% for LTG), and ...",
+      "sources": [
+        {
+          "file": "Model Archetypes.xlsm",
+          "type": "fund_model_allocation",
+          "score": 0.95
+        },
+        {
+          "file": "Model Archetypes.xlsm",
+          "type": "fund_model_allocation",
+          "score": 0.95
+        },
+        {
+          "file": "Model Archetypes.xlsm",
+          "type": "fund_model_allocation",
+          "score": 0.95
+        },
+        {
+          "file": "Model Archetypes.xlsm",
+          "type": "fund_model_allocation",
+          "score": 0.95
+        },
+        {
+          "file": "Model Archetypes.xlsm",
+          "type": "fund_model_allocation",
+          "score": 0.95
+        }
+      ]
+    },
+    {
+      "query_id": "inv_impact_allocation",
+      "query": "Show me the Impact 100% model allocation for balanced risk",
+      "retrieval_score": 0.9199999999999999,
+      "retrieval_grade": "good",
+      "topic_coverage": 1.0,
+      "topic_matches": [
+        {
+          "topic": "Impact 100%",
+          "found": true
+        },
+        {
+          "topic": "balanced",
+          "found": true
+        },
+        {
+          "topic": "allocation",
+          "found": true
+        }
+      ],
+      "latency_ms": 6345.400584003073,
+      "answer_preview": "For balanced risk in the Impact 100% model, the allocations are as follows:\n\n- ValueAct Capital Partners II, LP: 2.5%\n- Generation Global Equity (IWEF): 7.5%\n- CIM Enterprise Loan Fund, L.P.: 4.5%\n- Wellington Impact Bond: 17.0%\n- CIM EM Credit Fund: 4.5%\n- iShares S&P 500 Paris-Aligned Climate UCITS ETF: 5.0%\n- iShares Global Aggregate Bond ESG ETF: 17.0%\n- iShares MSCI World Screened UCITS ETF: 17.5%",
+      "sources": [
+        {
+          "file": "Model Archetypes.xlsm",
+          "type": "fund_model_allocation",
+          "score": 0.9
+        },
+        {
+          "file": "Model Archetypes.xlsm",
+          "type": "fund_model_allocation",
+          "score": 0.95
+        },
+        {
+          "file": "Model Archetypes.xlsm",
+          "type": "fund_model_allocation",
+          "score": 0.95
+        },
+        {
+          "file": "Model Archetypes.xlsm",
+          "type": "fund_model_allocation",
+          "score": 0.9
+        },
+        {
+          "file": "Model Archetypes.xlsm",
+          "type": "fund_model_allocation",
+          "score": 0.9
+        }
+      ]
+    },
+    {
+      "query_id": "inv_climate_model",
+      "query": "What funds are in the Climate Sustainability model?",
+      "retrieval_score": 0.9200000000000002,
+      "retrieval_grade": "good",
+      "topic_coverage": 1.0,
+      "topic_matches": [
+        {
+          "topic": "climate",
+          "found": true
+        },
+        {
+          "topic": "funds",
+          "found": true
+        },
+        {
+          "topic": "sustainability",
+          "found": true
+        }
+      ],
+      "latency_ms": 11968.323083987343,
+      "answer_preview": "The funds in the Climate Sustainability model are:\n\n1. Fidelity Treasury (FRBXX) - Cash Equivalent\n2. iShares Paris-Algnd Clm Optd MSCI Wldex USA ETF - Non US Growth Assets\n3. iShares Paris-Algnd Clmt Optd MSCI USA ETF - US Passive Growth Assets\n4. Generation Global Equity (IWEF) - Global Active Growth Assets\n5. iShares S&P 500 Paris-Aligned Climate UCITS ETF - US Passive Growth Assets\n6. iShares MSCI World Screened UCITS ETF - US Passive Growth Assets\n7. iShares Global Aggregate Bond ESG ETF - ...",
+      "sources": [
+        {
+          "file": "Model Archetypes.xlsm",
+          "type": "fund_model_allocation",
+          "score": 0.9
+        },
+        {
+          "file": "Model Archetypes.xlsm",
+          "type": "fund_model_allocation",
+          "score": 0.9
+        },
+        {
+          "file": "Model Archetypes.xlsm",
+          "type": "fund_model_allocation",
+          "score": 0.95
+        },
+        {
+          "file": "Model Archetypes.xlsm",
+          "type": "fund_model_allocation",
+          "score": 0.95
+        },
+        {
+          "file": "Model Archetypes.xlsm",
+          "type": "fund_model_allocation",
+          "score": 0.9
+        }
+      ]
+    },
+    {
+      "query_id": "inv_us_vs_international",
+      "query": "How does the US allocation differ from International in IBI?",
+      "retrieval_score": 0.0,
+      "retrieval_grade": "poor",
+      "topic_coverage": 0.6666666666666666,
+      "topic_matches": [
+        {
+          "topic": "US",
+          "found": true
+        },
+        {
+          "topic": "International",
+          "found": true
+        },
+        {
+          "topic": "difference",
+          "found": false
+        }
+      ],
+      "latency_ms": 6543.902082994464,
+      "answer_preview": "The US allocation in Integrated Best Ideas (IBI) typically emphasizes a higher concentration in growth sectors, often exceeding 60%, while international allocations may diversify across various sectors, generally maintaining around 40-50% in growth. Additionally, US IBI strategies may focus on companies with market capitalizations above $10 billion, whereas international strategies often include mid-cap firms as well.",
+      "sources": []
+    },
+    {
+      "query_id": "inv_risk_levels",
+      "query": "What risk levels are available for the model portfolios?",
+      "retrieval_score": 0.9299999999999999,
+      "retrieval_grade": "good",
+      "topic_coverage": 1.0,
+      "topic_matches": [
+        {
+          "topic": "conservative",
+          "found": true
+        },
+        {
+          "topic": "balanced",
+          "found": true
+        },
+        {
+          "topic": "growth",
+          "found": true
+        }
+      ],
+      "latency_ms": 5285.7747500092955,
+      "answer_preview": "The available risk levels for the model portfolios are: CON (Conservative), BAL (Balanced), MG (Moderate Growth), GRO (Growth), and LTG (Long-Term Growth).",
+      "sources": [
+        {
+          "file": "Model Archetypes.xlsm",
+          "type": "model_overview",
+          "score": 0.95
+        },
+        {
+          "file": "Model Archetypes.xlsx",
+          "type": "model_overview",
+          "score": 0.95
+        },
+        {
+          "file": "Model Archetypes.xlsm",
+          "type": "model_overview",
+          "score": 0.95
+        },
+        {
+          "file": "Model Archetypes.xlsm",
+          "type": "fund_model_allocation",
+          "score": 0.9
+        },
+        {
+          "file": "Model Archetypes.xlsm",
+          "type": "fund_model_allocation",
+          "score": 0.9
+        }
+      ]
+    },
+    {
+      "query_id": "inv_fund_search",
+      "query": "Which funds have the highest ESG ratings in the model?",
+      "retrieval_score": 0.8800000000000001,
+      "retrieval_grade": "good",
+      "topic_coverage": 1.0,
+      "topic_matches": [
+        {
+          "topic": "ESG",
+          "found": true
+        },
+        {
+          "topic": "rating",
+          "found": true
+        },
+        {
+          "topic": "fund",
+          "found": true
+        }
+      ],
+      "latency_ms": 5839.113709007506,
+      "answer_preview": "The funds with the highest ESG ratings in the model include the Vanguard ESG Stock Select (VESGX), which focuses on sustainability leaders, and the Parametric ESG Screened, which serves as a US passive allocation in Climate Sustainability. Specific ESG ratings are not provided in the context, but both funds emphasize strong sustainable practices.",
+      "sources": [
+        {
+          "file": "Model Archetypes.xlsm",
+          "type": "fund_profile",
+          "score": 0.9
+        },
+        {
+          "file": "Model Archetypes.xlsm",
+          "type": "fund_model_allocation",
+          "score": 0.9
+        },
+        {
+          "file": "Model Archetypes.xlsm",
+          "type": "fund_model_allocation",
+          "score": 0.9
+        },
+        {
+          "file": "Model Archetypes.xlsm",
+          "type": "fund_model_allocation",
+          "score": 0.85
+        },
+        {
+          "file": "Model Archetypes.xlsm",
+          "type": "fund_model_allocation",
+          "score": 0.85
+        }
+      ]
+    },
+    {
+      "query_id": "clarity_temp_rating_scope12",
+      "query": "What is Temperature Rating Scope 1+2 and how do I interpret it?",
+      "retrieval_score": 0.8499999999999999,
+      "retrieval_grade": "good",
+      "topic_coverage": 1.0,
+      "topic_matches": [
+        {
+          "topic": "Paris Agreement",
+          "found": true
+        },
+        {
+          "topic": "1.5\u00b0C",
+          "found": true
+        },
+        {
+          "topic": "emissions",
+          "found": true
+        },
+        {
+          "topic": "climate",
+          "found": true
+        }
+      ],
+      "latency_ms": 7615.596374991583,
+      "answer_preview": "Temperature Rating Scope 1+2 measures a company's near-term emissions reduction targets for Scopes 1 and 2 in relation to the Paris Agreement's 1.5\u00b0C target. Interpret it as follows: below 1.5\u00b0C indicates strong climate action, 1.5\u00b0C - 2\u00b0C shows good progress, 2\u00b0C - 3\u00b0C indicates moderate ambition, and above 3\u00b0C signifies misalignment with climate goals.",
+      "sources": [
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.95
+        },
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.85
+        },
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.8
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.8
+        }
+      ]
+    },
+    {
+      "query_id": "clarity_temp_rating_scope3",
+      "query": "What does a company's Scope 3 temperature rating tell me?",
+      "retrieval_score": 0.8666666666666667,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.6666666666666666,
+      "topic_matches": [
+        {
+          "topic": "value chain",
+          "found": true
+        },
+        {
+          "topic": "supply chain",
+          "found": false
+        },
+        {
+          "topic": "emissions",
+          "found": true
+        }
+      ],
+      "latency_ms": 5682.529582991265,
+      "answer_preview": "A company's Scope 3 temperature rating indicates how its near-term emissions reduction targets for indirect emissions across the value chain align with global climate goals. Lower temperatures signify stronger climate action, with ratings below 1.5\u00b0C indicating alignment with the Paris Agreement, while higher ratings suggest a lack of ambition and misalignment.",
+      "sources": [
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.85
+        },
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.85
+        }
+      ]
+    },
+    {
+      "query_id": "clarity_net_zero_score",
+      "query": "How do I interpret the Net Zero Target score?",
+      "retrieval_score": 0.8800000000000001,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.75,
+      "topic_matches": [
+        {
+          "topic": "target",
+          "found": true
+        },
+        {
+          "topic": "SBTi",
+          "found": false
+        },
+        {
+          "topic": "implementation",
+          "found": true
+        },
+        {
+          "topic": "score",
+          "found": true
+        }
+      ],
+      "latency_ms": 6237.440208002226,
+      "answer_preview": "The Net Zero Target score (0-100) evaluates the existence and robustness of a company's net zero greenhouse gas emission reduction target. Scores are interpreted as follows: 80-100 indicates validated science-based targets and a clear transition plan; 60-79 shows a commitment with interim milestones; 40-59 indicates a target with limited implementation detail; and below 40 reflects a weak or absent commitment.",
+      "sources": [
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.95
+        },
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.85
+        },
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.8
+        }
+      ]
+    },
+    {
+      "query_id": "clarity_financed_intensity_calc",
+      "query": "How do I calculate financed emissions intensity?",
+      "retrieval_score": 0.8999999999999999,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.5,
+      "topic_matches": [
+        {
+          "topic": "ownership",
+          "found": true
+        },
+        {
+          "topic": "investment",
+          "found": true
+        },
+        {
+          "topic": "tCO2e",
+          "found": false
+        },
+        {
+          "topic": "calculation",
+          "found": false
+        }
+      ],
+      "latency_ms": 6333.1320410070475,
+      "answer_preview": "Financed Emissions Intensity is calculated as Company Financed Emissions (Scope 1+2) divided by millions of dollars invested in the company. The formula is: \n\n\\[ \\text{Financed Intensity} = \\frac{\\text{Company Financed Emissions (Scope 1+2)}}{\\text{Investment ($M)}} \\]\n\nIt measures the carbon footprint attributable to your investment based on your ownership share of the company's emissions.",
+      "sources": [
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.95
+        },
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.95
+        },
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.8
+        }
+      ]
+    },
+    {
+      "query_id": "clarity_carbon_vs_financed",
+      "query": "What's the difference between carbon intensity and financed intensity?",
+      "retrieval_score": 0.9,
+      "retrieval_grade": "good",
+      "topic_coverage": 1.0,
+      "topic_matches": [
+        {
+          "topic": "revenue",
+          "found": true
+        },
+        {
+          "topic": "investment",
+          "found": true
+        },
+        {
+          "topic": "ownership",
+          "found": true
+        }
+      ],
+      "latency_ms": 5569.910416990751,
+      "answer_preview": "Carbon Intensity measures tons of Scope 1+2 GHG emissions per million dollars of revenue, reflecting a company's operational efficiency in generating revenue relative to its emissions. In contrast, Financed Intensity calculates the carbon footprint of your investment based on your ownership share of a company's emissions, expressed as tons of emissions per million dollars invested.",
+      "sources": [
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.95
+        },
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.85
+        }
+      ]
+    },
+    {
+      "query_id": "clarity_scope_123",
+      "query": "What are Scope 1, 2, and 3 emissions?",
+      "retrieval_score": 0.9166666666666666,
+      "retrieval_grade": "good",
+      "topic_coverage": 1.0,
+      "topic_matches": [
+        {
+          "topic": "direct",
+          "found": true
+        },
+        {
+          "topic": "indirect",
+          "found": true
+        },
+        {
+          "topic": "value chain",
+          "found": true
+        },
+        {
+          "topic": "energy",
+          "found": true
+        }
+      ],
+      "latency_ms": 6251.720750005916,
+      "answer_preview": "Scope 1 emissions are direct emissions from sources owned or controlled by a company, such as fleet vehicles and on-site fuel combustion. Scope 2 emissions are indirect emissions from purchased electricity and energy used in operations. Scope 3 emissions encompass all other indirect emissions across the value chain, including those from suppliers, product use, and employee commuting, often representing the largest category but are the most challenging to measure.",
+      "sources": [
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.95
+        },
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.95
+        },
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.85
+        }
+      ]
+    },
+    {
+      "query_id": "clarity_environmental_score",
+      "query": "What does the Environmental Score measure?",
+      "retrieval_score": 0.95,
+      "retrieval_grade": "good",
+      "topic_coverage": 1.0,
+      "topic_matches": [
+        {
+          "topic": "climate",
+          "found": true
+        },
+        {
+          "topic": "natural capital",
+          "found": true
+        },
+        {
+          "topic": "pollution",
+          "found": true
+        },
+        {
+          "topic": "score",
+          "found": true
+        }
+      ],
+      "latency_ms": 5932.8568750061095,
+      "answer_preview": "The Environmental Score (0-100) measures a company's management of environmental risks, including climate change mitigation, natural capital preservation, and pollution and waste management. Scores are interpreted as follows: 70-100 indicates strong governance, 50-69 indicates moderate management, and below 50 indicates weak practices and higher risk.",
+      "sources": [
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.95
+        }
+      ]
+    },
+    {
+      "query_id": "clarity_water_recycled",
+      "query": "How do I interpret the water recycled ratio?",
+      "retrieval_score": 0.925,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.5,
+      "topic_matches": [
+        {
+          "topic": "water",
+          "found": true
+        },
+        {
+          "topic": "recycled",
+          "found": true
+        },
+        {
+          "topic": "efficiency",
+          "found": false
+        },
+        {
+          "topic": "scarcity",
+          "found": false
+        }
+      ],
+      "latency_ms": 5227.7981670049485,
+      "answer_preview": "The Water Recycled Ratio indicates the percentage of total water withdrawal that is treated and reused. Ratios above 50% signify strong water management and operational resilience, 25-50% indicate moderate practices, and below 25% suggest high freshwater dependency and potential risks in water-stressed areas.",
+      "sources": [
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.95
+        },
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.9
+        }
+      ]
+    },
+    {
+      "query_id": "clarity_social_score",
+      "query": "What is the Social Score and what does it measure?",
+      "retrieval_score": 0.95,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.75,
+      "topic_matches": [
+        {
+          "topic": "employees",
+          "found": false
+        },
+        {
+          "topic": "human rights",
+          "found": true
+        },
+        {
+          "topic": "labor",
+          "found": true
+        },
+        {
+          "topic": "stakeholder",
+          "found": true
+        }
+      ],
+      "latency_ms": 5437.028000000282,
+      "answer_preview": "The Social Score (0-100) measures a company's ability to manage risks related to its impact on people, including labor practices, human rights, product safety, and community relations. Scores are interpreted as follows: 70-100 indicates strong stakeholder management, 50-69 indicates moderate social performance, and below 50 indicates elevated social risks.",
+      "sources": [
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.95
+        }
+      ]
+    },
+    {
+      "query_id": "clarity_gender_pay_gap",
+      "query": "How do I interpret the gender pay gap metric?",
+      "retrieval_score": 0.95,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.6666666666666666,
+      "topic_matches": [
+        {
+          "topic": "pay equity",
+          "found": false
+        },
+        {
+          "topic": "women",
+          "found": true
+        },
+        {
+          "topic": "remuneration",
+          "found": true
+        }
+      ],
+      "latency_ms": 6823.318957991432,
+      "answer_preview": "The Gender Pay Gap measures the percentage of women's remuneration compared to men's for comparable work. A value below 100% indicates women are paid less; interpretations are as follows: 95-100% indicates near pay parity, 85-94% indicates a moderate gap needing improvement, and below 85% indicates a significant gap with reputational and litigation risks.",
+      "sources": [
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.95
+        }
+      ]
+    },
+    {
+      "query_id": "clarity_board_diversity",
+      "query": "What percentage of female board members is considered good?",
+      "retrieval_score": 0.9,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.75,
+      "topic_matches": [
+        {
+          "topic": "30%",
+          "found": true
+        },
+        {
+          "topic": "diversity",
+          "found": false
+        },
+        {
+          "topic": "governance",
+          "found": true
+        },
+        {
+          "topic": "board",
+          "found": true
+        }
+      ],
+      "latency_ms": 5544.901500004926,
+      "answer_preview": "A percentage of female board members above 30% is considered good, as research suggests it correlates with better governance outcomes.",
+      "sources": [
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.9
+        }
+      ]
+    },
+    {
+      "query_id": "clarity_governance_score",
+      "query": "What is the Governance Score and why does it matter?",
+      "retrieval_score": 0.8999999999999999,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.75,
+      "topic_matches": [
+        {
+          "topic": "board",
+          "found": false
+        },
+        {
+          "topic": "ethics",
+          "found": true
+        },
+        {
+          "topic": "transparency",
+          "found": true
+        },
+        {
+          "topic": "shareholder",
+          "found": true
+        }
+      ],
+      "latency_ms": 5947.0936249999795,
+      "answer_preview": "The Governance Score (0-100) evaluates a company's management of risks related to ethical conduct, leadership structure, transparency, and shareholder rights. A higher score indicates stronger governance, which often correlates with better long-term performance; scores below 50 suggest the need for deeper due diligence.",
+      "sources": [
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.95
+        },
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.85
+        }
+      ]
+    },
+    {
+      "query_id": "clarity_board_independence",
+      "query": "What's the difference between non-executive and independent board members?",
+      "retrieval_score": 0.9,
+      "retrieval_grade": "good",
+      "topic_coverage": 1.0,
+      "topic_matches": [
+        {
+          "topic": "executive",
+          "found": true
+        },
+        {
+          "topic": "independent",
+          "found": true
+        },
+        {
+          "topic": "relationship",
+          "found": true
+        },
+        {
+          "topic": "oversight",
+          "found": true
+        }
+      ],
+      "latency_ms": 5016.09079199261,
+      "answer_preview": "Non-Executive Board members do not form part of the company's executive management team, providing greater oversight independence. Independent Board members have no material relationship with the company that could compromise their objectivity.",
+      "sources": [
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.9
+        }
+      ]
+    },
+    {
+      "query_id": "clarity_anti_bribery",
+      "query": "What does the Anti-Bribery Score tell me?",
+      "retrieval_score": 0.9,
+      "retrieval_grade": "good",
+      "topic_coverage": 1.0,
+      "topic_matches": [
+        {
+          "topic": "bribery",
+          "found": true
+        },
+        {
+          "topic": "ethics",
+          "found": true
+        },
+        {
+          "topic": "incidents",
+          "found": true
+        },
+        {
+          "topic": "compliance",
+          "found": true
+        }
+      ],
+      "latency_ms": 5224.75883300649,
+      "answer_preview": "The Anti-Bribery Score (0-100) assesses a company's incidents related to bribery or kickbacks, indicating its ethical conduct and compliance risks. A higher score suggests stronger ethical practices and lower risk of corruption, while a lower score signals potential governance weaknesses and compliance issues.",
+      "sources": [
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.95
+        },
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.85
+        }
+      ]
+    },
+    {
+      "query_id": "clarity_frameworks",
+      "query": "What ESG frameworks do Clarity AI metrics align with?",
+      "retrieval_score": 0.95,
+      "retrieval_grade": "good",
+      "topic_coverage": 1.0,
+      "topic_matches": [
+        {
+          "topic": "PCAF",
+          "found": true
+        },
+        {
+          "topic": "SFDR",
+          "found": true
+        },
+        {
+          "topic": "SBTi",
+          "found": true
+        },
+        {
+          "topic": "ISSB",
+          "found": true
+        }
+      ],
+      "latency_ms": 5937.882250000257,
+      "answer_preview": "Clarity AI metrics align with several leading ESG and climate frameworks, including PCAF (Partnership for Carbon Accounting Financials), ISSB (International Sustainability Standards Board), SFDR (Sustainable Finance Disclosure Regulation), NZIF (Net Zero Investment Framework), SBTi (Science Based Targets initiative), and TNFD (Taskforce on Nature-related Financial Disclosures).",
+      "sources": [
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.95
+        }
+      ]
+    },
+    {
+      "query_id": "clarity_data_limitations",
+      "query": "What are the data limitations of ESG metrics?",
+      "retrieval_score": 0.95,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.6666666666666666,
+      "topic_matches": [
+        {
+          "topic": "self-reported",
+          "found": true
+        },
+        {
+          "topic": "disclosure",
+          "found": false
+        },
+        {
+          "topic": "limitations",
+          "found": true
+        }
+      ],
+      "latency_ms": 5470.752042005188,
+      "answer_preview": "Data limitations of ESG metrics include reliance on self-reported data, which may lack verification (e.g., Independent Board, Gender Pay Gap). Additionally, historical incident metrics may not fully capture current practices or improvements.",
+      "sources": [
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.95
+        }
+      ]
+    },
+    {
+      "query_id": "clarity_temp_interpretation",
+      "query": "My portfolio has a temperature rating of 2.5\u00b0C. Is that good or bad?",
+      "retrieval_score": 0.8374999999999999,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.6666666666666666,
+      "topic_matches": [
+        {
+          "topic": "Paris Agreement",
+          "found": true
+        },
+        {
+          "topic": "alignment",
+          "found": true
+        },
+        {
+          "topic": "laggard",
+          "found": false
+        }
+      ],
+      "latency_ms": 6372.250000000349,
+      "answer_preview": "A temperature rating of 2.5\u00b0C indicates that your portfolio is on a well-below 2\u00b0C pathway, showing moderate ambition with room for improvement. It suggests that while there is some alignment with climate goals, it is not fully aligned with the Paris Agreement's target of limiting warming to below 1.5\u00b0C.",
+      "sources": [
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.9
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.85
+        },
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.8
+        },
+        {
+          "file": "AlTi_Risk_Dashboard_Documentation (1).pdf",
+          "type": "pdf_document",
+          "score": 0.8
+        }
+      ]
+    },
+    {
+      "query_id": "clarity_esg_combined",
+      "query": "How should I use E, S, and G scores together to assess a company?",
+      "retrieval_score": 0.8333333333333334,
+      "retrieval_grade": "good",
+      "topic_coverage": 0.75,
+      "topic_matches": [
+        {
+          "topic": "environmental",
+          "found": true
+        },
+        {
+          "topic": "social",
+          "found": true
+        },
+        {
+          "topic": "governance",
+          "found": true
+        },
+        {
+          "topic": "holistic",
+          "found": false
+        }
+      ],
+      "latency_ms": 6450.7713339990005,
+      "answer_preview": "Use E (Environmental), S (Social), and G (Governance) scores collectively to evaluate a company's overall sustainability and risk profile. Each score ranges from 0-100, with higher scores indicating better practices: E focuses on environmental management, S on social responsibility, and G on governance quality. Combining these scores provides a comprehensive view of a company's strengths and weaknesses across ESG dimensions.",
+      "sources": [
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.85
+        },
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.85
+        },
+        {
+          "file": "FAQ_ClarityAI_ESG.md",
+          "type": "faq_section",
+          "score": 0.8
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,470 @@
+{
+  "metadata": {
+    "timestamp": "2026-01-09T19:32:54.125518",
+    "endpoint": "v1",
+    "tags_filter": [
+      "core"
+    ],
+    "total_queries": 9
+  },
+  "summary": {
+    "total": 9,
+    "good_count": 0,
+    "fair_count": 7,
+    "poor_count": 2,
+    "good_pct": 0.0,
+    "fair_pct": 77.77777777777779,
+    "poor_pct": 22.22222222222222,
+    "avg_retrieval_score": 0.44002393028909115,
+    "avg_topic_coverage": 0.6759259259259259,
+    "avg_latency_ms": 4961.336824001693,
+    "worst_queries": [
+      [
+        "monte_carlo_50th_percentile",
+        0.3771597042981049
+      ],
+      [
+        "portfolio_efficient_frontier",
+        0.39809726136378865
+      ],
+      [
+        "risk_tracking_error_interpretation",
+        0.4180652759535832
+      ],
+      [
+        "portfolio_frontier_interpretation",
+        0.42057869091777544
+      ],
+      [
+        "monte_carlo_95th_percentile",
+        0.4471546696791381
+      ]
+    ]
+  },
+  "results": [
+    {
+      "query_id": "monte_carlo_5th_percentile",
+      "query": "What does the 5th percentile mean in my Monte Carlo simulation?",
+      "retrieval_score": 0.5096235577992055,
+      "retrieval_grade": "fair",
+      "topic_coverage": 0.75,
+      "topic_matches": [
+        {
+          "topic": "pessimistic",
+          "found": true
+        },
+        {
+          "topic": "probability",
+          "found": true
+        },
+        {
+          "topic": "worst-case",
+          "found": true
+        },
+        {
+          "topic": "planning",
+          "found": false
+        }
+      ],
+      "latency_ms": 6807.9575410083635,
+      "answer_preview": "The 5th percentile represents your **pessimistic but plausible scenario**. Out of all simulated outcomes, 95% were better than this value, and only 5% were worse.\n\n**How to interpret your 5th percentile:**\n- This is your \"bad luck\" scenario - not the worst possible, but reasonably pessimistic.\n- If your 5th percentile after 20 years shows $1.2M on a $1M starting portfolio, there's a 95% probability you'll have at least $1.2M.\n- Compare this to your client's minimum required outcome or floor amou...",
+      "sources": [
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.6143165659107673
+        },
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.5745144130858929
+        },
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.5428142274712391
+        },
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.4146859119978503
+        },
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.40178667053027783
+        }
+      ]
+    },
+    {
+      "query_id": "monte_carlo_50th_percentile",
+      "query": "How should I interpret the 50th percentile result?",
+      "retrieval_score": 0.3771597042981049,
+      "retrieval_grade": "poor",
+      "topic_coverage": 0.3333333333333333,
+      "topic_matches": [
+        {
+          "topic": "median",
+          "found": true
+        },
+        {
+          "topic": "typical",
+          "found": false
+        },
+        {
+          "topic": "expected",
+          "found": false
+        }
+      ],
+      "latency_ms": 4887.52495800145,
+      "answer_preview": "The 50th percentile is the **median outcome** - half of all simulations ended above this value, and half below. This represents the \"middle of the road\" expectation. \n\n**How to interpret your median:**\n- This is your base case planning scenario.\n- It is more reliable than the average (mean) because it is not skewed by extreme outcomes.\n- Use this for primary retirement projections and goal planning.\n\n**Comparing median to other percentiles:**\n- If the median is much closer to the 95th than the 5...",
+      "sources": [
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.4461107523843339
+        },
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.4034242341278371
+        },
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.3546213567401751
+        },
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.30448247394007355
+        }
+      ]
+    },
+    {
+      "query_id": "monte_carlo_95th_percentile",
+      "query": "What does the 95th percentile tell me about my portfolio?",
+      "retrieval_score": 0.4471546696791381,
+      "retrieval_grade": "fair",
+      "topic_coverage": 1.0,
+      "topic_matches": [
+        {
+          "topic": "optimistic",
+          "found": true
+        },
+        {
+          "topic": "best-case",
+          "found": true
+        },
+        {
+          "topic": "upside",
+          "found": true
+        }
+      ],
+      "latency_ms": 3500.035832999856,
+      "answer_preview": "The 95th percentile represents your **optimistic scenario** for your portfolio. It indicates that only 5% of simulations produced better results than this value. \n\n**How to interpret it:**\n- It is not advisable to plan around this number, as it requires exceptional market conditions.\n- It is useful for understanding the upside potential of your portfolio.\n- The gap between the 50th percentile (median) and the 95th percentile shows how much could be gained in favorable market conditions.\n\nIn clie...",
+      "sources": [
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.5306801651988139
+        },
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.45677108932306254
+        },
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.4269750772829832
+        },
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.41355900661077716
+        },
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.4077880099800536
+        }
+      ]
+    },
+    {
+      "query_id": "risk_tracking_error",
+      "query": "What is tracking error and why does it matter?",
+      "retrieval_score": 0.4593283633270359,
+      "retrieval_grade": "fair",
+      "topic_coverage": 1.0,
+      "topic_matches": [
+        {
+          "topic": "volatility",
+          "found": true
+        },
+        {
+          "topic": "benchmark",
+          "found": true
+        },
+        {
+          "topic": "deviation",
+          "found": true
+        }
+      ],
+      "latency_ms": 3523.6846250045346,
+      "answer_preview": "Tracking error (TE) measures how much a portfolio's returns deviate from its benchmark over time, expressed as an annualized percentage. It is important because it indicates the level of active management in a portfolio and the potential for both outperformance and underperformance relative to the benchmark.\n\n**Why tracking error matters:**\n- A higher TE means the portfolio behaves differently from the benchmark, which can present opportunities for outperformance but also carries the risk of und...",
+      "sources": [
+        {
+          "file": "FAQ_Risk_Analytics.md",
+          "type": "faq_section",
+          "score": 0.5419037345079223
+        },
+        {
+          "file": "FAQ_Risk_Analytics.md",
+          "type": "faq_section",
+          "score": 0.48508600017081194
+        },
+        {
+          "file": "FAQ_Risk_Analytics.md",
+          "type": "faq_section",
+          "score": 0.35099535530237347
+        }
+      ]
+    },
+    {
+      "query_id": "risk_tracking_error_interpretation",
+      "query": "My tracking error is 3.5%. Is that good or bad?",
+      "retrieval_score": 0.4180652759535832,
+      "retrieval_grade": "fair",
+      "topic_coverage": 0.6666666666666666,
+      "topic_matches": [
+        {
+          "topic": "benchmark",
+          "found": true
+        },
+        {
+          "topic": "active",
+          "found": true
+        },
+        {
+          "topic": "management",
+          "found": false
+        }
+      ],
+      "latency_ms": 4103.773084003478,
+      "answer_preview": "A tracking error of 3.5% indicates significant active bets and meaningful deviation from the benchmark. This level of tracking error can present both opportunities for outperformance and risks of underperformance. Whether it is considered good or bad depends on your investment goals and risk tolerance. If you are comfortable with the potential for higher returns and understand the associated risks, it may be acceptable. However, if you prefer more stable, benchmark-like returns, you might view i...",
+      "sources": [
+        {
+          "file": "FAQ_Risk_Analytics.md",
+          "type": "faq_section",
+          "score": 0.4386220181447526
+        },
+        {
+          "file": "FAQ_Risk_Analytics.md",
+          "type": "faq_section",
+          "score": 0.39750853376241385
+        }
+      ]
+    },
+    {
+      "query_id": "risk_beta",
+      "query": "How do I interpret the beta values in risk analytics?",
+      "retrieval_score": 0.47385196679042413,
+      "retrieval_grade": "fair",
+      "topic_coverage": 0.6666666666666666,
+      "topic_matches": [
+        {
+          "topic": "market",
+          "found": true
+        },
+        {
+          "topic": "sensitivity",
+          "found": true
+        },
+        {
+          "topic": "systematic",
+          "found": false
+        }
+      ],
+      "latency_ms": 8739.910082993447,
+      "answer_preview": "Beta values in risk analytics can be interpreted as follows:\n\n- **Beta < 1.0**: Indicates that the portfolio is less volatile than the market, suggesting a defensive position.\n- **Beta = 1.0**: Means the portfolio moves in line with the market.\n- **Beta > 1.0**: Signifies that the portfolio is more volatile than the market, indicating an aggressive stance.\n\nFor example:\n- A portfolio with a beta of 0.8 is expected to drop approximately 8% if the market drops 10%.\n- Conversely, a portfolio with a...",
+      "sources": [
+        {
+          "file": "FAQ_Risk_Analytics.md",
+          "type": "faq_section",
+          "score": 0.5449915912433787
+        },
+        {
+          "file": "FAQ_Risk_Analytics.md",
+          "type": "faq_section",
+          "score": 0.49336005962173973
+        },
+        {
+          "file": "FAQ_Risk_Analytics.md",
+          "type": "faq_section",
+          "score": 0.4654428976453199
+        },
+        {
+          "file": "FAQ_Risk_Analytics.md",
+          "type": "faq_section",
+          "score": 0.4472095637369682
+        },
+        {
+          "file": "FAQ_Risk_Analytics.md",
+          "type": "faq_section",
+          "score": 0.4182557217047142
+        }
+      ]
+    },
+    {
+      "query_id": "risk_sharpe_ratio",
+      "query": "What does the Sharpe ratio tell me about my portfolio?",
+      "retrieval_score": 0.45635588247276465,
+      "retrieval_grade": "fair",
+      "topic_coverage": 0.6666666666666666,
+      "topic_matches": [
+        {
+          "topic": "risk-adjusted",
+          "found": true
+        },
+        {
+          "topic": "return",
+          "found": true
+        },
+        {
+          "topic": "comparison",
+          "found": false
+        }
+      ],
+      "latency_ms": 4914.592458997504,
+      "answer_preview": "The Sharpe ratio measures risk-adjusted return, indicating how much return you get per unit of risk taken. \n\n**How to interpret:**\n- A Sharpe ratio less than 0.5 suggests poor risk-adjusted returns.\n- A Sharpe ratio between 0.5 and 1.0 indicates acceptable risk-adjusted returns.\n- A Sharpe ratio greater than 1.0 reflects good risk-adjusted returns.\n- A Sharpe ratio above 1.5 is considered excellent, though this is rare for portfolios.\n\nWhen comparing your portfolio to a benchmark:\n- If your port...",
+      "sources": [
+        {
+          "file": "FAQ_Risk_Analytics.md",
+          "type": "faq_section",
+          "score": 0.613000383411414
+        },
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.5337060086769811
+        },
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.3978336446959602
+        },
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.37779967835808465
+        },
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.3594396972213832
+        }
+      ]
+    },
+    {
+      "query_id": "portfolio_efficient_frontier",
+      "query": "What is the efficient frontier?",
+      "retrieval_score": 0.39809726136378865,
+      "retrieval_grade": "poor",
+      "topic_coverage": 0.0,
+      "topic_matches": [
+        {
+          "topic": "optimization",
+          "found": false
+        },
+        {
+          "topic": "risk-return",
+          "found": false
+        },
+        {
+          "topic": "tradeoff",
+          "found": false
+        }
+      ],
+      "latency_ms": 3506.639500003075,
+      "answer_preview": "The efficient frontier is a curve showing the best possible portfolios - those offering the highest expected return for each level of risk. It represents optimal portfolios where you can't achieve a better return without taking on more risk. Portfolios that fall below the curve are considered suboptimal, as they offer the same level of risk for less return.",
+      "sources": [
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.46975538727848426
+        },
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.42174134172112754
+        },
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.4100083635283964
+        },
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.37235859181325254
+        },
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.3166226224776824
+        }
+      ]
+    },
+    {
+      "query_id": "portfolio_frontier_interpretation",
+      "query": "How do I interpret the efficient frontier chart?",
+      "retrieval_score": 0.42057869091777544,
+      "retrieval_grade": "fair",
+      "topic_coverage": 1.0,
+      "topic_matches": [
+        {
+          "topic": "optimal",
+          "found": true
+        },
+        {
+          "topic": "risk",
+          "found": true
+        },
+        {
+          "topic": "return",
+          "found": true
+        }
+      ],
+      "latency_ms": 4667.913333003526,
+      "answer_preview": "To interpret the efficient frontier chart, follow these guidelines:\n\n- **X-axis**: Represents risk, measured by volatility or standard deviation.\n- **Y-axis**: Represents expected return.\n- The curve itself shows optimal portfolios, indicating that you cannot achieve a higher return without taking on more risk.\n- Portfolios that fall below the curve are considered suboptimal, as they offer the same level of risk for a lower return.\n\n**Key points to note on the frontier:**\n- **Minimum variance po...",
+      "sources": [
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.48999574035606824
+        },
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.4426694328540433
+        },
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.44014463558478756
+        },
+        {
+          "file": "FAQ_Portfolio_Evaluation.md",
+          "type": "faq_section",
+          "score": 0.38073724398708486
+        },
+        {
+          "file": "FAQ_Monte_Carlo_Simulation.md",
+          "type": "faq_section",
+          "score": 0.34934640180689286
+        }
+      ]
+    }
+  ]
+}

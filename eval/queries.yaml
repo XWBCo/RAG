@@ -1,0 +1,616 @@
+# RAG Evaluation Test Suite
+# ========================
+# Test queries organized by category with expected topics for validation.
+#
+# Schema:
+#   id: unique identifier
+#   query: the question to ask
+#   domain: which collection to query (default: app_education)
+#   expected_topics: concepts that should appear in a good answer
+#   tags: categories for filtering
+#   notes: optional context for humans
+
+queries:
+  # ==========================================================================
+  # Monte Carlo Simulation
+  # ==========================================================================
+
+  - id: monte_carlo_5th_percentile
+    query: "What does the 5th percentile mean in my Monte Carlo simulation?"
+    domain: app_education
+    expected_topics:
+      - pessimistic
+      - probability
+      - worst-case
+      - planning
+    tags: [monte_carlo, interpretation, core]
+    notes: "Key interpretive question - users often confused about percentiles"
+
+  - id: monte_carlo_50th_percentile
+    query: "How should I interpret the 50th percentile result?"
+    domain: app_education
+    expected_topics:
+      - median
+      - typical
+      - expected
+    tags: [monte_carlo, interpretation, core]
+
+  - id: monte_carlo_95th_percentile
+    query: "What does the 95th percentile tell me about my portfolio?"
+    domain: app_education
+    expected_topics:
+      - optimistic
+      - best-case
+      - upside
+    tags: [monte_carlo, interpretation, core]
+
+  - id: monte_carlo_num_simulations
+    query: "Why does the simulation run 1000 times? Would more be better?"
+    domain: app_education
+    expected_topics:
+      - convergence
+      - accuracy
+      - statistical
+    tags: [monte_carlo, methodology]
+
+  - id: monte_carlo_assumptions
+    query: "What assumptions does the Monte Carlo simulation make?"
+    domain: app_education
+    expected_topics:
+      - returns
+      - distribution
+      - correlation
+    tags: [monte_carlo, methodology]
+
+  - id: monte_carlo_inflation
+    query: "How does inflation affect my Monte Carlo results?"
+    domain: app_education
+    expected_topics:
+      - purchasing power
+      - real returns
+      - adjustment
+    tags: [monte_carlo, interpretation]
+
+  - id: monte_carlo_withdrawals
+    query: "How do withdrawals impact the simulation outcomes?"
+    domain: app_education
+    expected_topics:
+      - sequence
+      - depletion
+      - sustainability
+    tags: [monte_carlo, interpretation]
+
+  - id: monte_carlo_prob_loss
+    query: "What does 'probability of 50% loss' mean?"
+    domain: app_education
+    expected_topics:
+      - risk
+      - likelihood
+      - scenario
+    tags: [monte_carlo, interpretation]
+
+  - id: monte_carlo_client_conversation
+    query: "How should I explain Monte Carlo results to my client?"
+    domain: app_education
+    expected_topics:
+      - confidence
+      - range
+      - planning
+    tags: [monte_carlo, advisory]
+
+  - id: monte_carlo_compare_scenarios
+    query: "How do I compare multiple simulation scenarios?"
+    domain: app_education
+    expected_topics:
+      - percentiles
+      - risk
+      - tradeoff
+    tags: [monte_carlo, usage]
+
+  # ==========================================================================
+  # Risk Analytics
+  # ==========================================================================
+
+  - id: risk_tracking_error
+    query: "What is tracking error and why does it matter?"
+    domain: app_education
+    expected_topics:
+      - volatility
+      - benchmark
+      - deviation
+    tags: [risk_analytics, interpretation, core]
+    notes: "Frequently asked - users need to explain to clients"
+
+  - id: risk_tracking_error_interpretation
+    query: "My tracking error is 3.5%. Is that good or bad?"
+    domain: app_education
+    expected_topics:
+      - benchmark
+      - active
+      - management
+    tags: [risk_analytics, interpretation, core]
+
+  - id: risk_beta
+    query: "How do I interpret the beta values in risk analytics?"
+    domain: app_education
+    expected_topics:
+      - market
+      - sensitivity
+      - systematic
+    tags: [risk_analytics, interpretation, core]
+
+  - id: risk_sharpe_ratio
+    query: "What does the Sharpe ratio tell me about my portfolio?"
+    domain: app_education
+    expected_topics:
+      - risk-adjusted
+      - return
+      - comparison
+    tags: [risk_analytics, interpretation, core]
+
+  - id: risk_max_drawdown
+    query: "What is maximum drawdown and how should I use it?"
+    domain: app_education
+    expected_topics:
+      - loss
+      - peak
+      - recovery
+    tags: [risk_analytics, interpretation]
+
+  - id: risk_factor_explained
+    query: "What does 'factor explained' percentage mean?"
+    domain: app_education
+    expected_topics:
+      - systematic
+      - exposure
+      - attribution
+    tags: [risk_analytics, interpretation]
+
+  - id: risk_idiosyncratic
+    query: "What is idiosyncratic risk and why does it matter?"
+    domain: app_education
+    expected_topics:
+      - specific
+      - diversifiable
+      - security
+    tags: [risk_analytics, interpretation]
+
+  - id: risk_correlation
+    query: "How do I interpret the correlation matrix?"
+    domain: app_education
+    expected_topics:
+      - relationship
+      - diversification
+      - co-movement
+    tags: [risk_analytics, interpretation]
+
+  - id: risk_effective_n
+    query: "What is Effective N and what does it tell me about diversification?"
+    domain: app_education
+    expected_topics:
+      - diversification
+      - concentration
+      - holdings
+    tags: [risk_analytics, interpretation]
+
+  - id: risk_contributors
+    query: "How do I interpret the top risk contributors?"
+    domain: app_education
+    expected_topics:
+      - allocation
+      - volatility
+      - concentration
+    tags: [risk_analytics, interpretation]
+
+  - id: risk_high_beta
+    query: "My growth beta is 1.3. What does that mean for my portfolio?"
+    domain: app_education
+    expected_topics:
+      - sensitivity
+      - factor
+      - exposure
+    tags: [risk_analytics, interpretation]
+
+  - id: risk_reduce_tracking_error
+    query: "How can I reduce tracking error without changing asset allocation significantly?"
+    domain: app_education
+    expected_topics:
+      - rebalancing
+      - benchmark
+      - constraints
+    tags: [risk_analytics, advisory]
+
+  # ==========================================================================
+  # Portfolio Evaluation / Optimization
+  # ==========================================================================
+
+  - id: portfolio_efficient_frontier
+    query: "What is the efficient frontier?"
+    domain: app_education
+    expected_topics:
+      - optimization
+      - risk-return
+      - tradeoff
+    tags: [portfolio_eval, interpretation, core]
+
+  - id: portfolio_frontier_interpretation
+    query: "How do I interpret the efficient frontier chart?"
+    domain: app_education
+    expected_topics:
+      - optimal
+      - risk
+      - return
+    tags: [portfolio_eval, interpretation, core]
+
+  - id: portfolio_optimal_point
+    query: "What is the optimal point on the efficient frontier?"
+    domain: app_education
+    expected_topics:
+      - Sharpe
+      - tangent
+      - risk-adjusted
+    tags: [portfolio_eval, interpretation]
+
+  - id: portfolio_constraints
+    query: "How do constraints affect portfolio optimization?"
+    domain: app_education
+    expected_topics:
+      - allocation
+      - limits
+      - feasible
+    tags: [portfolio_eval, methodology]
+
+  - id: portfolio_caps_templates
+    query: "What are the different caps templates and when should I use each?"
+    domain: app_education
+    expected_topics:
+      - constraints
+      - allocation
+      - limits
+    tags: [portfolio_eval, usage]
+
+  - id: portfolio_below_frontier
+    query: "Why is my current portfolio below the efficient frontier?"
+    domain: app_education
+    expected_topics:
+      - suboptimal
+      - improvement
+      - reallocation
+    tags: [portfolio_eval, interpretation]
+
+  - id: portfolio_private_vs_core
+    query: "What's the difference between the core and private frontiers?"
+    domain: app_education
+    expected_topics:
+      - asset class
+      - liquidity
+      - allocation
+    tags: [portfolio_eval, interpretation]
+
+  - id: portfolio_rebalancing
+    query: "When should I recommend rebalancing based on the optimization results?"
+    domain: app_education
+    expected_topics:
+      - drift
+      - threshold
+      - target
+    tags: [portfolio_eval, advisory]
+
+  # ==========================================================================
+  # Cross-cutting / General
+  # ==========================================================================
+
+  - id: general_cma
+    query: "What are Capital Market Assumptions and how are they used?"
+    domain: app_education
+    expected_topics:
+      - expected returns
+      - forecast
+      - assumptions
+    tags: [general, methodology]
+
+  - id: general_data_frequency
+    query: "How often is the data updated?"
+    domain: app_education
+    expected_topics:
+      - frequency
+      - update
+      - refresh
+    tags: [general, data]
+
+  - id: general_export
+    query: "How do I export results from the dashboard?"
+    domain: app_education
+    expected_topics:
+      - download
+      - export
+      - CSV
+    tags: [general, usage]
+
+  # ==========================================================================
+  # Edge Cases / Adversarial
+  # ==========================================================================
+
+  - id: edge_vague_question
+    query: "Tell me about risk"
+    domain: app_education
+    expected_topics:
+      - volatility
+      - portfolio
+    tags: [edge_case]
+    notes: "Vague query - should still return something useful"
+
+  - id: edge_out_of_domain
+    query: "What's the weather like today?"
+    domain: app_education
+    expected_topics: []
+    tags: [edge_case]
+    notes: "Out of domain - should handle gracefully"
+
+  - id: edge_complex_question
+    query: "If my 5th percentile Monte Carlo result is below my minimum acceptable wealth and my tracking error is high, what should I do?"
+    domain: app_education
+    expected_topics:
+      - risk
+      - allocation
+      - adjustment
+    tags: [edge_case, complex]
+    notes: "Multi-part complex question"
+
+  - id: edge_typo_query
+    query: "What is trakcing eror?"
+    domain: app_education
+    expected_topics:
+      - volatility
+      - benchmark
+    tags: [edge_case]
+    notes: "Query with typos - tests fuzzy matching"
+
+  - id: edge_abbreviation
+    query: "What does TE mean in risk analytics?"
+    domain: app_education
+    expected_topics:
+      - tracking error
+      - volatility
+    tags: [edge_case]
+    notes: "Abbreviation query"
+
+  # ==========================================================================
+  # Investments Domain (for v2 LangGraph comparison)
+  # ==========================================================================
+
+  - id: inv_ibi_allocation
+    query: "What is the allocation for Integrated Best Ideas model?"
+    domain: investments
+    expected_topics:
+      - allocation
+      - risk level
+      - asset class
+    tags: [investments, archetype, v2_test]
+
+  - id: inv_impact_allocation
+    query: "Show me the Impact 100% model allocation for balanced risk"
+    domain: investments
+    expected_topics:
+      - Impact 100%
+      - balanced
+      - allocation
+    tags: [investments, archetype, v2_test]
+
+  - id: inv_climate_model
+    query: "What funds are in the Climate Sustainability model?"
+    domain: investments
+    expected_topics:
+      - climate
+      - funds
+      - sustainability
+    tags: [investments, archetype, v2_test]
+
+  - id: inv_us_vs_international
+    query: "How does the US allocation differ from International in IBI?"
+    domain: investments
+    expected_topics:
+      - US
+      - International
+      - difference
+    tags: [investments, archetype, v2_test]
+
+  - id: inv_risk_levels
+    query: "What risk levels are available for the model portfolios?"
+    domain: investments
+    expected_topics:
+      - conservative
+      - balanced
+      - growth
+    tags: [investments, archetype, v2_test]
+
+  - id: inv_fund_search
+    query: "Which funds have the highest ESG ratings in the model?"
+    domain: investments
+    expected_topics:
+      - ESG
+      - rating
+      - fund
+    tags: [investments, archetype, v2_test]
+
+  # ==========================================================================
+  # Clarity AI / ESG Metrics
+  # ==========================================================================
+
+  - id: clarity_temp_rating_scope12
+    query: "What is Temperature Rating Scope 1+2 and how do I interpret it?"
+    domain: app_education
+    expected_topics:
+      - Paris Agreement
+      - 1.5°C
+      - emissions
+      - climate
+    tags: [clarity_ai, climate, core]
+    notes: "Core climate metric - users need to explain temperature alignment"
+
+  - id: clarity_temp_rating_scope3
+    query: "What does a company's Scope 3 temperature rating tell me?"
+    domain: app_education
+    expected_topics:
+      - value chain
+      - supply chain
+      - emissions
+    tags: [clarity_ai, climate, core]
+
+  - id: clarity_net_zero_score
+    query: "How do I interpret the Net Zero Target score?"
+    domain: app_education
+    expected_topics:
+      - target
+      - SBTi
+      - implementation
+      - score
+    tags: [clarity_ai, climate, interpretation]
+
+  - id: clarity_financed_intensity_calc
+    query: "How do I calculate financed emissions intensity?"
+    domain: app_education
+    expected_topics:
+      - ownership
+      - investment
+      - tCO2e
+      - calculation
+    tags: [clarity_ai, climate, calculation]
+    notes: "Includes example calculation in FAQ"
+
+  - id: clarity_carbon_vs_financed
+    query: "What's the difference between carbon intensity and financed intensity?"
+    domain: app_education
+    expected_topics:
+      - revenue
+      - investment
+      - ownership
+    tags: [clarity_ai, climate, interpretation]
+
+  - id: clarity_scope_123
+    query: "What are Scope 1, 2, and 3 emissions?"
+    domain: app_education
+    expected_topics:
+      - direct
+      - indirect
+      - value chain
+      - energy
+    tags: [clarity_ai, climate, core]
+
+  - id: clarity_environmental_score
+    query: "What does the Environmental Score measure?"
+    domain: app_education
+    expected_topics:
+      - climate
+      - natural capital
+      - pollution
+      - score
+    tags: [clarity_ai, environment, core]
+
+  - id: clarity_water_recycled
+    query: "How do I interpret the water recycled ratio?"
+    domain: app_education
+    expected_topics:
+      - water
+      - recycled
+      - efficiency
+      - scarcity
+    tags: [clarity_ai, environment]
+
+  - id: clarity_social_score
+    query: "What is the Social Score and what does it measure?"
+    domain: app_education
+    expected_topics:
+      - employees
+      - human rights
+      - labor
+      - stakeholder
+    tags: [clarity_ai, social, core]
+
+  - id: clarity_gender_pay_gap
+    query: "How do I interpret the gender pay gap metric?"
+    domain: app_education
+    expected_topics:
+      - pay equity
+      - women
+      - remuneration
+    tags: [clarity_ai, social]
+
+  - id: clarity_board_diversity
+    query: "What percentage of female board members is considered good?"
+    domain: app_education
+    expected_topics:
+      - 30%
+      - diversity
+      - governance
+      - board
+    tags: [clarity_ai, social]
+
+  - id: clarity_governance_score
+    query: "What is the Governance Score and why does it matter?"
+    domain: app_education
+    expected_topics:
+      - board
+      - ethics
+      - transparency
+      - shareholder
+    tags: [clarity_ai, governance, core]
+
+  - id: clarity_board_independence
+    query: "What's the difference between non-executive and independent board members?"
+    domain: app_education
+    expected_topics:
+      - executive
+      - independent
+      - relationship
+      - oversight
+    tags: [clarity_ai, governance]
+
+  - id: clarity_anti_bribery
+    query: "What does the Anti-Bribery Score tell me?"
+    domain: app_education
+    expected_topics:
+      - bribery
+      - ethics
+      - incidents
+      - compliance
+    tags: [clarity_ai, governance]
+
+  - id: clarity_frameworks
+    query: "What ESG frameworks do Clarity AI metrics align with?"
+    domain: app_education
+    expected_topics:
+      - PCAF
+      - SFDR
+      - SBTi
+      - ISSB
+    tags: [clarity_ai, methodology]
+
+  - id: clarity_data_limitations
+    query: "What are the data limitations of ESG metrics?"
+    domain: app_education
+    expected_topics:
+      - self-reported
+      - disclosure
+      - limitations
+    tags: [clarity_ai, methodology]
+
+  - id: clarity_temp_interpretation
+    query: "My portfolio has a temperature rating of 2.5°C. Is that good or bad?"
+    domain: app_education
+    expected_topics:
+      - Paris Agreement
+      - alignment
+      - laggard
+    tags: [clarity_ai, climate, interpretation]
+    notes: "Practical interpretation question"
+
+  - id: clarity_esg_combined
+    query: "How should I use E, S, and G scores together to assess a company?"
+    domain: app_education
+    expected_topics:
+      - environmental
+      - social
+      - governance
+      - holistic
+    tags: [clarity_ai, methodology, complex]

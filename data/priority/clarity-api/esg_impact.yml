@@ -1,0 +1,841 @@
+components:
+  schemas:
+    EsgImpactAsyncRequest:
+      type: "object"
+      properties:
+        scoreIds:
+          type: "array"
+          description: "Requested Score IDs"
+          example:
+            - "ENVIRONMENTAL"
+            - "SOCIAL"
+            - "GOVERNANCE"
+            - "ESG"
+          items:
+            type: "string"
+        securityTypes:
+          type: "array"
+          description: "The security types requested"
+          example:
+            - "FUND"
+          items:
+            type: "string"
+          enum:
+            - "EQUITY"
+            - "FIXED_INCOME"
+            - "FUND"
+        securityIdsType:
+          type: "string"
+          description: "Defines whether the security IDs passed in the 'securityIds' parameter are of type ISIN or CUSIP."
+          example: "ISIN"
+          default: "ISIN"
+          enum:
+            - "ISIN"
+            - "CUSIP"
+        securityIds:
+          type: "array"
+          description: "List of security ids to retrieve"
+          example:
+            - "USXXXXXXXXXX"
+            - "ESXXXXXXXXXX"
+            - "JPXXXXXXXXXX"
+            - "GBXXXXXXXXXX"
+          items:
+            type: "string"
+        idColumns:
+          type: "array"
+          description: "Allows you to specify a list of security ID types that will be included in the response. Only the securities that have an identifier type matching 'idColumns' will be returned. If you want to retrieve all the securities, you can set 'idColumns' to \"ALL\" and no securities will be filtered out. Take into account that when using the \"ALL\" parameter whenever a new security identifier type is available in the Clarity AI platform it will be included in the response."
+          example:
+            - "ISIN"
+            - "CUSIP"
+          items:
+            type: "string"
+          default: "ISIN"
+          enum:
+            - "ISIN"
+            - "CUSIP"
+            - "ALL"
+    CreateJobResource:
+      type: "object"
+      properties:
+        uuid:
+          type: "string"
+    APIError:
+      type: "object"
+      properties:
+        code:
+          type: "integer"
+          format: "int32"
+        message:
+          type: "string"
+    EsgImpactOrganizationsAsyncRequest:
+      type: "object"
+      properties:
+        scoreIds:
+          type: "array"
+          description: "Requested Score IDs"
+          example:
+            - "ENVIRONMENTAL"
+            - "SOCIAL"
+            - "GOVERNANCE"
+            - "ESG"
+          items:
+            type: "string"
+        permIds:
+          type: "array"
+          description: "List of permIds to retrieve"
+          example:
+            - "5000008406"
+            - "5000038958"
+            - "4295882319"
+          items:
+            type: "string"
+    EsgImpactFundsAsyncRequest:
+      type: "object"
+      properties:
+        scoreIds:
+          type: "array"
+          description: "Requested Score IDs"
+          example:
+            - "ENVIRONMENTAL"
+            - "SOCIAL"
+            - "GOVERNANCE"
+            - "ESG"
+          items:
+            type: "string"
+        optionalColumns:
+          type: "array"
+          description: "Optional columns to return in CSV:\n* `FUND_GROUP_ID`: Internal ID representing the group fund ID of a group of fund share classes\n"
+          example:
+            - "FUND_GROUP_ID"
+          items:
+            type: "string"
+          enum:
+            - "FUND_GROUP_ID"
+        onlyOneSecurityPerFundGroupId:
+          type: "boolean"
+          description: "Include only one Fund Share Class for each fund group in the response"
+          example: false
+        idColumns:
+          type: "array"
+          description: "Allows you to specify a list of fund ID types that will be included in the response. Only the funds that have an identifier type matching 'idColumns' will be returned. If you want to retrieve all funds, you can set 'idColumns' to \"ALL\" and no funds will be filtered out. Take into account that when using the \"ALL\" parameter whenever a new fund identifier type is available in the Clarity AI platform it will be included in the response."
+          example:
+            - "CUSIP"
+          items:
+            type: "string"
+          default: "ISIN"
+          enum:
+            - "ISIN"
+            - "CUSIP"
+            - "ALL"
+    ImpactByCategoryResponse:
+      type: "object"
+      properties:
+        portfolioName:
+          type: "string"
+          example: "Portfolio Clarity"
+        totalOrganizations:
+          minimum: 0
+          type: "integer"
+          format: "int32"
+          example: 10
+        coverageOrganizations:
+          minimum: 0
+          type: "integer"
+          format: "int32"
+          example: 8
+        coverageWeight:
+          maximum: 100
+          minimum: 0
+          type: "number"
+          format: "double"
+          example: 73
+        totalCompanies:
+          minimum: 0
+          type: "integer"
+          format: "int32"
+          example: 9
+        esgImpactCoverage:
+          maximum: 100
+          minimum: 0
+          type: "number"
+          format: "double"
+          example: 87.987
+        scores:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/EsgImpact"
+    EsgImpact:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          example: "CLIMATE_CHANGE"
+        pillar:
+          type: "string"
+          example: "ENVIRONMENTAL"
+        treeLevel:
+          type: "string"
+          example: "PILLAR"
+          enum:
+            - "TOTAL"
+            - "PILLAR"
+            - "METRIC"
+        score:
+          maximum: 100
+          minimum: 0
+          type: "integer"
+          format: "int32"
+          example: 87
+        metadata:
+          type: "string"
+          example: "NONE"
+          enum:
+            - "NONE"
+            - "ASSIGNED"
+            - "LIMITED_INFO"
+            - "NOT_AVAILABLE"
+            - "NOT_IMPORTANT"
+            - "NOT_APPLICABLE"
+            - "OUT_OF_UNIVERSE"
+        relevance:
+          maximum: 100
+          minimum: 0
+          type: "integer"
+          format: "int32"
+          example: 82
+    ImpactScoresByIdResponse:
+      type: "object"
+      properties:
+        scores:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/EsgImpact"
+    VersionsResource:
+      type: "object"
+      properties:
+        current:
+          $ref: "#/components/schemas/VersionResource"
+        versions:
+          type: "array"
+          description: "Latest two versions"
+          items:
+            $ref: "#/components/schemas/VersionResource"
+    VersionResource:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          description: "Version id"
+          example: "5201d475-277c-4808-8607-a99e588696b0"
+        date:
+          type: "string"
+          description: "Version activation date"
+          format: "date-time"
+          example: "2022-01-27T15:04:42.726Z"
+      description: "Latest two versions"
+    FundEsgImpactByIsinResponse:
+      type: "object"
+      properties:
+        isin:
+          type: "string"
+          example: "ES0105093001"
+        name:
+          type: "string"
+          example: "Gigas Hosting SA ORD"
+        allocationDate:
+          type: "string"
+          format: "date"
+          example: "2020-05-20"
+        coverageWeight:
+          maximum: 100
+          minimum: 0
+          type: "number"
+          format: "double"
+          example: 87
+        esgImpactCoverage:
+          maximum: 100
+          minimum: 0
+          type: "number"
+          format: "float"
+          example: 93.45
+        peersGroup:
+          $ref: "#/components/schemas/PeersGroup"
+        scores:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/EsgImpactWithPercentiles"
+    PeersGroup:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          example: "5689"
+        count:
+          minimum: 0
+          type: "integer"
+          format: "int32"
+          example: 15
+    EsgImpactWithPercentiles:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          example: "CLIMATE_CHANGE"
+        treeLevel:
+          type: "string"
+          example: "PILLAR"
+          enum:
+            - "TOTAL"
+            - "PILLAR"
+            - "METRIC"
+        score:
+          maximum: 100
+          minimum: 0
+          type: "integer"
+          format: "int32"
+          example: 87
+        metadata:
+          type: "string"
+          example: "NONE"
+          enum:
+            - "NONE"
+            - "ASSIGNED"
+            - "LIMITED_INFO"
+            - "NOT_AVAILABLE"
+            - "NOT_IMPORTANT"
+            - "NOT_APPLICABLE"
+            - "OUT_OF_UNIVERSE"
+        relevance:
+          maximum: 100
+          minimum: 0
+          type: "integer"
+          format: "int32"
+          example: 82
+        peersPercentile:
+          maximum: 100
+          minimum: 0
+          type: "integer"
+          format: "int32"
+          example: 57
+    FundMetricScoreResponse:
+      type: "object"
+      properties:
+        scores:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/FundMetricScore"
+    FundMetricScore:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+        treeLevel:
+          type: "string"
+        pillar:
+          type: "string"
+        score:
+          type: "integer"
+          format: "int32"
+        metadata:
+          type: "string"
+          enum:
+            - "NONE"
+            - "ASSIGNED"
+            - "LIMITED_INFO"
+            - "NOT_AVAILABLE"
+            - "NOT_IMPORTANT"
+            - "NOT_APPLICABLE"
+            - "OUT_OF_UNIVERSE"
+        relevance:
+          type: "integer"
+          format: "int32"
+  securitySchemes:
+    JWT:
+      type: "http"
+      scheme: "bearer"
+      bearerFormat: "JWT"
+info:
+  title: "Clarity AI API - ESG Impact (Deprecated)"
+  description: "API to access Clarity AI data services."
+  termsOfService: "https://static.clarity.ai/Clarity_AI_TermsAndConditions.pdf"
+  contact:
+    name: "Clarity AI"
+    url: "https://www.clarity.ai"
+    email: "support@clarity.ai"
+  version: "1.0.0"
+openapi: "3.0.1"
+paths:
+  /public/securities/esg-impact/scores-by-id/async:
+    post:
+      tags:
+        - "Universe download - Asynchronous jobs"
+      summary: "Async Job -  Request ESG Impact Scores"
+      description: "This endpoint will make a request for an async Job to retrieve the entire universe of <a href=\"https://clarity.ai\">Clarity.AI</a> ESG Impact scores for given security types and score Ids.<br>You can request the securities using securityTypes or provide a list of security ids (usually isins) with securityIds, <b>but NOT both</b>.<b>Please note</b>: This call will only returns the identifier (uuid) for this task. You'll need this value later on further calls to know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>) or download your file when ready (see &laquo;Async Job - Download result file&raquo;)<br>Check <a href=\"/docs/universe-api-async-jobs\">this document</a> for a complete explanation of the flow for these Async jobs endpoints"
+      operationId: "asyncImpactGetScores"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EsgImpactAsyncRequest"
+        required: true
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n5001 - List cannot be empty. At least one score id is required\n\n2201 - Invalid parameters for this request\n\n5003 - List cannot be empty. At least one security type is required\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it\n\n2202 - The value 'ALL' can not be used in conjunction with other identifier types\n\n2203 - 'idColumns' must match 'securityIdTypes' when requesting by specific IDs\n\n"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        413:
+          description: "Invalid request:\n\n2101 - The limit of 25.000 ids in the same request has been exceeded"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      deprecated: true
+      security:
+        - JWT: []
+  /public/organizations/esg-impact/scores-by-id/async:
+    post:
+      tags:
+        - "Universe download - Asynchronous jobs"
+      summary: "Async Job - Request Organizations scores from permIds"
+      description: "This endpoint will make a request for an async job to retrieve the entire universe of <a href=\"https://clarity.ai\">Clarity.AI</a> securities through their ISINs with their respective issuer, identified using the PermId (see: <a href=\"https://permid.org/\">permid.org</a> )<br>If no permIds are set, the entire mapping table will be returned.<b>Please note</b>: This call will only returns the identifier (uuid) for this task. You'll need this value later on further calls to know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>) or download your file when ready (see &laquo;Async Job - Download result file&raquo;)<br>Check <a href=\"/docs/universe-api-async-jobs\">this document</a> for a complete explanation of the flow for these Async jobs endpoints"
+      operationId: "asyncImpactOrganizationsGetScores"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EsgImpactOrganizationsAsyncRequest"
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n5001 - List cannot be empty. At least one score id is required\n\n2201 - Invalid parameters for this request\n\n5003 - List cannot be empty. At least one security type is required\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        413:
+          description: "Invalid request:\n\n2101 - The limit of 25.000 ids in the same request has been exceeded"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      deprecated: true
+      security:
+        - JWT: []
+  /public/funds/esg-impact/scores-by-id/async:
+    post:
+      tags:
+        - "Universe download - Asynchronous jobs"
+      summary: "Async Job -  Request ESG Impact Scores for funds"
+      description: "This endpoint will make a request for an async Job to retrieve the entire universe of <a href=\"https://clarity.ai\">Clarity.AI</a> ESG Impact funds scores for given score Ids.<br><b>Please note</b>: This call only returns the identifier (uuid) for this task. You'll need this value later on further calls to know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>) or download your file when ready (see &laquo;Async Job - Download result file&raquo;)<br>Check <a href=\"/docs/universe-api-async-jobs\">this document</a> for a complete explanation of the flow for these Async jobs endpoints"
+      operationId: "asyncImpactFundsGetScores"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EsgImpactFundsAsyncRequest"
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n5001 - List cannot be empty. At least one score id is required\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it\n\n2202 - The value 'ALL' can not be used in conjunction with other identifier types"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      deprecated: true
+      security:
+        - JWT: []
+  /public/portfolios/{portfolioId}/esg-impact/top-organizations:
+    get:
+      tags:
+        - "Portfolio ESG Impact"
+      summary: "Get Portfolio Top 10 organizations ESG Impact scores by weight"
+      description: "Given a portfolio id returns the top 10 organizations by portfolio weight and the Total ESG Impact score, pillars score, its relevance and peers percentile respectively along with SDG Coverage (number of companies and % of the portfolio with ESG Impact data)"
+      operationId: "getTopOrganizationsByWeight"
+      parameters:
+        - name: "portfolioId"
+          in: "path"
+          description: "Portfolio ID"
+          required: true
+          schema:
+            type: "string"
+        - name: "version"
+          in: "query"
+          description: "Dataset version"
+          required: false
+          schema:
+            type: "string"
+          example: "2e6b4b6a-835d-11ec-a8a3-0242ac120002"
+      responses:
+        200:
+          description: "The esg impact scores for each organization"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImpactByCategoryResponse"
+        400:
+          description: "Invalid request:\n\n2004 - Portfolio id requested not valid or empty"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n2007 - The portfolio id does not exist or does not belong to the user\n\n1022 - The version does not exist or is obsolete"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      deprecated: true
+      security:
+        - JWT: []
+  /public/portfolios/{portfolioId}/esg-impact/summary:
+    get:
+      tags:
+        - "Portfolio ESG Impact"
+      summary: "Get ESG Impact Total and Pillars Portfolio Scores"
+      description: "Given a portfolio id, returns the Total ESG Impact score, Environmental score, Social score, Governance score and its relevance respectively for a specific Portfolio (portfolioId) along ESG Coverage (number of companies and % of the portfolio with ESG data)."
+      operationId: "getByCategory"
+      parameters:
+        - name: "portfolioId"
+          in: "path"
+          description: "Portfolio ID"
+          required: true
+          schema:
+            type: "string"
+        - name: "version"
+          in: "query"
+          description: "Dataset version"
+          required: false
+          schema:
+            type: "string"
+          example: "2e6b4b6a-835d-11ec-a8a3-0242ac120002"
+      responses:
+        200:
+          description: "The esg impact scores"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImpactByCategoryResponse"
+        400:
+          description: "Invalid request:\n\n2004 - Portfolio id requested not valid or empty"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n2007 - The portfolio id does not exist or does not belong to the user\n\n1022 - The version does not exist or is obsolete"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      deprecated: true
+      security:
+        - JWT: []
+  /public/portfolios/{portfolioId}/esg-impact/scores-by-id:
+    get:
+      tags:
+        - "Portfolio ESG Impact"
+      summary: "get Portfolio ESG Impact scores by score ids"
+      description: "Given a portfolio id, returns the requested scores for a specific Portfolio (portfolioId) along ESG Coverage (number of companies and % of the portfolio with ESG data)."
+      operationId: "getESGImpactByScoreIds"
+      parameters:
+        - name: "portfolioId"
+          in: "path"
+          description: "Portfolio ID"
+          required: true
+          schema:
+            type: "string"
+        - name: "scoreId"
+          in: "query"
+          description: "The scores identifiers"
+          required: true
+          schema:
+            type: "array"
+            items:
+              type: "string"
+          example: "[ENVIRONMENTAL, SOCIAL]"
+        - name: "version"
+          in: "query"
+          description: "Dataset version"
+          required: false
+          schema:
+            type: "string"
+          example: "2e6b4b6a-835d-11ec-a8a3-0242ac120002"
+      responses:
+        200:
+          description: "The ESG Impact requested scores "
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImpactScoresByIdResponse"
+        400:
+          description: "Invalid request:\n\n2004 - Portfolio id requested not valid or empty\n\n5001 - List cannot be empty. At least one score id is required"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n2007 - The portfolio id does not exist or does not belong to the user\n\n1022 - The version does not exist or is obsolete"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      deprecated: true
+      security:
+        - JWT: []
+  /public/organizations/esg-impact/version:
+    get:
+      tags:
+        - "Versions"
+      operationId: "organizationsVersion"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VersionsResource"
+        404:
+          description: "Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      deprecated: true
+      security:
+        - JWT: []
+  /public/funds/{fundId}/esg-impact/summary:
+    get:
+      tags:
+        - "Fund ESG Impact"
+      summary: "Get ESG Impact Total and Pillars Fund Scores"
+      description: "Given a Fund ISIN, returns the Total ESG Impact score, Environmental score, Social score, Governance score and its relevance respectively for a specific Fund (isin) along ESG Coverage (number of companies and % of the fund with ESG data)."
+      operationId: "getEsgImpactSummary"
+      parameters:
+        - name: "fundId"
+          in: "path"
+          description: "ISIN"
+          required: true
+          schema:
+            type: "string"
+          example: "ES0105093001"
+        - name: "scoringProfileId"
+          in: "query"
+          description: "Scoring Profile ID"
+          required: false
+          schema:
+            type: "string"
+        - name: "version"
+          in: "query"
+          description: "Dataset version"
+          required: false
+          schema:
+            type: "string"
+          example: "2e6b4b6a-835d-11ec-a8a3-0242ac120002"
+      responses:
+        200:
+          description: "The fund esg impact scores"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FundEsgImpactByIsinResponse"
+        400:
+          description: "Invalid request:\n\n3000 - Fund ID requested not valid or empty"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n3001 - Fund ID not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      deprecated: true
+      security:
+        - JWT: []
+  /public/funds/{fundId}/esg-impact/scores-by-id:
+    get:
+      tags:
+        - "Fund ESG Impact"
+      summary: "Get Fund ESG Impact scores"
+      description: "Given a Fund ISIN and score ids, returns funds coverage and specified scores in the fund"
+      operationId: "getImpactMetricScoreUsingGET"
+      parameters:
+        - name: "fundId"
+          in: "path"
+          description: "ISIN"
+          required: true
+          schema:
+            type: "string"
+          example: "ES0105093001"
+        - name: "scoringProfileId"
+          in: "query"
+          description: "Scoring Profile ID"
+          required: false
+          schema:
+            type: "string"
+        - name: "scoreId"
+          in: "query"
+          description: "Desired score ids"
+          required: true
+          schema:
+            type: "array"
+            items:
+              type: "string"
+          example: "TOTAL"
+        - name: "version"
+          in: "query"
+          description: "Dataset version"
+          required: false
+          schema:
+            type: "string"
+          example: "2e6b4b6a-835d-11ec-a8a3-0242ac120002"
+      responses:
+        200:
+          description: "The fund esg impact scores"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FundMetricScoreResponse"
+        400:
+          description: "Invalid request:\n\n3000 - Fund ID requested not valid or empty\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it\n\n5001 - List cannot be empty. At least one score id is required"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n3001 - Fund ID not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      deprecated: true
+      security:
+        - JWT: []
+servers:
+  - url: "https://api.clarity.ai/clarity/v1"
+  - url: "https://api.dev.clarity.ai/clarity/v1"
+tags:
+  - name: "Portfolio ESG Impact"
+    description: "Portfolio ESG Impact API"
+  - name: "Fund ESG Impact"
+    description: "Fund ESG Impact API"
+  - name: "Universe download - Asynchronous jobs"
+    description: "Universe download - ESG Impact Asynchronous jobs API"
+security:
+  - JWT: []

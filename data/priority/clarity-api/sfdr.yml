@@ -1,0 +1,878 @@
+components:
+  schemas:
+    AsyncRawDataRequest:
+      type: "object"
+      properties:
+        metricIds:
+          title: "Requested Metric IDs"
+          type: "array"
+          description: "Requested Metric IDs"
+          example: "CARBON_EMISSIONS"
+          items:
+            title: "Requested Metric IDs"
+            type: "string"
+            description: "Requested Metric IDs"
+            example: "CARBON_EMISSIONS"
+        idColumns:
+          title: "Field is a list of security identifier types that will filter the securities to include in the response"
+          type: "array"
+          description: "Allows you to specify a list of security ID types that will be included in the response. Only the securities that have an identifier type matching 'idColumns' will be returned. If you want to retrieve all the securities, you can set 'idColumns' to \"ALL\" and no securities will be filtered out. Take into account that when using the \"ALL\" parameter whenever a new security identifier type is available in the Clarity AI platform it will be included in the response."
+          items:
+            type: "string"
+            enum:
+              - "ISIN"
+              - "CUSIP"
+              - "ALL"
+    CreateJobResource:
+      type: "object"
+      properties:
+        uuid:
+          type: "string"
+    APIError:
+      type: "object"
+      properties:
+        code:
+          type: "integer"
+          format: "int32"
+        message:
+          type: "string"
+    AsyncRequest:
+      type: "object"
+      properties:
+        metricIds:
+          type: "array"
+          description: "Requested Metric IDs"
+          example: "CARBON_EMISSIONS"
+          items:
+            type: "string"
+            description: "Requested Metric IDs"
+            example: "CARBON_EMISSIONS"
+        securityTypes:
+          type: "array"
+          description: "The security types requested"
+          example: "FUND"
+          items:
+            type: "string"
+          enum:
+            - "EQUITY"
+            - "FIXED_INCOME"
+            - "FUND"
+        securityIds:
+          type: "array"
+          description: "List of security ids to retrieve"
+          items:
+            type: "string"
+        idColumns:
+          type: "array"
+          description: "Allows you to specify a list of security ID types that will be included in the response. Only the securities that have an identifier type matching 'idColumns' will be returned. If you want to retrieve all the securities, you can set 'idColumns' to \"ALL\" and no securities will be filtered out. Take into account that when using the \"ALL\" parameter whenever a new security identifier type is available in the Clarity AI platform it will be included in the response."
+          example:
+            - "ISIN"
+            - "CUSIP"
+          items:
+            type: "string"
+            enum:
+              - "ISIN"
+              - "CUSIP"
+              - "ALL"
+          default: "ISIN"
+          enum:
+            - "ISIN"
+            - "CUSIP"
+            - "ALL"
+        securityIdsType:
+          type: "string"
+          description: "Defines whether the security IDs passed in the 'securityIds' parameter are of type ISIN or CUSIP."
+          enum:
+            - "ISIN"
+            - "CUSIP"
+        optionalColumns:
+          type: "array"
+          items:
+            type: "string"
+    PortfolioQuarterRequest:
+      required:
+        - "metricIds"
+        - "portfolioIdQ1"
+        - "portfolioIdQ2"
+        - "portfolioIdQ3"
+        - "portfolioIdQ4"
+        - "year"
+      type: "object"
+      properties:
+        year:
+          title: "Requested year, must be 2022"
+          type: "integer"
+          format: "int32"
+          example: 2022
+        portfolioIdQ1:
+          title: "Requested portfolio Id for Q1"
+          type: "string"
+        portfolioIdQ2:
+          title: "Requested portfolio Id for Q2"
+          type: "string"
+        portfolioIdQ3:
+          title: "Requested portfolio Id for Q3"
+          type: "string"
+        portfolioIdQ4:
+          title: "Requested portfolio Id for Q4"
+          type: "string"
+        metricIds:
+          title: "Requested Metric IDs"
+          uniqueItems: true
+          type: "array"
+          example: "CARBON_EMISSIONS"
+          items:
+            title: "Requested Metric IDs"
+            type: "string"
+            example: "CARBON_EMISSIONS"
+    PortfolioAndQuarterAggregatedMetricsResponse:
+      type: "object"
+      properties:
+        Q1:
+          $ref: "#/components/schemas/PortfolioAggregatedMetricsResponse"
+        Q2:
+          $ref: "#/components/schemas/PortfolioAggregatedMetricsResponse"
+        Q3:
+          $ref: "#/components/schemas/PortfolioAggregatedMetricsResponse"
+        Q4:
+          $ref: "#/components/schemas/PortfolioAggregatedMetricsResponse"
+        average:
+          $ref: "#/components/schemas/QuarterAggregatedMetricsResponse"
+    PortfolioAggregatedMetricsResponse:
+      type: "object"
+      properties:
+        portfolioId:
+          type: "string"
+        portfolioName:
+          type: "string"
+        totalOrganizations:
+          type: "integer"
+          format: "int32"
+        metrics:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/PortfolioAggregatedMetricWithValuesResponse"
+    PortfolioAggregatedMetricWithValuesResponse:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+        unit:
+          type: "string"
+        metadata:
+          type: "string"
+        value:
+          type: "number"
+          format: "float"
+        coverage:
+          type: "number"
+          format: "float"
+        eligibility:
+          type: "number"
+          format: "float"
+        eligibilityCoverage:
+          type: "number"
+          format: "float"
+    QuarterAggregatedMetricsResponse:
+      type: "object"
+      properties:
+        metrics:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/QuarterAggregatedMetricWithValuesResponse"
+    QuarterAggregatedMetricWithValuesResponse:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+        unit:
+          type: "string"
+        metadata:
+          type: "string"
+        value:
+          type: "number"
+          format: "float"
+    AsyncOrganizationsRawDataRequest:
+      type: "object"
+      properties:
+        metricIds:
+          title: "Requested Metric IDs"
+          type: "array"
+          example: "CARBON_EMISSIONS"
+          items:
+            title: "Requested Metric IDs"
+            type: "string"
+            example: "CARBON_EMISSIONS"
+    AsyncOrganizationRequest:
+      type: "object"
+      properties:
+        metricIds:
+          title: "Requested Metric IDs"
+          type: "array"
+          description: "Requested Metric IDs"
+          example: "CARBON_EMISSIONS"
+          items:
+            title: "Requested Metric IDs"
+            type: "string"
+            description: "Requested Metric IDs"
+            example: "CARBON_EMISSIONS"
+        permIds:
+          title: "List of permIds to retrieve"
+          type: "array"
+          description: "List of permIds to retrieve"
+          items:
+            type: "string"
+        optionalColumns:
+          title: "Optional columns to return in CSV"
+          type: "array"
+          description: "Optional columns to return in CSV"
+          example:
+            - "WATCHLIST"
+          items:
+            title: "Optional columns to return in CSV"
+            type: "string"
+            description: "Optional columns to return in CSV"
+            example: "[\"WATCHLIST\"]"
+            enum:
+              - "WATCHLIST"
+          enum:
+            - "WATCHLIST"
+    AsyncSecuritiesFundsRequest:
+      type: "object"
+      properties:
+        metricIds:
+          title: "Requested Metric IDs"
+          type: "array"
+          description: "Requested Metric IDs"
+          example: "CARBON_EMISSIONS"
+          items:
+            title: "Requested Metric IDs"
+            type: "string"
+            description: "Requested Metric IDs"
+            example: "CARBON_EMISSIONS"
+        securityIdsType:
+          title: "Used to specify the security identifier type of the ids included in the “securityIds” list"
+          type: "string"
+          description: "Used to specify the security identifier type of the ids included in the “securityIds” list"
+          example: "ISIN"
+          enum:
+            - "ISIN"
+            - "CUSIP"
+            - "ISIN"
+            - "CUSIP"
+        securityIds:
+          title: "List of security ids (ISIN) to retrieve"
+          type: "array"
+          description: "List of security ids (ISIN) to retrieve"
+          example: "USXXXXXXXXXX"
+          items:
+            title: "List of security ids (ISIN) to retrieve"
+            type: "string"
+            description: "List of security ids (ISIN) to retrieve"
+            example: "USXXXXXXXXXX"
+        onlyOneSecurityPerFundGroupId:
+          title: "Include only one Fund Share Class for each fund group in the response"
+          type: "boolean"
+          description: "Include only one Fund Share Class for each fund group in the response.\nWhen you provide a list of securityIds, the generated file will include data only for those security IDs, provided they belong to a primary fund."
+          example: false
+        idColumns:
+          title: "Allows you to specify a list of security ID types that will be included in the response.\nOnly the securities that have an identifier type matching 'idColumns' will be returned.\nIf you want to retrieve all the securities, you can set 'idColumns' to \"ALL\" and no securities will be filtered out.\nTake into account that when using the \"ALL\" parameter whenever a new security identifier type is available in the Clarity AI platform it will be included in the response."
+          type: "array"
+          example:
+            - "ISIN"
+            - "CUSIP"
+            - "ALL"
+          items:
+            title: "Allows you to specify a list of security ID types that will be included in the response.\nOnly the securities that have an identifier type matching 'idColumns' will be returned.\nIf you want to retrieve all the securities, you can set 'idColumns' to \"ALL\" and no securities will be filtered out.\nTake into account that when using the \"ALL\" parameter whenever a new security identifier type is available in the Clarity AI platform it will be included in the response."
+            type: "string"
+            example: "[\"ISIN\",\"CUSIP\",\"ALL\"]"
+            enum:
+              - "ISIN"
+              - "CUSIP"
+              - "ALL"
+        optionalColumns:
+          title: "Optional columns to return in CSV"
+          type: "array"
+          description: "Optional columns to return in CSV"
+          example:
+            - "FUND_GROUP_ID"
+          items:
+            title: "Optional columns to return in CSV"
+            type: "string"
+            description: "Optional columns to return in CSV"
+            example: "[\"FUND_GROUP_ID\"]"
+            enum:
+              - "FUND_GROUP_ID"
+              - "ELIGIBILITY"
+              - "ELIGIBILITY_COVERAGE"
+          enum:
+            - "FUND_GROUP_ID"
+            - "ELIGIBILITY"
+            - "ELIGIBILITY_COVERAGE"
+    PortfolioValueResponse:
+      type: "object"
+      properties:
+        portfolioId:
+          type: "string"
+          example: "Id"
+        portfolioName:
+          type: "string"
+          example: "Name"
+        totalOrganizations:
+          type: "integer"
+          format: "int32"
+          example: 1957
+          enum:
+            - null
+        metrics:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/MetricByPortfolio"
+    MetricByPortfolio:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          example: "Metric Name"
+        value:
+          type: "number"
+          format: "float"
+          example: 45
+          enum:
+            - null
+        metadata:
+          type: "string"
+          example: "NONE"
+          enum:
+            - "NONE"
+            - "ASSIGNED"
+            - "LIMITED_INFO"
+            - "NOT_AVAILABLE"
+            - "NOT_IMPORTANT"
+            - "NOT_APPLICABLE"
+            - "OUT_OF_UNIVERSE"
+            - "NONE, ASSIGNED, LIMITED_INFO, NOT_AVAILABLE, NOT_IMPORTANT, NOT_APPLICABLE, OUT_OF_UNIVERSE"
+        units:
+          type: "string"
+          example: "%"
+        coverage:
+          type: "number"
+          format: "float"
+          example: 12.9
+          enum:
+            - null
+        eligibility:
+          type: "number"
+          format: "float"
+          example: 87.5
+          enum:
+            - null
+        eligibilityCoverage:
+          type: "number"
+          format: "float"
+          example: 11.29
+          enum:
+            - null
+        percentageEstimated:
+          type: "number"
+          format: "float"
+          example: 11.29
+          enum:
+            - null
+  securitySchemes:
+    JWT:
+      type: "http"
+      scheme: "bearer"
+      bearerFormat: "JWT"
+info:
+  title: "Clarity AI API - SFDR"
+  description: "API to access Clarity AI data services."
+  termsOfService: "https://static.clarity.ai/Clarity_AI_TermsAndConditions.pdf"
+  contact:
+    name: "Clarity AI"
+    url: "https://www.clarity.ai"
+    email: "support@clarity.ai"
+  version: "1.0.0"
+openapi: "3.0.1"
+paths:
+  /public/securities/sfdr/rawdata/metric-by-id/async:
+    post:
+      tags:
+        - "SFDR Async Jobs"
+      summary: "Async Job - Request SFDR Raw Metric Values for Securities"
+      description: "This endpoint will make a request to asynchronously retrieve extensive SFDR information.\n\nThe asynchronous process will generate a file with SFDR raw values for the whole universe of securities.\n\n<b>Please note</b>:\n\nThis call will only return the identifier (uuid) for this task. You'll need this value to:\n - Know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>)\n - Download your file when ready (see <a href=\"./asyncdownloadcompressedfile\">Async Job - Download compressed result file</a>)\n\nPlease refer to <a href=\"/docs/universe-api-async-jobs\">Universe API's Technical documentation</a> for a complete explanation of the workflow for these asynchronous job endpoints.\n"
+      operationId: "asyncSfdrSecuritiesGetRawValues"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AsyncRawDataRequest"
+        required: true
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/securities/sfdr/metric-by-id/async:
+    post:
+      tags:
+        - "SFDR Async Jobs"
+      summary: "Async Job - Request SFDR Values for Securities"
+      description: "This endpoint will make a request to asynchronously retrieve extensive SFDR information.\n\nThe asynchronous process will generate a file with SFDR values for the whole universe of securities.\n\n<b>Please note</b>:\n\nThis call will only return the identifier (uuid) for this task. You'll need this value to:\n - Know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>)\n - Download your file when ready (see <a href=\"./asyncdownloadcompressedfile\">Async Job - Download compressed result file</a>)\n\nPlease refer to <a href=\"/docs/universe-api-async-jobs\">Universe API's Technical documentation</a> for a complete explanation of the workflow for these asynchronous job endpoints.\n"
+      operationId: "asyncSfdrSecuritiesGetValues"
+      parameters:
+        - name: "considerOnlyRelevantInvestments"
+          in: "query"
+          required: false
+          schema:
+            type: "boolean"
+            default: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AsyncRequest"
+        required: true
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        413:
+          description: "Payload too large:\n\n2101 - The limit of 25.000 ids in the same request has been exceeded"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/portfolios/sfdr/quarterly-average:
+    post:
+      tags:
+        - "Portfolio SFDR"
+      summary: "Get portfolio level aggregation per quarter and year aggregation as the average of the 4 quarters."
+      description: "Given 4 portfolios, each representing the investment on a given quarter, the year to which the quarters correspond to, and a list of metrics; returns the aggregated metric values of per quarter plus the average aggregation metric value, as the yearly value."
+      operationId: "getQuarterValues"
+      parameters:
+        - name: "considerOnlyRelevantInvestments"
+          in: "query"
+          required: false
+          schema:
+            type: "boolean"
+            default: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PortfolioQuarterRequest"
+        required: true
+      responses:
+        200:
+          description: "SFDR aggregated metric values of per quarter plus the average aggregation metric value, as the yearly value."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortfolioAndQuarterAggregatedMetricsResponse"
+        400:
+          description: "Invalid request:\n\n9002 - The portfolio id '%s' does not exist or does not belong to the user\n\n9001 - A portfolio for each quarter must be requested\n\n9005 - Invalid year\n\n9008 - Metric id list is required\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n2007 - The portfolio id does not exist or does not belong to the user"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/organizations/sfdr/rawdata/metric-by-id/async:
+    post:
+      tags:
+        - "SFDR Async Jobs"
+      summary: "Async Job - Request SFDR Raw Metric Values for Organizations"
+      description: "This endpoint will make a request to asynchronously retrieve extensive SFDR information.\n\nThe asynchronous process will generate a file with SFDR raw values for the whole universe of organizations.\n\n<b>Please note</b>:\n\nThis call will only return the identifier (uuid) for this task. You'll need this value to:\n - Know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>)\n - Download your file when ready (see <a href=\"./asyncdownloadcompressedfile\">Async Job - Download compressed result file</a>)\n\nPlease refer to <a href=\"/docs/universe-api-async-jobs\">Universe API's Technical documentation</a> for a complete explanation of the workflow for these asynchronous job endpoints.\n"
+      operationId: "asyncSfdrOrganizationsGetRawValues"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AsyncOrganizationsRawDataRequest"
+        required: true
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/organizations/sfdr/metric-by-id/async:
+    post:
+      tags:
+        - "SFDR Async Jobs"
+      summary: "Async Job - Request SFDR Values for Organizations"
+      description: "This endpoint will make a request to asynchronously retrieve extensive SFDR information.\n\nThe asynchronous process will generate a file with SFDR values for the whole universe of organizations.\n\n<b>Please note</b>:\n\nThis call will only return the identifier (uuid) for this task. You'll need this value to:\n - Know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>)\n - Download your file when ready (see <a href=\"./asyncdownloadcompressedfile\">Async Job - Download compressed result file</a>)\n\nPlease refer to <a href=\"/docs/universe-api-async-jobs\">Universe API's Technical documentation</a> for a complete explanation of the workflow for these asynchronous job endpoints.\n"
+      operationId: "asyncSfdrOrganizationsGetValues"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AsyncOrganizationRequest"
+        required: true
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        413:
+          description: "Payload too large:\n\n2101 - The limit of 25.000 ids in the same request has been exceeded"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/funds/sfdr/metric-by-id/async:
+    post:
+      tags:
+        - "SFDR Async Jobs"
+      summary: "Async Job - Request SFDR Values for Funds"
+      description: "This endpoint will make a request to asynchronously retrieve extensive SFDR information.\n\nThe asynchronous process will generate a file with SFDR values for the whole universe of funds.\n\n<b>Please note</b>:\n\nThis call will only return the identifier (uuid) for this task. You'll need this value to:\n - Know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>)\n - Download your file when ready (see <a href=\"./asyncdownloadcompressedfile\">Async Job - Download compressed result file</a>)\n\nPlease refer to <a href=\"/docs/universe-api-async-jobs\">Universe API's Technical documentation</a> for a complete explanation of the workflow for these asynchronous job endpoints.\n"
+      operationId: "asyncSfdrFundsGetValues"
+      parameters:
+        - name: "considerOnlyRelevantInvestments"
+          in: "query"
+          required: false
+          schema:
+            type: "boolean"
+            default: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AsyncSecuritiesFundsRequest"
+        required: true
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        413:
+          description: "Payload too large:\n\n2101 - The limit of 25.000 ids in the same request has been exceeded"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/portfolios/{portfolioId}/sfdr/report:
+    get:
+      tags:
+        - "Portfolio SFDR"
+      summary: "Get SFDR Report for the portfolio"
+      description: "Will return the SFDR Report attached to the response for the specified portfolio. The report will be provided in .docx format."
+      operationId: "getReport"
+      parameters:
+        - name: "portfolioId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "optionalPais"
+          in: "query"
+          description: "The optionalPais identifiers. The user will need to specify the this parameter according to the following rules:\n  - If the portfolio contains organizations of type \"sovereigns\" only: at least one optional social PAI is required.\n  - Otherwise: at least one optional social and one optional environmental PAIs are required.\n"
+          required: true
+          schema:
+            type: "array"
+            items:
+              type: "string"
+          example: "DEFORESTATION"
+        - name: "considerOnlyRelevantInvestments"
+          in: "query"
+          required: false
+          schema:
+            type: "boolean"
+            default: false
+      responses:
+        200:
+          description: "SFDR report"
+          content:
+            application/octet-stream: {}
+        400:
+          description: "Invalid request. See examples for possible errors."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+              examples:
+                2004 - Portfolio id requested not valid or empty:
+                  description: "The portfolio ID provided by the user is not valid or is empty."
+                2006 - At least one of the scores requested does not exist or this account does not have permission to access it:
+                  description: "Description: At least one of the metrics requested does not exist or this user does not have permissions to access it"
+                9011 - At least one optional social PAI must be specified:
+                  description: "The user did not specify at least one optional social PAI in the request, but at least one optional social PAI is required since the portfolio is composed of sovereign organizations only."
+                9004 - At least one optional PAI per pillar must be specified:
+                  description: "The user did not specify at least one optional social AND one optional environmental PAI in the request."
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n2007 - The portfolio id does not exist or does not belong to the user"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        412:
+          description: "Invalid portfolio:\n\n2011 - The portfolio is not valid\n\n2015 - The portfolio is not valid as it only has 1 organization"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/portfolios/{portfolioId}/sfdr/metric-by-id:
+    get:
+      tags:
+        - "Portfolio SFDR"
+      summary: "Get portfolio values"
+      description: "Given a portfolio id, returns all values for the requested metrics."
+      operationId: "getValues"
+      parameters:
+        - name: "portfolioId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "metricIds"
+          in: "query"
+          description: "The metrics identifiers"
+          required: true
+          schema:
+            type: "array"
+            items:
+              type: "string"
+          example: "POLITICAL_STABILITY"
+        - name: "considerOnlyRelevantInvestments"
+          in: "query"
+          required: false
+          schema:
+            type: "boolean"
+            default: false
+      responses:
+        200:
+          description: "SFDR values for the requested metrics"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortfolioValueResponse"
+        400:
+          description: "Invalid request:\n\n2007 - The portfolio id does not exist or does not belong to the user\n\n9006 - At least one of the metrics requested does not exist or this account does not have permission to access it"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/portfolios/{portfolioId}/sfdr/metric-by-id/export/csv:
+    get:
+      tags:
+        - "Portfolio SFDR"
+      summary: "Export portfolio values"
+      description: "Given a portfolio id, returns a csv file containing all values for the requested metrics."
+      operationId: "getValues_1"
+      parameters:
+        - name: "portfolioId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "metricIds"
+          in: "query"
+          description: "The metrics identifiers"
+          required: true
+          schema:
+            type: "array"
+            items:
+              type: "string"
+          example: "POLITICAL_STABILITY"
+        - name: "considerOnlyRelevantInvestments"
+          in: "query"
+          required: false
+          schema:
+            type: "boolean"
+            default: false
+      responses:
+        200:
+          description: "SFDR values for the requested metrics"
+          content:
+            text/csv: {}
+        400:
+          description: "Invalid request:\n\n2007 - The portfolio id does not exist or does not belong to the user\n\n9006 - At least one of the metrics requested does not exist or this account does not have permission to access it\n\n1024 - Sorry, something went wrong. Please try again later."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        500:
+          description: "Internal server error:\n\n1024 - Sorry, something went wrong. Please try again later."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+servers:
+  - url: "https://api.clarity.ai/clarity/v1"
+  - url: "https://api.dev.clarity.ai/clarity/v1"
+tags:
+  - name: "Portfolio SFDR"
+    description: "Portfolio SFDR API"
+security:
+  - JWT: []

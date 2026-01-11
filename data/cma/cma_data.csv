@@ -1,0 +1,39 @@
+Purpose,Group,Asset Class,Forecast Return,Forecast Volatility
+Stability,Cash,US Cash,0.0337,0.0067
+Stability,Cash,Global Cash,0.0210,0.0060
+Stability,Government & Municipal Bonds,US Government,0.0420,0.0579
+Stability,Government & Municipal Bonds,Global Government,0.0428,0.0600
+Stability,Government & Municipal Bonds,US Municipal,0.0390,0.0471
+Stability,Government & Municipal Bonds,US Inflation-Linked,0.0430,0.0566
+Stability,Government & Municipal Bonds,Global Inflation-Linked,0.0445,0.0720
+Stability,Corporates & MBS,US Aggregate,0.0461,0.0505
+Stability,Corporates & MBS,Global Aggregate,0.0445,0.0500
+Stability,Corporates & MBS,IG Corporate,0.0497,0.0719
+Stability,Corporates & MBS,MBS,0.0500,0.0521
+Diversified,Other Credit,High Yield,0.0590,0.0885
+Diversified,Other Credit,HY Muni Bond,0.0570,0.0861
+Diversified,Other Credit,EM Debt,0.0580,0.0920
+Diversified,Other Credit,Loans,0.0600,0.0780
+Diversified,Other Credit,Private Debt,0.0880,0.1180
+Diversified,Other Credit,Credit Direct. HFs,0.0668,0.0723
+Diversified,Absolute Return,Absolute Return HFs,0.0555,0.0681
+Diversified,Real Assets,Gold,0.0335,0.1676
+Diversified,Real Assets,General Commodities,0.0490,0.1665
+Diversified,Real Assets,Private Infrastructure*,0.0920,0.1140
+Diversified,Real Assets,Listed Infrastructure,0.0754,0.1583
+Diversified,Real Assets,Illiquid Real Estate,0.0866,0.1358
+Growth,Alternative Growth,Growth Direct. HFs,0.0560,0.0850
+Growth,Alternative Growth,US REITs,0.0722,0.1899
+Growth,Alternative Growth,Global REITs,0.0707,0.1790
+Growth,Alternative Growth,Private Equity,0.1221,0.2200
+Growth,Equities,Global,0.0668,0.1580
+Growth,Equities,Global Dev.,0.0656,0.1574
+Growth,Equities,Global EAFE,0.0821,0.1740
+Growth,Equities,Global Dev. EAFE,0.0819,0.1667
+Growth,Equities,US,0.0600,0.1620
+Growth,Equities,Pan Europe,0.0815,0.1903
+Growth,Equities,Japan,0.0880,0.1810
+Growth,Equities,Asia Pacific ex Japan,0.0735,0.2079
+Growth,Equities,EM,0.0795,0.2151
+Growth,Equities,US SMID,0.0675,0.2020
+Growth,Equities,Global SMID,0.0857,0.1802

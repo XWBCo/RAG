@@ -1,0 +1,99 @@
+components:
+  schemas:
+    UngcSecuritiesRequest:
+      type: "object"
+      properties:
+        idColumns:
+          uniqueItems: true
+          type: "array"
+          items:
+            type: "string"
+        securityTypes:
+          uniqueItems: true
+          type: "array"
+          items:
+            type: "string"
+        securityIdsType:
+          type: "string"
+        securityIds:
+          uniqueItems: true
+          type: "array"
+          items:
+            type: "string"
+    CreateJobResource:
+      type: "object"
+      properties:
+        uuid:
+          type: "string"
+    APIError:
+      type: "object"
+      properties:
+        code:
+          type: "integer"
+          format: "int32"
+        message:
+          type: "string"
+  securitySchemes:
+    JWT:
+      type: "http"
+      scheme: "bearer"
+      bearerFormat: "JWT"
+info:
+  title: "Clarity AI API - Controversies"
+  description: "API to access Clarity AI data services."
+  termsOfService: "https://static.clarity.ai/Clarity_AI_TermsAndConditions.pdf"
+  contact:
+    name: "Clarity AI"
+    url: "https://www.clarity.ai"
+    email: "support@clarity.ai"
+  version: "1.0.0"
+openapi: "3.0.1"
+paths:
+  /public/securities/controversies/global-norms/async:
+    post:
+      tags:
+        - "Universe download - Asynchronous jobs"
+      summary: "Async Job - Request securities global norms"
+      description: "This endpoint will make a request for an async job to retrieve the whole universe of <a href=\"https://clarity.ai\">Clarity.AI</a> with details about breaches / watchlists of the UNGC principles for given security types or security ids <br>You can ask whether to get securities using securityTypes or provide a list of security ids (usually ISINs) with securityIds, <b>but NOT both</b>.<b>Please note</b>: This call will only return the identifier (UUID) for this task. You'll need this value later on further calls to know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>) or download your file when ready (see &laquo;Async Job - Download result file&raquo;)<br>Check <a href=\"/docs/universe-api-async-jobs\">this document</a> for a complete explanation of the flow for these Async jobs endpoints"
+      operationId: "asyncSecuritiesGetGlobalNorms"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UngcSecuritiesRequest"
+        required: true
+      responses:
+        200:
+          description: "The job request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it\n\n2201 - Invalid parameters for this request\n\n5001 - List cannot be empty. At least one score id is required\n\n5003 - List cannot be empty. At least one security type is required\n\n5005 - List cannot be empty. At least one security ID is required\n\n5006 - Only one of these params can be present: %s. Please provide only one of them\n\n5007 - At least one of these params must be present: %s. Please provide one of them\n\n2202 - The value 'ALL' can not be used in conjunction with other identifier types\n\n2203 - 'idColumns' must match 'securityIdTypes' when requesting by specific IDs"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+servers:
+  - url: "https://api.clarity.ai/clarity/v1"
+  - url: "https://api.dev.clarity.ai/clarity/v1"
+tags:
+  - name: "Universe download - Asynchronous jobs"
+    description: "Universe download - Asynchronous jobs"
+security:
+  - JWT: []

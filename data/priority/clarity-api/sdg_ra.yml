@@ -1,0 +1,1369 @@
+components:
+  schemas:
+    SdgRevSecuritiesAsyncRequest:
+      type: "object"
+      properties:
+        alignmentIds:
+          type: "array"
+          description: "Requested Alignment IDs"
+          example:
+            - "P_01_POVERTY"
+            - "P_02_END_HUNGER"
+            - "TOTAL_SDG_RA"
+          items:
+            type: "string"
+        alignmentType:
+          type: "array"
+          description: "Requested Alignment Types. If emtpy or null, all types are requested"
+          example:
+            - "ALIGNMENT"
+            - "MISALIGNMENT"
+            - "NET_ALIGNMENT"
+          items:
+            type: "string"
+            enum:
+              - "ALIGNMENT"
+              - "MISALIGNMENT"
+              - "NET_ALIGNMENT"
+        securityTypes:
+          type: "array"
+          description: "The security types requested"
+          example:
+            - "FUND"
+          items:
+            type: "string"
+          enum:
+            - "EQUITY"
+            - "FIXED_INCOME"
+            - "FUND"
+        securityIdsType:
+          type: "string"
+          description: "Defines whether the security IDs passed in the 'securityIds' parameter are of type ISIN or CUSIP."
+          example: "ISIN"
+          default: "ISIN"
+          enum:
+            - "ISIN"
+            - "CUSIP"
+        securityIds:
+          type: "array"
+          description: "List of security ids to retrieve"
+          example:
+            - "US88165GAF72"
+            - "AU000000QBE9"
+            - "JP3918000005"
+            - "CA15135U1093"
+          items:
+            type: "string"
+        idColumns:
+          type: "array"
+          description: "Allows you to specify a list of security ID types that will be included in the response. Only the securities that have an identifier type matching 'idColumns' will be returned. If you want to retrieve all the securities, you can set 'idColumns' to \"ALL\" and no securities will be filtered out. Take into account that when using the \"ALL\" parameter whenever a new security identifier type is available in the Clarity AI platform it will be included in the response."
+          example:
+            - "ISIN"
+            - "CUSIP"
+          items:
+            type: "string"
+          default: "ISIN"
+          enum:
+            - "ISIN"
+            - "CUSIP"
+            - "ALL"
+    CreateJobResource:
+      type: "object"
+      properties:
+        uuid:
+          type: "string"
+    APIError:
+      type: "object"
+      properties:
+        code:
+          type: "integer"
+          format: "int32"
+        message:
+          type: "string"
+    SdgAlignmentSecuritiesAsyncRequest:
+      type: "object"
+      properties:
+        alignmentIds:
+          type: "array"
+          description: "Requested Alignment IDs"
+          example:
+            - "P_01_POVERTY"
+            - "P_02_END_HUNGER"
+            - "TOTAL_SDG_RA"
+          items:
+            type: "string"
+        alignmentTypes:
+          type: "array"
+          description: "Requested Alignment Types. If emtpy or null, all types are requested"
+          example:
+            - "ALIGNMENT"
+            - "MISALIGNMENT"
+            - "NET_ALIGNMENT"
+          items:
+            type: "string"
+            enum:
+              - "ALIGNMENT"
+              - "MISALIGNMENT"
+              - "NET_ALIGNMENT"
+        assessmentTypes:
+          type: "array"
+          description: "Requested Assessment Types. If emtpy or null, all types are requested"
+          example:
+            - "REVENUE_ALIGNMENT"
+            - "PRODUCTS_SERVICES"
+            - "OPERATIONS"
+            - "NORMS_VIOLATION"
+            - "SDG_ASSESSMENT"
+          items:
+            type: "string"
+            enum:
+              - "REVENUE_ALIGNMENT"
+              - "PRODUCTS_SERVICES"
+              - "OPERATIONS"
+              - "NORMS_VIOLATION"
+              - "SDG_ASSESSMENT"
+        securityTypes:
+          type: "array"
+          description: "The security types requested"
+          example:
+            - "FUND"
+          items:
+            type: "string"
+          enum:
+            - "EQUITY"
+            - "FIXED_INCOME"
+            - "FUND"
+        securityIdsType:
+          type: "string"
+          description: "Defines whether the security IDs passed in the 'securityIds' parameter are of type ISIN or CUSIP."
+          example: "ISIN"
+          default: "ISIN"
+          enum:
+            - "ISIN"
+            - "CUSIP"
+        securityIds:
+          type: "array"
+          description: "List of security ids to retrieve"
+          example:
+            - "US88165GAF72"
+            - "AU000000QBE9"
+            - "JP3918000005"
+            - "CA15135U1093"
+          items:
+            type: "string"
+        idColumns:
+          type: "array"
+          description: "Allows you to specify a list of security ID types that will be included in the response. Only the securities that have an identifier type matching 'idColumns' will be returned. If you want to retrieve all the securities, you can set 'idColumns' to \"ALL\" and no securities will be filtered out. Take into account that when using the \"ALL\" parameter whenever a new security identifier type is available in the Clarity AI platform it will be included in the response."
+          example:
+            - "ISIN"
+            - "CUSIP"
+          items:
+            type: "string"
+          default: "ISIN"
+          enum:
+            - "ISIN"
+            - "CUSIP"
+            - "ALL"
+    SdgRevOrganizationsAsyncRequest:
+      type: "object"
+      properties:
+        alignmentIds:
+          type: "array"
+          description: "Requested Alignment IDs"
+          example:
+            - "P_01_POVERTY"
+            - "P_02_END_HUNGER"
+            - "TOTAL_SDG_RA"
+          items:
+            type: "string"
+        permIds:
+          type: "array"
+          description: "List of organizations, identified by permId, to retrieve information from. If this parameter is not present, all available organizations will be returned"
+          example:
+            - "5000008406"
+            - "5000038958"
+            - "4295882319"
+          items:
+            type: "string"
+        alignmentType:
+          type: "array"
+          description: "Requested Alignment Types. If emtpy or null, all types are requested"
+          example:
+            - "ALIGNMENT"
+            - "MISALIGNMENT"
+            - "NET_ALIGNMENT"
+          items:
+            type: "string"
+            enum:
+              - "ALIGNMENT"
+              - "MISALIGNMENT"
+              - "NET_ALIGNMENT"
+        optionalColumns:
+          type: "array"
+          description: "Optional columns to return in CSV:\n* `YEAR`: Year of the metric, e.g. 2023, 2024, 2025\n"
+          example:
+            - "YEAR"
+          items:
+            type: "string"
+          enum:
+            - "YEAR"
+    SdgAlignmentOrganizationsAsyncRequest:
+      type: "object"
+      properties:
+        alignmentIds:
+          type: "array"
+          description: "Requested Alignment IDs"
+          example:
+            - "P_01_POVERTY"
+            - "P_02_END_HUNGER"
+            - "TOTAL_SDG_RA"
+          items:
+            type: "string"
+        permIds:
+          type: "array"
+          description: "List of organizations, identified by permId, to retrieve information from. If this parameter is not present, all available organizations will be returned"
+          example:
+            - "5000008406"
+            - "5000038958"
+            - "4295882319"
+          items:
+            type: "string"
+        assessmentTypes:
+          type: "array"
+          description: "Requested Assessment Types. If emtpy or null, all types are requested"
+          example:
+            - "REVENUE_ALIGNMENT"
+            - "PRODUCTS_SERVICES"
+            - "OPERATIONS"
+            - "NORMS_VIOLATION"
+            - "SDG_ASSESSMENT"
+          items:
+            type: "string"
+            enum:
+              - "REVENUE_ALIGNMENT"
+              - "PRODUCTS_SERVICES"
+              - "OPERATIONS"
+              - "NORMS_VIOLATION"
+              - "SDG_ASSESSMENT"
+        alignmentTypes:
+          type: "array"
+          description: "Requested Alignment Types. If emtpy or null, all types are requested"
+          example:
+            - "ALIGNMENT"
+            - "MISALIGNMENT"
+            - "NET_ALIGNMENT"
+          items:
+            type: "string"
+            enum:
+              - "ALIGNMENT"
+              - "MISALIGNMENT"
+              - "NET_ALIGNMENT"
+        optionalColumns:
+          type: "array"
+          description: "Optional columns to return in CSV:\n* `YEAR`: Year of the metric, e.g. 2023, 2024, 2025\n"
+          example:
+            - "YEAR"
+          items:
+            type: "string"
+          enum:
+            - "YEAR"
+    SdgRevFundsAsyncRequest:
+      type: "object"
+      properties:
+        alignmentIds:
+          type: "array"
+          description: "Requested Alignment IDs"
+          example:
+            - "P_01_POVERTY"
+            - "P_02_END_HUNGER"
+            - "TOTAL_SDG_RA"
+          items:
+            type: "string"
+        alignmentType:
+          type: "array"
+          description: "Requested Alignment Types. If emtpy or null, all types are requested"
+          example:
+            - "ALIGNMENT"
+            - "MISALIGNMENT"
+            - "NET_ALIGNMENT"
+          items:
+            type: "string"
+            enum:
+              - "ALIGNMENT"
+              - "MISALIGNMENT"
+              - "NET_ALIGNMENT"
+        optionalColumns:
+          type: "array"
+          description: "Optional columns to return in CSV:\n* `FUND_GROUP_ID`: Internal ID representing the group fund ID of a group of fund share classes\n"
+          example:
+            - "FUND_GROUP_ID"
+          items:
+            type: "string"
+          enum:
+            - "FUND_GROUP_ID"
+        onlyOneSecurityPerFundGroupId:
+          type: "boolean"
+          description: "Include only one Fund Share Class for each fund group in the response"
+          example: false
+        idColumns:
+          type: "array"
+          description: "Allows you to specify a list of fund ID types that will be included in the response. Only the funds that have an identifier type matching 'idColumns' will be returned. If you want to retrieve all funds, you can set 'idColumns' to \"ALL\" and no funds will be filtered out. Take into account that when using the \"ALL\" parameter whenever a new fund identifier type is available in the Clarity AI platform it will be included in the response."
+          example:
+            - "CUSIP"
+          items:
+            type: "string"
+          default: "ISIN"
+          enum:
+            - "ISIN"
+            - "CUSIP"
+            - "ALL"
+    SdgAlignmentFundsAsyncRequest:
+      type: "object"
+      properties:
+        alignmentIds:
+          type: "array"
+          description: "Requested Alignment IDs"
+          example:
+            - "P_01_POVERTY"
+            - "P_02_END_HUNGER"
+            - "TOTAL_SDG_RA"
+          items:
+            type: "string"
+        assessmentTypes:
+          type: "array"
+          description: "Requested Assessment Types. If emtpy or null, all types are requested"
+          example:
+            - "REVENUE_ALIGNMENT"
+            - "PRODUCTS_SERVICES"
+            - "OPERATIONS"
+            - "NORMS_VIOLATION"
+            - "SDG_ASSESSMENT"
+          items:
+            type: "string"
+            enum:
+              - "REVENUE_ALIGNMENT"
+              - "PRODUCTS_SERVICES"
+              - "OPERATIONS"
+              - "NORMS_VIOLATION"
+              - "SDG_ASSESSMENT"
+        alignmentTypes:
+          type: "array"
+          description: "Requested Alignment Types. If emtpy or null, all types are requested"
+          example:
+            - "ALIGNMENT"
+            - "MISALIGNMENT"
+            - "NET_ALIGNMENT"
+          items:
+            type: "string"
+            enum:
+              - "ALIGNMENT"
+              - "MISALIGNMENT"
+              - "NET_ALIGNMENT"
+        optionalColumns:
+          type: "array"
+          description: "Optional columns to return in CSV:\n* `FUND_GROUP_ID`: Internal ID representing the group fund ID of a group of fund share classes\n"
+          example:
+            - "FUND_GROUP_ID"
+          items:
+            type: "string"
+          enum:
+            - "FUND_GROUP_ID"
+        onlyOneSecurityPerFundGroupId:
+          type: "boolean"
+          description: "Include only one Fund Share Class for each fund group in the response"
+          example: false
+        idColumns:
+          type: "array"
+          description: "Allows you to specify a list of fund ID types that will be included in the response. Only the funds that have an identifier type matching 'idColumns' will be returned. If you want to retrieve all funds, you can set 'idColumns' to \"ALL\" and no funds will be filtered out. Take into account that when using the \"ALL\" parameter whenever a new fund identifier type is available in the Clarity AI platform it will be included in the response."
+          example:
+            - "CUSIP"
+          items:
+            type: "string"
+          default: "ISIN"
+          enum:
+            - "ISIN"
+            - "CUSIP"
+            - "ALL"
+    PortfolioSummary:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+          description: "Portfolio name."
+        coverage:
+          type: "number"
+          description: "Applicable portfolio coverage"
+          format: "double"
+          example: 87
+        composition:
+          $ref: "#/components/schemas/AlignmentComposition"
+        alignments:
+          type: "array"
+          description: "The list of requested alignments for the portfolio."
+          items:
+            $ref: "#/components/schemas/PortfolioAssessment"
+    AlignmentComposition:
+      type: "object"
+      properties:
+        positiveAlignment:
+          $ref: "#/components/schemas/CompositionValue"
+        partiallyPositiveAlignment:
+          $ref: "#/components/schemas/CompositionValue"
+        fullyPositiveAlignment:
+          $ref: "#/components/schemas/CompositionValue"
+        negativeAlignment:
+          $ref: "#/components/schemas/CompositionValue"
+        partiallyNegativeAlignment:
+          $ref: "#/components/schemas/CompositionValue"
+        fullyNegativeAlignment:
+          $ref: "#/components/schemas/CompositionValue"
+        zeroAlignment:
+          $ref: "#/components/schemas/CompositionValue"
+        partiallyNotAligned:
+          $ref: "#/components/schemas/CompositionValue"
+        notApplicable:
+          $ref: "#/components/schemas/CompositionValue"
+        notAvailable:
+          $ref: "#/components/schemas/CompositionValue"
+        unknown:
+          $ref: "#/components/schemas/CompositionValue"
+      description: "Breakdown of portfolio coverage"
+    CompositionValue:
+      type: "object"
+      properties:
+        percentage:
+          type: "number"
+          description: "Total percentage of organizations"
+          format: "double"
+        number:
+          type: "integer"
+          description: "Total number of organizations"
+          format: "int32"
+      description: "Percentage and number of organizations with not unknown information"
+    PortfolioAssessment:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          description: "Id of the goal/issue/activity behind the alignment."
+          example: "P_01_POVERTY"
+        treeLevel:
+          type: "string"
+          description: "Level on the SDG tree the alignment belongs to"
+          enum:
+            - "TOTAL"
+            - "GOAL"
+            - "ISSUE"
+            - "ACTIVITY"
+        parentId:
+          type: "string"
+          description: "Parent alignment id in the SDG Alignment tree"
+        revenueAlignment:
+          $ref: "#/components/schemas/AlignmentsValue"
+        productAndServicesAssessment:
+          $ref: "#/components/schemas/AlignmentsValue"
+        operationAssessment:
+          $ref: "#/components/schemas/AlignmentsValue"
+        normsViolation:
+          $ref: "#/components/schemas/NormsViolationValue"
+        sdgAssessment:
+          $ref: "#/components/schemas/AlignmentsValue"
+      description: "The list of requested alignments for the portfolio."
+    AlignmentsValue:
+      type: "object"
+      properties:
+        positive:
+          $ref: "#/components/schemas/AlignmentValue"
+        negative:
+          $ref: "#/components/schemas/AlignmentValue"
+        net:
+          $ref: "#/components/schemas/AlignmentValue"
+      description: "SDG assessment values"
+    AlignmentValue:
+      type: "object"
+      properties:
+        alignment:
+          type: "number"
+          description: "Percentage of alignment"
+          format: "double"
+          example: 19
+        metadata:
+          type: "string"
+          description: "Metadata for the score"
+          example: "NONE"
+          enum:
+            - "NONE"
+            - "ASSIGNED"
+            - "LIMITED_INFO"
+            - "NOT_AVAILABLE"
+            - "NOT_IMPORTANT"
+            - "NOT_APPLICABLE"
+            - "OUT_OF_UNIVERSE"
+        relevance:
+          type: "number"
+          description: "Data Relevance is the total importance of all applicable metrics with raw data available."
+          format: "double"
+          example: 100
+      description: "Net alignment value"
+    NormsViolationValue:
+      type: "object"
+      properties:
+        value:
+          type: "number"
+          description: "Percentage of norms violation"
+          format: "double"
+          example: 3
+        metadata:
+          type: "string"
+          description: "Metadata for the value"
+          example: "NONE"
+          enum:
+            - "NONE"
+            - "ASSIGNED"
+            - "LIMITED_INFO"
+            - "NOT_AVAILABLE"
+            - "NOT_IMPORTANT"
+            - "NOT_APPLICABLE"
+            - "OUT_OF_UNIVERSE"
+      description: "UNGC & OECD violation"
+    PortfolioAlignments:
+      type: "object"
+      properties:
+        alignments:
+          type: "array"
+          description: "The list of the Total and Goals alignments for the portfolio."
+          items:
+            $ref: "#/components/schemas/PortfolioAlignment"
+    PortfolioAlignment:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          description: "Id of the goal/issue/activity behind the alignment."
+          example: "P_01_POVERTY"
+        treeLevel:
+          type: "string"
+          description: "Level on the SDG tree the alignment belongs to"
+          enum:
+            - "TOTAL"
+            - "GOAL"
+            - "ISSUE"
+            - "ACTIVITY"
+        parentId:
+          type: "string"
+          description: "Parent alignment id in the SDG tree"
+        positive:
+          $ref: "#/components/schemas/AlignmentValue"
+        negative:
+          $ref: "#/components/schemas/AlignmentValue"
+        net:
+          $ref: "#/components/schemas/AlignmentValue"
+      description: "The list of the Total and Goals alignments for the portfolio."
+    PortfolioAssessments:
+      type: "object"
+      properties:
+        alignments:
+          type: "array"
+          description: "The list of requested alignments for the portfolio."
+          items:
+            $ref: "#/components/schemas/PortfolioAssessment"
+    FundSummaryWithIsin:
+      type: "object"
+      properties:
+        isin:
+          type: "string"
+          example: "ES0105093001"
+        name:
+          type: "string"
+          description: "The name of the fund"
+          example: "Fidelity European Mlt-Asst"
+        allocationDate:
+          type: "string"
+          description: "Allocation date (yyyy-mm-dd)"
+          format: "date"
+          example: "2020-05-20"
+        coverage:
+          type: "number"
+          description: "Applicable fund coverage"
+          format: "double"
+          example: 87
+        alignments:
+          type: "array"
+          description: "The list of the Total and Goals alignments for the fund."
+          items:
+            $ref: "#/components/schemas/FundAlignment"
+    FundAlignment:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          description: "Id of the goal/issue/activity behind the alignment."
+          example: "P_01_POVERTY"
+        treeLevel:
+          type: "string"
+          description: "Level on the SDG tree the alignment belongs to"
+          enum:
+            - "TOTAL"
+            - "GOAL"
+            - "ISSUE"
+            - "ACTIVITY"
+        parentId:
+          type: "string"
+          description: "Parent alignment id in the SDG tree"
+        positive:
+          $ref: "#/components/schemas/AlignmentValue"
+        negative:
+          $ref: "#/components/schemas/AlignmentValue"
+        net:
+          $ref: "#/components/schemas/AlignmentValue"
+      description: "The list of requested alignments for the fund."
+    FundAlignments:
+      type: "object"
+      properties:
+        alignments:
+          type: "array"
+          description: "The list of requested alignments for the fund."
+          items:
+            $ref: "#/components/schemas/FundAlignment"
+    FundAlignmentsSummaryWithIsin:
+      type: "object"
+      properties:
+        isin:
+          type: "string"
+          example: "ES0105093001"
+        name:
+          type: "string"
+          description: "The name of the fund"
+          example: "Fidelity European Mlt-Asst"
+        allocationDate:
+          type: "string"
+          description: "Allocation date (yyyy-mm-dd)"
+          format: "date"
+          example: "2020-05-20"
+        coverage:
+          type: "number"
+          description: "Applicable fund coverage"
+          format: "double"
+          example: 87
+        alignments:
+          type: "array"
+          description: "The list of the Total and Goals alignments for the fund."
+          items:
+            $ref: "#/components/schemas/FundAssessment"
+    FundAssessment:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          description: "Id of the goal/issue/activity behind the alignment."
+          example: "P_01_POVERTY"
+        treeLevel:
+          type: "string"
+          description: "Level on the SDG tree the alignment belongs to"
+          enum:
+            - "TOTAL"
+            - "GOAL"
+            - "ISSUE"
+            - "ACTIVITY"
+        parentId:
+          type: "string"
+          description: "Parent alignment id in the SDG Alignment tree"
+        revenueAlignment:
+          $ref: "#/components/schemas/AlignmentsValue"
+        productAndServicesAssessment:
+          $ref: "#/components/schemas/AlignmentsValue"
+        operationAssessment:
+          $ref: "#/components/schemas/AlignmentsValue"
+        normsViolation:
+          $ref: "#/components/schemas/NormsViolationValue"
+        sdgAssessment:
+          $ref: "#/components/schemas/AlignmentsValue"
+      description: "The list of the Total and Goals alignments for the fund."
+    FundAssessments:
+      type: "object"
+      properties:
+        alignments:
+          type: "array"
+          description: "The list of requested alignments for the fund."
+          items:
+            $ref: "#/components/schemas/FundAssessment"
+  securitySchemes:
+    JWT:
+      type: "http"
+      scheme: "bearer"
+      bearerFormat: "JWT"
+info:
+  title: "Clarity AI API - UN SDG Alignment"
+  description: "API to access Clarity AI data services."
+  termsOfService: "https://static.clarity.ai/Clarity_AI_TermsAndConditions.pdf"
+  contact:
+    name: "Clarity AI"
+    url: "https://www.clarity.ai"
+    email: "support@clarity.ai"
+  version: "1.0.0"
+openapi: "3.0.1"
+paths:
+  /public/securities/sdg-rev/alignment-by-id/async:
+    post:
+      tags:
+        - "Universe download - Asynchronous jobs"
+      summary: "Async Job - Request SDG Revenue Alignment Values"
+      description: "This endpoint will make a request for an async Job to retrieve the entire universe of <a href=\"https://clarity.ai\">Clarity.AI</a> SDG Revenue Alignment values for given security types and Alignment Ids.<br>You can request the securities using securityTypes or provide a list of security ids (usually isins) with securityIds, <b>but NOT both</b>.<br><b>Please note</b>: This call will only return the identifier (uuid) for this task. You'll need this value later on further calls to know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>) or download your file when ready (see &laquo;Async Job - Download result file&raquo;)<br>Check <a href=\"/docs/universe-api-async-jobs\">this document</a> for a complete explanation of the flow for these Async jobs endpoints"
+      operationId: "sdgRevGetSecuritiesAlignments"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SdgRevSecuritiesAsyncRequest"
+        required: true
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it\n\n2202 - The value 'ALL' can not be used in conjunction with other identifier types\n\n2203 - 'idColumns' must match 'securityIdTypes' when requesting by specific IDs\n\n"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        413:
+          description: "Invalid request:\n\n2101 - The limit of 25.000 ids in the same request has been exceeded"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/securities/sdg-alignment/alignment-by-id/async:
+    post:
+      tags:
+        - "Universe download - Asynchronous jobs"
+      summary: "Async Job - Request SDG Alignment Values"
+      description: "This endpoint will make a request for an async Job to retrieve the entire universe of <a href=\"https://clarity.ai\">Clarity.AI</a> SDG Alignment values for given security types, Alignment Ids and Alignment Types.<br>You can request the securities using securityTypes or provide a list of security ids (usually isins) with securityIds, <b>but NOT both</b>.<br><b>Please note</b>: This call will only return the identifier (uuid) for this task. You'll need this value later on further calls to know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>) or download your file when ready (see &laquo;Async Job - Download result file&raquo;)<br>Check <a href=\"/docs/universe-api-async-jobs\">this document</a> for a complete explanation of the flow for these Async jobs endpoints"
+      operationId: "sdgRevGetSecuritiesAlignments_1"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SdgAlignmentSecuritiesAsyncRequest"
+        required: true
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it\n\n2202 - The value 'ALL' can not be used in conjunction with other identifier types\n\n2203 - 'idColumns' must match 'securityIdTypes' when requesting by specific IDs\n\n"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        413:
+          description: "Invalid request:\n\n2101 - The limit of 25.000 ids in the same request has been exceeded"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/organizations/sdg-rev/alignment-by-id/async:
+    post:
+      tags:
+        - "Universe download - Asynchronous jobs"
+      summary: "Async Job - Request SDG Revenue Alignments Values for Organizations"
+      description: "This endpoint will make a request for an async job to retrieve the entire universe of <a href=\"https://clarity.ai\">Clarity.AI</a> securities through their ISINs with their respective issuer, identified using the PermId (see: <a href=\"https://permid.org/\">permid.org</a> )<br>If no permIds are set, the entire mapping table will be returned.<br><b>Please note</b>: This call will only returns the identifier (uuid) for this task. You'll need this value later on further calls to know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>) or download your file when ready (see &laquo;Async Job - Download result file&raquo;)<br>Check <a href=\"/docs/universe-api-async-jobs\">this document</a> for a complete explanation of the flow for these Async jobs endpoints"
+      operationId: "sdgRevGetOrganizationsAlignments"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SdgRevOrganizationsAsyncRequest"
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        413:
+          description: "Invalid request:\n\n2101 - The limit of 25.000 ids in the same request has been exceeded"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/organizations/sdg-alignment/alignment-by-id/async:
+    post:
+      tags:
+        - "Universe download - Asynchronous jobs"
+      summary: "Async Job - Request SDG Alignment Values for Organizations"
+      description: "This endpoint will make a request for an async job to retrieve the entire universe of <a href=\"https://clarity.ai\">Clarity.AI</a> securities through their ISINs with their respective issuer, identified using the PermId (see: <a href=\"https://permid.org/\">permid.org</a> )<br>If no permIds are set, the entire mapping table will be returned.<br><b>Please note</b>: This call will only returns the identifier (uuid) for this task. You'll need this value later on further calls to know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>) or download your file when ready (see &laquo;Async Job - Download result file&raquo;)<br>Check <a href=\"/docs/universe-api-async-jobs\">this document</a> for a complete explanation of the flow for these Async jobs endpoints"
+      operationId: "sdgAlignmentGetOrganizationsAlignments"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SdgAlignmentOrganizationsAsyncRequest"
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        413:
+          description: "Invalid request:\n\n2101 - The limit of 25.000 ids in the same request has been exceeded"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/funds/sdg-rev/alignment-by-id/async:
+    post:
+      tags:
+        - "Universe download - Asynchronous jobs"
+      summary: "Async Job - Request SDG Revenue Alignments Values for Funds"
+      description: "This endpoint will make a request for an async Job to retrieve the entire universe of <a href=\"https://clarity.ai\">Clarity.AI</a> SDG Revenue Alignments for all funds and given Alignment Ids.<br><b>Please note</b>: This call will only return the identifier (uuid) for this task. You'll need this value later on further calls to know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>) or download your file when ready (see &laquo;Async Job - Download result file&raquo;)<br>Check <a href=\"/docs/universe-api-async-jobs\">this document</a> for a complete explanation of the flow for these Async jobs endpoints"
+      operationId: "sdgRevGetFundsAlignments"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SdgRevFundsAsyncRequest"
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it\n\n2202 - The value 'ALL' can not be used in conjunction with other identifier types"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/funds/sdg-alignment/alignment-by-id/async:
+    post:
+      tags:
+        - "Universe download - Asynchronous jobs"
+      summary: "Async Job - Request SDG Alignments Values for Funds"
+      description: "This endpoint will make a request for an async Job to retrieve the entire universe of <a href=\"https://clarity.ai\">Clarity.AI</a> SDG Alignments for all funds and given metric ids.<br><b>Please note</b>: This call will only return the identifier (uuid) for this task. You'll need this value later on further calls to know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>) or download your file when ready (see &laquo;Async Job - Download result file&raquo;)<br>Check <a href=\"/docs/universe-api-async-jobs\">this document</a> for a complete explanation of the flow for these Async jobs endpoints"
+      operationId: "sdgAlignmentGetFundsAlignments"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SdgAlignmentFundsAsyncRequest"
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it\n\n2202 - The value 'ALL' can not be used in conjunction with other identifier types"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/portfolios/{portfolioId}/sdg-rev/summary:
+    get:
+      tags:
+        - "Portfolio UN SDG Alignment"
+      summary: "Get SDG Revenue Alignment Total and Goals Portfolio Scores"
+      description: "Given a portfolio id, returns the Total and Goals alignments for a specific Portfolio (portfolioId) along alignment composition."
+      operationId: "portfolioSummary"
+      parameters:
+        - name: "portfolioId"
+          in: "path"
+          description: "The portfolio id you are looking for"
+          required: true
+          schema:
+            type: "string"
+          example: "9a2f825g00013311c3b93699"
+      responses:
+        200:
+          description: "Portfolio alignments"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortfolioSummary"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n2007 - The portfolio id does not exist or does not belong to the user\n\n"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/portfolios/{portfolioId}/sdg-rev/alignment-by-id:
+    get:
+      tags:
+        - "Portfolio UN SDG Alignment"
+      summary: "Get specific SDG Revenue Alignments for Portfolio"
+      description: "Return the requested alignments for a given portfolioId."
+      operationId: "portfolioAlignments"
+      parameters:
+        - name: "portfolioId"
+          in: "path"
+          description: "The portfolio id you are looking for"
+          required: true
+          schema:
+            type: "string"
+          example: "9a2f825g00013311c3b93699"
+        - name: "alignmentId"
+          in: "query"
+          description: "Alignments identifier"
+          required: true
+          schema:
+            type: "array"
+            items:
+              type: "string"
+          example: "[\"TOTAL_SDG_RA\", \"P_01_POVERTY\",]"
+      responses:
+        200:
+          description: "Portfolio alignments"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortfolioAlignments"
+        400:
+          description: "Invalid request:\n\n2006 - At least one of the alignments requested does not exist or this account does not have permission to access it\n\n5001 - List cannot be empty. At least one alignment id is required"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n2007 - The portfolio id does not exist or does not belong to the user\n\n"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/portfolios/{portfolioId}/sdg-alignment/summary:
+    get:
+      tags:
+        - "Portfolio UN SDG Alignment"
+      summary: "Get SDG Alignment portfolio summary"
+      description: "Given a portfolio id, returns the Total and Goals Alignments for a specific Portfolio (portfolioId) along Total Alignment composition."
+      operationId: "portfolioSummaryAssessments"
+      parameters:
+        - name: "portfolioId"
+          in: "path"
+          description: "The portfolio id you are looking for"
+          required: true
+          schema:
+            type: "string"
+          example: "9a2f825g00013311c3b93699"
+      responses:
+        200:
+          description: "Portfolio alignments"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortfolioSummary"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n2007 - The portfolio id does not exist or does not belong to the user\n\n"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/portfolios/{portfolioId}/sdg-alignment/alignment-by-id:
+    get:
+      tags:
+        - "Portfolio UN SDG Alignment"
+      summary: "Get SDG Alignment portfolio values"
+      description: "Return the requested alignments for a given portfolioId."
+      operationId: "portfolioAssessments"
+      parameters:
+        - name: "portfolioId"
+          in: "path"
+          description: "The portfolio id you are looking for"
+          required: true
+          schema:
+            type: "string"
+          example: "9a2f825g00013311c3b93699"
+        - name: "alignmentId"
+          in: "query"
+          description: "Alignments identifier"
+          required: true
+          schema:
+            type: "array"
+            items:
+              type: "string"
+          example: "[\"TOTAL_SDG_RA\", \"P_01_POVERTY\",]"
+      responses:
+        200:
+          description: "Portfolio alignments"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortfolioAssessments"
+        400:
+          description: "Invalid request:\n\n2006 - At least one of the alignments requested does not exist or this account does not have permission to access it\n\n5001 - List cannot be empty. At least one alignment id is required"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n2007 - The portfolio id does not exist or does not belong to the user\n\n"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/funds/{isin}/sdg-rev/summary:
+    get:
+      tags:
+        - "Fund UN SDG Alignment"
+      summary: "Get SDG Revenue Alignment Total and Goals"
+      description: "Given a Fund ISIN, returns the Total and Goals alignments for a specific fund along applicable Coverage."
+      operationId: "fundSummaryByIsin"
+      parameters:
+        - name: "isin"
+          in: "path"
+          description: "ISIN"
+          required: true
+          schema:
+            type: "string"
+          example: "ES0105093001"
+      responses:
+        200:
+          description: "Fund alignments"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FundSummaryWithIsin"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n3001 - Fund ID not found\n\n"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/funds/{isin}/sdg-rev/alignment-by-id:
+    get:
+      tags:
+        - "Fund UN SDG Alignment"
+      summary: "Get SDG Revenue Alignment values"
+      description: "Given a Fund ISIN, returns the alignments for a specific fund."
+      operationId: "fundAlignmentsByIsin"
+      parameters:
+        - name: "isin"
+          in: "path"
+          description: "ISIN"
+          required: true
+          schema:
+            type: "string"
+          example: "ES0105093001"
+        - name: "alignmentId"
+          in: "query"
+          description: "Alignments identifier"
+          required: true
+          schema:
+            type: "array"
+            items:
+              type: "string"
+          example: "[\"TOTAL_SDG_RA\", \"P_01_POVERTY\",]"
+      responses:
+        200:
+          description: "Fund alignments"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FundAlignments"
+        400:
+          description: "Invalid request:\n\n2006 - At least one of the alignments requested does not exist or this account does not have permission to access it\n\n5001 - List cannot be empty. At least one alignment id is required"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n3001 - Fund ID not found\n\n"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/funds/{isin}/sdg-alignment/summary:
+    get:
+      tags:
+        - "Fund UN SDG Alignment"
+      summary: "Get SDG Alignment Total and Goals"
+      description: "Given a Fund ISIN, returns the Total and Goals alignments for a specific fund along applicable Coverage."
+      operationId: "fundAssessmentSummaryByIsin"
+      parameters:
+        - name: "isin"
+          in: "path"
+          description: "ISIN"
+          required: true
+          schema:
+            type: "string"
+          example: "ES0105093001"
+      responses:
+        200:
+          description: "Fund alignments"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FundAlignmentsSummaryWithIsin"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n3001 - Fund ID not found\n\n"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/funds/{isin}/sdg-alignment/alignment-by-id:
+    get:
+      tags:
+        - "Fund UN SDG Alignment"
+      summary: "Get SDG Alignment values"
+      description: "Given a Fund ISIN, returns the alignments for a specific fund."
+      operationId: "fundAssessmentsByIsin"
+      parameters:
+        - name: "isin"
+          in: "path"
+          description: "ISIN"
+          required: true
+          schema:
+            type: "string"
+          example: "ES0105093001"
+        - name: "alignmentId"
+          in: "query"
+          description: "Alignments identifier"
+          required: true
+          schema:
+            type: "array"
+            items:
+              type: "string"
+          example: "[\"TOTAL_SDG_RA\", \"P_01_POVERTY\",]"
+      responses:
+        200:
+          description: "Fund alignments"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FundAssessments"
+        400:
+          description: "Invalid request:\n\n2006 - At least one of the alignments requested does not exist or this account does not have permission to access it\n\n5001 - List cannot be empty. At least one alignment id is required"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n3001 - Fund ID not found\n\n"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+servers:
+  - url: "https://api.clarity.ai/clarity/v1"
+  - url: "https://api.dev.clarity.ai/clarity/v1"
+tags:
+  - name: "Universe download - Asynchronous jobs"
+    description: "SDG Alignment Async Jobs Controller"
+security:
+  - JWT: []

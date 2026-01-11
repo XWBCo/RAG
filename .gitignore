@@ -1,0 +1,32 @@
+# Environment and secrets
+.env
+*.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+*.egg-info/
+
+# Vector DB (too large, recreate from data/)
+chroma_db/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs (generated at runtime)
+logs/*.jsonl
+logs/*.log
+
+# Test artifacts
+.pytest_cache/
+.coverage
+htmlcov/

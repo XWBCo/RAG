@@ -1,0 +1,1535 @@
+components:
+  schemas:
+    TemperatureAlignmentSecurityAsyncRequest:
+      type: "object"
+      properties:
+        idColumns:
+          uniqueItems: true
+          type: "array"
+          description: "Requested Footprint Security Id columns show in result file"
+          example:
+            - "CUSIP"
+            - "ISIN"
+          items:
+            type: "string"
+          enum:
+            - "ISIN"
+            - "CUSIP"
+        securityTypes:
+          uniqueItems: true
+          type: "array"
+          description: "Requested Footprint Security Types"
+          example:
+            - "FUND"
+            - "EQUITY"
+            - "FIXED_INCOME"
+          items:
+            type: "string"
+          enum:
+            - "FUND"
+            - "EQUITY"
+            - "FIXED_INCOME"
+        securityIdsType:
+          type: "string"
+          description: "Requested Footprint Security Id Type"
+          example: "ISIN"
+          enum:
+            - "ISIN"
+            - "CUSIP"
+        securityIds:
+          type: "array"
+          description: "Requested Footprint Security Ids"
+          example:
+            - "US0378331005"
+            - "US64110L1061"
+          items:
+            type: "string"
+    CreateJobResource:
+      type: "object"
+      properties:
+        uuid:
+          type: "string"
+    APIError:
+      type: "object"
+      properties:
+        code:
+          type: "integer"
+          format: "int32"
+        message:
+          type: "string"
+    CarbonFootprintSecurityAsyncRequest:
+      type: "object"
+      properties:
+        idColumns:
+          uniqueItems: true
+          type: "array"
+          description: "Requested Footprint Security Id columns show in result file"
+          example:
+            - "CUSIP"
+            - "ISIN"
+          items:
+            type: "string"
+          enum:
+            - "ISIN"
+            - "CUSIP"
+        metricIds:
+          type: "array"
+          description: "Requested Footprint Security Metric IDs"
+          example:
+            - "WEIGHTED_AVERAGE_CARBON_INTENSITY_SCOPE_1_2"
+            - "TOTAL_FINANCED_EMISSIONS_SCOPE_3"
+          items:
+            type: "string"
+        securityTypes:
+          uniqueItems: true
+          type: "array"
+          description: "Requested Footprint Security Types"
+          example:
+            - "FUND"
+            - "EQUITY"
+            - "FIXED_INCOME"
+          items:
+            type: "string"
+          enum:
+            - "FUND"
+            - "EQUITY"
+            - "FIXED_INCOME"
+        securityIdsType:
+          type: "string"
+          description: "Requested Footprint Security Id Type"
+          example: "ISIN"
+          enum:
+            - "ISIN"
+            - "CUSIP"
+        securityIds:
+          type: "array"
+          description: "Requested Footprint Security Ids"
+          example:
+            - "US0378331005"
+            - "US64110L1061"
+          items:
+            type: "string"
+    TopSectorsPortfolioRequest:
+      type: "object"
+      properties:
+        metricIds:
+          type: "array"
+          description: "Metric id"
+          example:
+            - "CONTRIBUTION_TO_TOTAL_FINANCED_EMISSIONS_SCOPE_1_2"
+          items:
+            type: "string"
+            description: "Metric id"
+            example: "[\"CONTRIBUTION_TO_TOTAL_FINANCED_EMISSIONS_SCOPE_1_2\"]"
+    TopSectorResource:
+      type: "object"
+      properties:
+        metrics:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/TopSectorsByMetric"
+      description: "Metrics with top 5 sectors"
+    TopSectorsByMetric:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          description: "Metric id"
+          example: "CONTRIBUTION_TO_TOTAL_FINANCED_EMISSIONS_SCOPE_1_2"
+        sectors:
+          type: "array"
+          description: "Top 5 sectors for specific metric"
+          example:
+            - id: "55"
+              value: 39.180006972729075
+              meta: "NONE"
+              weight: 35.42
+            - id: "40"
+              value: 15.920574230365744
+              meta: "NONE"
+              weight: 20.24
+            - id: "10"
+              value: 15.61760498438724
+              meta: "NONE"
+              weight: 15
+            - id: "15"
+              value: 12.853729967292892
+              meta: "NONE"
+              weight: 5
+            - id: "20"
+              value: 4.445214032452101
+              meta: "NONE"
+              weight: 5
+          items:
+            $ref: "#/components/schemas/TopSectorsValues"
+      description: "Specific information for each metric"
+    TopSectorsValues:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          description: "Sector Id"
+          example: "55"
+        value:
+          type: "number"
+          description: "Metric value for requested metric"
+          format: "double"
+          example: 36.701168
+        meta:
+          type: "string"
+          description: "Meta value"
+          example: "NONE"
+        weight:
+          type: "number"
+          description: "Sector weight"
+          format: "double"
+          example: 28.56
+      description: "Value for each metric"
+      example:
+        - id: "55"
+          value: 39.180006972729075
+          meta: "NONE"
+          weight: 35.42
+        - id: "40"
+          value: 15.920574230365744
+          meta: "NONE"
+          weight: 20.24
+        - id: "10"
+          value: 15.61760498438724
+          meta: "NONE"
+          weight: 15
+        - id: "15"
+          value: 12.853729967292892
+          meta: "NONE"
+          weight: 5
+        - id: "20"
+          value: 4.445214032452101
+          meta: "NONE"
+          weight: 5
+    NetZeroAsyncRequest:
+      required:
+        - "permIds"
+      type: "object"
+      properties:
+        permIds:
+          type: "array"
+          description: "Requested Perm IDs"
+          example:
+            - "PERM_ID_1"
+            - "PERM_ID_2"
+          items:
+            pattern: "\\d+"
+            type: "string"
+        metricIds:
+          type: "array"
+          description: "Requested Footprint Security Metric IDs"
+          example:
+            - "NZ_ALIGNMENT"
+            - "NEAR_TERM_VALID_TARGET_SCOPE_1_2"
+            - "EMISSIONS_PERFORMANCE_COMPLIANT"
+            - "NZ_DECARBONIZATION_ACTIONS_RESULT"
+          items:
+            type: "string"
+        includeScope3:
+          type: "boolean"
+          description: "Indicates if scope 3 metrics are included"
+          example: false
+    TemperatureAlignmentAsyncRequest:
+      required:
+        - "permIds"
+      type: "object"
+      properties:
+        permIds:
+          type: "array"
+          description: "Requested Perm IDs"
+          example:
+            - "PERM_ID_1"
+            - "PERM_ID_2"
+          items:
+            pattern: "\\d+"
+            type: "string"
+    CarbonFootprintOrgLevelRequest:
+      required:
+        - "permIds"
+      type: "object"
+      properties:
+        permIds:
+          type: "array"
+          description: "Requested Perm IDs"
+          example:
+            - "PERM_ID_1"
+            - "PERM_ID_2"
+          items:
+            pattern: "\\d+"
+            type: "string"
+    HistoricalEmissionsOrgAsyncRequest:
+      required:
+        - "metricIds"
+        - "year"
+      type: "object"
+      properties:
+        metricIds:
+          type: "array"
+          description: "Requested Historical Emissions Organization Metric IDs"
+          example:
+            - "ANALYTICESTIMATEDCO2TOTAL"
+            - "CO2INDIRECTSCOPE3_UPSTREAM"
+            - "CO2INDIRECTSCOPE3_DOWNSTREAM"
+            - "CO2INDIRECTSCOPE3_NS"
+            - "CO2DIRECTSCOPE1"
+            - "CO2INDIRECTSCOPE2"
+            - "CO2INDIRECTSCOPE3"
+          items:
+            type: "string"
+        year:
+          minimum: 2019
+          type: "integer"
+          description: "Data from an specific year"
+          format: "int32"
+          example: 2023
+        permIds:
+          type: "array"
+          description: "Requested Perm IDs"
+          example:
+            - "PERM_ID_1"
+            - "PERM_ID_2"
+          items:
+            type: "string"
+    CarbonFootprintAsyncRequest:
+      type: "object"
+      properties:
+        metricIds:
+          type: "array"
+          description: "Requested Footprint Metric IDs"
+          example:
+            - "WEIGHTED_AVERAGE_CARBON_INTENSITY_SCOPE_1_2"
+            - "TOTAL_FINANCED_EMISSIONS_SCOPE_1_2"
+            - "CARBON_INTENSITY_PER_SALES_SCOPE_3"
+          items:
+            type: "string"
+    PortfolioCarbonScoresResponse:
+      type: "object"
+      properties:
+        portfolioName:
+          type: "string"
+          example: "Portfolio name"
+        totalOrganizations:
+          minimum: 0
+          type: "integer"
+          format: "int32"
+          example: 1957
+        scores:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CarbonScore"
+    CarbonScore:
+      type: "object"
+      properties:
+        score:
+          maximum: 100
+          minimum: 0
+          type: "integer"
+          format: "int32"
+          example: 87
+        metadata:
+          type: "string"
+          example: "NONE"
+          enum:
+            - "NONE"
+            - "ASSIGNED"
+            - "LIMITED_INFO"
+            - "NOT_AVAILABLE"
+            - "NOT_IMPORTANT"
+            - "NOT_APPLICABLE"
+            - "OUT_OF_UNIVERSE"
+        coverageOrganizations:
+          minimum: 0
+          type: "integer"
+          format: "int32"
+          example: 1344
+        coverageWeight:
+          maximum: 100
+          minimum: 0
+          type: "number"
+          format: "double"
+          example: 87.4
+        reportedOrganizations:
+          minimum: 0
+          type: "integer"
+          format: "int32"
+          example: 957
+        reportedWeight:
+          maximum: 100
+          minimum: 0
+          type: "number"
+          format: "double"
+          example: 77.1676447
+        id:
+          type: "string"
+          example: "CO2DIRECTSCOPE1"
+          enum:
+            - "ANALYTICESTIMATEDCO2TOTAL"
+            - "ANALYTIC_CO2INTENSITY_TOTAL_2025"
+            - "CO2DIRECTSCOPE1"
+            - "CO2INDIRECTSCOPE2"
+            - "CO2INDIRECTSCOPE3"
+            - "REDUCTION_CO2INTENSITY_TOTAL_2025"
+    PortfolioCarbonFootprintResponse:
+      type: "object"
+      properties:
+        portfolioName:
+          type: "string"
+          example: "Portfolio name"
+        totalOrganizations:
+          minimum: 0
+          type: "integer"
+          format: "int32"
+          example: 1957
+        metrics:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CarbonFootprint"
+    CarbonFootprint:
+      type: "object"
+      properties:
+        value:
+          minimum: 0
+          type: "number"
+          format: "double"
+          example: 742.51
+        units:
+          type: "string"
+          example: "tons CO2e"
+        metadata:
+          type: "string"
+          example: "NONE"
+          enum:
+            - "NONE"
+            - "ASSIGNED"
+            - "LIMITED_INFO"
+            - "NOT_AVAILABLE"
+            - "NOT_IMPORTANT"
+            - "NOT_APPLICABLE"
+            - "OUT_OF_UNIVERSE"
+        coverageOrganizations:
+          minimum: 0
+          type: "integer"
+          format: "int32"
+          example: 1344
+        coverageWeight:
+          maximum: 100
+          minimum: 0
+          type: "number"
+          format: "double"
+          example: 87.4
+        reportedOrganizations:
+          minimum: 0
+          type: "integer"
+          format: "int32"
+          example: 957
+        reportedWeight:
+          maximum: 100
+          minimum: 0
+          type: "number"
+          format: "double"
+          example: 77.1676447
+        id:
+          type: "string"
+          example: "TOTAL_FINANCED_EMISSIONS_SCOPE_1_2"
+          enum:
+            - "WEIGHTED_AVERAGE_CARBON_INTENSITY_SCOPE_1_2"
+            - "TOTAL_FINANCED_EMISSIONS_SCOPE_1_2"
+    FundScoresResponse:
+      type: "object"
+      properties:
+        idType:
+          type: "string"
+          example: "ISIN"
+          enum:
+            - "ISIN"
+            - "CUSIP"
+        id:
+          type: "string"
+          example: "ES0105093001"
+        name:
+          type: "string"
+          example: "Gigas Hosting SA ORD"
+        allocationDate:
+          type: "string"
+          format: "date"
+        totalOrganizations:
+          minimum: 0
+          type: "integer"
+          format: "int32"
+          example: 2339
+        peersGroup:
+          $ref: "#/components/schemas/PeersGroup"
+        scores:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/FundScoreResult"
+    PeersGroup:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          example: "5689"
+    FundScoreResult:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          example: "ANALYTIC_CO2INTENSITY_TOTAL_2025"
+        score:
+          maximum: 100
+          minimum: 0
+          type: "string"
+          format: "byte"
+          example: "ODc="
+        metadata:
+          type: "string"
+          example: "NONE"
+          enum:
+            - "NONE"
+            - "ASSIGNED"
+            - "LIMITED_INFO"
+            - "NOT_AVAILABLE"
+            - "NOT_IMPORTANT"
+            - "NOT_APPLICABLE"
+            - "OUT_OF_UNIVERSE"
+        coverageOrganizations:
+          type: "integer"
+          format: "int32"
+          example: 67
+        coverageWeight:
+          maximum: 100
+          minimum: 0
+          type: "number"
+          format: "float"
+          example: 67
+        reportedOrganizations:
+          type: "integer"
+          format: "int32"
+          example: 34
+        reportedWeight:
+          maximum: 100
+          minimum: 0
+          type: "number"
+          format: "float"
+          example: 45
+        peersPercentile:
+          maximum: 100
+          minimum: 0
+          type: "string"
+          format: "byte"
+          example: "NTc="
+        countPeersPercentile:
+          minimum: 0
+          type: "integer"
+          format: "int32"
+          example: 15
+    FundCarbonFootprintResponse:
+      type: "object"
+      properties:
+        idType:
+          type: "string"
+          example: "ISIN"
+          enum:
+            - "ISIN"
+            - "CUSIP"
+        id:
+          type: "string"
+          example: "ES0105093001"
+        name:
+          type: "string"
+          example: "Gigas Hosting SA ORD"
+        allocationDate:
+          type: "string"
+          format: "date"
+        totalOrganizations:
+          minimum: 0
+          type: "integer"
+          format: "int32"
+          example: 2339
+        peersGroup:
+          $ref: "#/components/schemas/PeersGroup"
+        metrics:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/FundCarbonFootprintResult"
+    FundCarbonFootprintResult:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          example: "TOTAL_FINANCED_EMISSIONS_SCOPE_1_2"
+        value:
+          type: "number"
+          format: "float"
+          example: 89.9
+        metadata:
+          type: "string"
+          example: "NONE"
+          enum:
+            - "NONE"
+            - "ASSIGNED"
+            - "LIMITED_INFO"
+            - "NOT_AVAILABLE"
+            - "NOT_IMPORTANT"
+            - "NOT_APPLICABLE"
+            - "OUT_OF_UNIVERSE"
+        unit:
+          type: "string"
+          example: "%"
+        coverageOrganizations:
+          type: "integer"
+          format: "int32"
+          example: 67
+        coverageWeight:
+          maximum: 100
+          minimum: 0
+          type: "number"
+          format: "float"
+          example: 67
+        reportedOrganizations:
+          type: "integer"
+          format: "int32"
+          example: 34
+        reportedWeight:
+          maximum: 100
+          minimum: 0
+          type: "number"
+          format: "float"
+          example: 45
+        peersPercentile:
+          maximum: 100
+          minimum: 0
+          type: "string"
+          format: "byte"
+          example: "NTc="
+        countPeersPercentile:
+          minimum: 0
+          type: "integer"
+          format: "int32"
+          example: 15
+    FundScoresWithIsinResponse:
+      type: "object"
+      properties:
+        isin:
+          type: "string"
+          example: "ES0105093001"
+        name:
+          type: "string"
+          example: "Gigas Hosting SA ORD"
+        allocationDate:
+          type: "string"
+          format: "date"
+        totalOrganizations:
+          minimum: 0
+          type: "integer"
+          format: "int32"
+          example: 2339
+        peersGroup:
+          $ref: "#/components/schemas/PeersGroup"
+        scores:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/FundScoreResult"
+    FundCarbonFootprintWithIsinResponse:
+      type: "object"
+      properties:
+        isin:
+          type: "string"
+          example: "ES0105093001"
+        name:
+          type: "string"
+          example: "Gigas Hosting SA ORD"
+        allocationDate:
+          type: "string"
+          format: "date"
+        totalOrganizations:
+          minimum: 0
+          type: "integer"
+          format: "int32"
+          example: 2339
+        peersGroup:
+          $ref: "#/components/schemas/PeersGroup"
+        metrics:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/FundCarbonFootprintResult"
+  securitySchemes:
+    JWT:
+      type: "http"
+      scheme: "bearer"
+      bearerFormat: "JWT"
+info:
+  title: "Clarity AI API - Climate"
+  description: "API to access Clarity AI data services."
+  termsOfService: "https://static.clarity.ai/Clarity_AI_TermsAndConditions.pdf"
+  contact:
+    name: "Clarity AI"
+    url: "https://www.clarity.ai"
+    email: "support@clarity.ai"
+  version: "1.0.0"
+openapi: "3.0.1"
+paths:
+  /public/securities/climate/temperature-alignment/rawdata/metric-by-id/async:
+    post:
+      tags:
+        - "Universe download - Asynchronous jobs"
+      summary: "Async Job, get Temperature Alignment raw data for securities"
+      description: "This endpoint will make a request for an async Job to retrieve the whole universe of <a href=\"https://clarity.ai\">Clarity.AI</a> Temperature Alignment raw data. <br><b>Please note</b>: This call will only return the identifier (uuid) for this task. You'll need this value later on further calls to know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>) or download your file when ready (see &laquo;Async Job - Download result file&raquo;)<br>Check <a href=\"/docs/universe-api-async-jobs\">this document</a> for a complete explanation of the flow for these Async jobs endpoints"
+      operationId: "asyncJobTemperatureAlignmentSecurityById"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TemperatureAlignmentSecurityAsyncRequest"
+        required: true
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        413:
+          description: "Exceeded ids limit:\n\n2101 - The limit of 25.000 ids in the same request has been exceeded"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/securities/climate/carbon-footprint/metric-by-id/async:
+    post:
+      tags:
+        - "Universe download - Asynchronous jobs"
+      summary: "Async Job, get Carbon Footprint Security metric values"
+      description: "This endpoint will make a request for an async Job to retrieve the whole universe of <a href=\"https://clarity.ai\">Clarity.AI</a> Carbon footprint for given metrics ids.<br><b>Please note</b>: This call will only return the identifier (uuid) for this task. You'll need this value later on further calls to know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>) or download your file when ready (see &laquo;Async Job - Download result file&raquo;)<br>Check <a href=\"/docs/universe-api-async-jobs\">this document</a> for a complete explanation of the flow for these Async jobs endpoints"
+      operationId: "asyncJobFootprintSecurityById"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CarbonFootprintSecurityAsyncRequest"
+        required: true
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        413:
+          description: "Exceeded ids limit:\n\n2101 - The limit of 25.000 ids in the same request has been exceeded"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/portfolios/{portfolioId}/climate/carbon-footprint/sectors/top:
+    post:
+      tags:
+        - "Portfolio Climate"
+      summary: "Get top five sectors portfolio carbon footprint"
+      description: "Given a portfolio id and a list of metric ids, returns the top five industry sectors with their value for each of the metrics.\n\nThe supported metrics are:\n* CONTRIBUTION_TO_TOTAL_FINANCED_EMISSIONS_SCOPE_1_2\n\nFind below the mapping for each of the sector IDs returned in the response:\n* 10: Energy\n* 15: Materials\n* 20: Industrials\n* 25: Consumer Discretionary\n* 30: Consumer Staples\n* 35: Health Care\n* 40: Financials\n* 45: Information Technology\n* 50: Communication Services\n* 55: Utilities\n* 60: Real Estate\n* 90: Governments"
+      operationId: "getTopSectorsCarbonFootprint"
+      parameters:
+        - name: "portfolioId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TopSectorsPortfolioRequest"
+        required: true
+      responses:
+        200:
+          description: "Top 5 sectors order by the metric value"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TopSectorResource"
+        400:
+          description: "Bad Request :\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n2007 - The portfolio id does not exist or does not belong to the user"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/organizations/net-zero/metric-by-id/async:
+    post:
+      tags:
+        - "Universe download - Asynchronous jobs"
+      summary: "Async Job, get Net Zero organization values"
+      description: "This endpoint will make a request for an async Job to retrieve the whole universe at the organization level Net Zero data feed that gives the alignment of each company to Net Zero using an standard Net Zero framework and the underlying metrics used to calculate it.<br><b>Please note</b>: This call will only return the identifier (uuid) for this task. You'll need this value later on further calls to know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>) or download your file when ready (see &laquo;Async Job - Download result file&raquo;)<br>Check <a href=\"/docs/universe-api-async-jobs\">this document</a> for a complete explanation of the flow for these Async jobs endpoints"
+      operationId: "asyncJobOrganizationMetricsByPermId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NetZeroAsyncRequest"
+        required: true
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      deprecated: true
+      security:
+        - JWT: []
+  /public/organizations/climate/temperature-alignment/rawdata/metric-by-id/async:
+    post:
+      tags:
+        - "Universe download - Asynchronous jobs"
+      summary: "Async Job, get Temperature Alignment raw data"
+      description: "This endpoint will make a request for an async job to retrieve <a href=\"https://clarity.ai\">Clarity.AI</a> Temperature Alignment raw data for given permIds. <br>You can request the whole values universe or provide a list of permIds (see: <a href=\"https://permid.org/\">permid.org</a>).<b>Please note</b>: This call will only return the identifier (uuid) for this task. You'll need this value later on further calls to know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>) or download your file when ready (see &laquo;Async Job - Download result file&raquo;)<br>Check <a href=\"/docs/universe-api-async-jobs\">this document</a> for a complete explanation of the flow for these Async jobs endpoints"
+      operationId: "asyncJobTemperatureAlignmentByPermId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TemperatureAlignmentAsyncRequest"
+        required: true
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        413:
+          description: "Exceeded ids limit:\n\n2101 - The limit of 25.000 ids in the same request has been exceeded"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/organizations/climate/carbon-footprint/metric-by-id/async:
+    post:
+      tags:
+        - "Universe download - Asynchronous jobs"
+      summary: "Async Job, get Carbon Footprint organization metric values"
+      description: "This endpoint will make a request for an async job to retrieve <a href=\"https://clarity.ai\">Clarity.AI</a> Carbon Footprint organization values for given permIds. <br>You can request the whole values universe or provide a list of permIds (see: <a href=\"https://permid.org/\">permid.org</a>).<b>Please note</b>: This call will only return the identifier (uuid) for this task. You'll need this value later on further calls to know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>) or download your file when ready (see &laquo;Async Job - Download result file&raquo;)<br>Check <a href=\"/docs/universe-api-async-jobs\">this document</a> for a complete explanation of the flow for these Async jobs endpoints"
+      operationId: "asyncJobCarbonOrganizationLevelMetrics"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CarbonFootprintOrgLevelRequest"
+        required: true
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        413:
+          description: "Exceeded ids limit:\n\n2101 - The limit of 25.000 ids in the same request has been exceeded"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/organizations/climate/carbon-footprint/historical-emissions/metric-by-id/async:
+    post:
+      tags:
+        - "Universe download - Asynchronous jobs"
+      summary: "Async Job, get Carbon Footprint Historical Emissions raw data"
+      description: "This endpoint will make a request for an async Job to retrieve the whole universe of\n<a href=\"https://clarity.ai\">Clarity.AI</a> Carbon footprint Historical Emissions for given metrics ids.<br>\n<b>Please note</b>: This call will only return the identifier (uuid) for this task. You'll need\nthis value later on further calls to know the status of your job\n(see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>)\nor download your file when ready (see &laquo;Async Job - Download result file&raquo;)\n<br>Check <a href=\"/docs/universe-api-async-jobs\">this document</a>\nfor a complete explanation of the flow for these Async jobs endpoints\n"
+      operationId: "asyncJobOrganizationHistoricalEmissions"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HistoricalEmissionsOrgAsyncRequest"
+        required: true
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it\n\n5011 - Invalid year"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        413:
+          description: "Too many permIds:\n\n2101 - The limit of 25.000 ids in the same request has been exceeded"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/organizations/climate-transition/net-zero/metric-by-id/async:
+    post:
+      tags:
+        - "Universe download - Asynchronous jobs"
+      summary: "Async Job, get Net Zero organization values for specific requested metrics"
+      description: "This endpoint will make a request for an async Job to retrieve the whole universe at the organization level Net Zero data feed that gives the alignment for the  Net Zero requested metrics for each company using an standard Net Zero framework and the underlying metrics used to calculate it.<br><b>Please note</b>: This call will only return the identifier (uuid) for this task. You'll need this value later on further calls to know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>) or download your file when ready (see &laquo;Async Job - Download result file&raquo;)<br>Check <a href=\"/docs/universe-api-async-jobs\">this document</a> for a complete explanation of the flow for these Async jobs endpoints"
+      operationId: "asyncJobNZOrganizationReceivingMetricsAndPermId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NetZeroAsyncRequest"
+        required: true
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/funds/climate/carbon-footprint/metric-by-id/async:
+    post:
+      tags:
+        - "Universe download - Asynchronous jobs"
+      summary: "Async Job, get Carbon Footprint fund metric values"
+      description: "This endpoint will make a request for an async Job to retrieve the whole universe of <a href=\"https://clarity.ai\">Clarity.AI</a> fund Carbon footprint values for given metrics ids.<br><b>Please note</b>: This call will only return the identifier (uuid) for this task. You'll need this value later on further calls to know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>) or download your file when ready (see &laquo;Async Job - Download result file&raquo;)<br>Check <a href=\"/docs/universe-api-async-jobs\">this document</a> for a complete explanation of the flow for these Async jobs endpoints"
+      operationId: "asyncJobFootprintById"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CarbonFootprintAsyncRequest"
+        required: true
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/portfolios/{portfolioId}/climate/carbon-scores:
+    get:
+      tags:
+        - "Portfolio Climate"
+      summary: "get Portfolio climate scores"
+      description: "Given a portfolio id, returns the Score, Coverage in number of organizations, Coverage in portfolio weight, Reported In number of organizations and Reported In portfolio weight for the main climate metrics: Total CO2 Emissions (Scope 1 + Scope 2), Scope 1 CO2e emissions (Direct), Scope 2 CO2e emissions (Indirect), Scope 3 CO2e emissions (Indirect), 2025 Committed Emissions and Emissions Reduction Commitment 2025."
+      operationId: "getScores"
+      parameters:
+        - name: "portfolioId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "scoringProfileId"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+            default: "ESG_RISK_INDUSTRY_CONSENSUS_ALL_COMPANIES"
+      responses:
+        200:
+          description: "The scores of the main climate metrics"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortfolioCarbonScoresResponse"
+        400:
+          description: "Invalid request:\n\n2004 - Portfolio id requested not valid or empty"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n2007 - The portfolio id does not exist or does not belong to the user"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        412:
+          description: "Invalid portfolio:\n\n2011 - The portfolio is not valid. If you are receiving this message because your portfolio isn't ready please check the status of a portfolio (Portfolios Management API -> GET Portfolio endpoint) before querying this endpoint"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/portfolios/{portfolioId}/climate/carbon-scores/top-organizations:
+    get:
+      tags:
+        - "Portfolio Climate"
+      summary: "Get top ten portfolio climate scores"
+      description: "Given a portfolio id, returns Organization name, Portfolio weight and scores for climate metrics"
+      operationId: "getTopOrganizationsCarbonScores"
+      parameters:
+        - name: "portfolioId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "scoringProfileId"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+            default: "ESG_RISK_INDUSTRY_CONSENSUS_ALL_COMPANIES"
+      responses:
+        200:
+          description: "Top ten organizations by weight with carbon scores"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortfolioCarbonFootprintResponse"
+        400:
+          description: "Invalid request:\n\n2004 - Portfolio id requested not valid or empty"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n2007 - The portfolio id does not exist or does not belong to the user"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        412:
+          description: "Invalid portfolio:\n\n2011 - The portfolio is not valid. If you are receiving this message because your portfolio isn't ready please check the status of a portfolio (Portfolios Management API -> GET Portfolio endpoint) before querying this endpoint"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/portfolios/{portfolioId}/climate/carbon-footprint:
+    get:
+      tags:
+        - "Portfolio Climate"
+      summary: "get Portfolio carbon footprint"
+      description: "Given a portfolio id, returns Value, Coverage in number of organizations, Coverage in portfolio weight, Reported In number of organizations, Reported In portfolio weight for the main carbon footprint metrics: Portfolio financed emissions and Portfolio Financed Emissions / USD M Invested."
+      operationId: "getFootPrint"
+      parameters:
+        - name: "portfolioId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "scoringProfileId"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+            default: "ESG_RISK_INDUSTRY_CONSENSUS_ALL_COMPANIES"
+      responses:
+        200:
+          description: "The summary of the main carbon footprint metrics"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortfolioCarbonFootprintResponse"
+        400:
+          description: "Invalid request:\n\n2004 - Portfolio id requested not valid or empty"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n2007 - The portfolio id does not exist or does not belong to the user"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        412:
+          description: "Invalid portfolio:\n\n2011 - The portfolio is not valid. If you are receiving this message because your portfolio isn't ready please check the status of a portfolio (Portfolios Management API -> GET Portfolio endpoint) before querying this endpoint"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/funds/{idType}/{id}/climate/carbon-scores:
+    get:
+      tags:
+        - "Funds Climate"
+      summary: "get Fund Climate scores"
+      description: "Given a Fund identifier it returns analytic estimated total CO2,analytic CO2 intensity 2025, analytic CO2 intensity 2030, Scope1, Scope2, Scope3, reduction CO2 intensity 2025 scoresand its percentiles along with coverage (number of relevant organizations, relevant weight, reported organizations andreported weight."
+      operationId: "getScoresSummary"
+      parameters:
+        - name: "idType"
+          in: "path"
+          description: "Identifier type"
+          required: true
+          schema:
+            type: "string"
+            enum:
+              - "ISIN"
+              - "CUSIP"
+          example: "ISIN"
+        - name: "id"
+          in: "path"
+          description: "Identifier"
+          required: true
+          schema:
+            type: "string"
+          example: "ES0105093001"
+        - name: "scoringProfileId"
+          in: "query"
+          description: "Scoring Profile ID"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        200:
+          description: "The fund climate scores"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FundScoresResponse"
+        400:
+          description: "Invalid request:\n\n3000 - Fund ID requested not valid or empty"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n3001 - Fund ID not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/funds/{idType}/{id}/climate/carbon-footprint:
+    get:
+      tags:
+        - "Funds Climate"
+      summary: "get Fund Carbon Footprint"
+      description: "Given a Fund identifier it returns weighted average carbon intensity,fund financed emissions / USD M Invested, fund carbon intensity values and its percentiles along with coverage (number of relevant organizations, relevant weight, reported organizations and reported weight."
+      operationId: "getCarbonFootprintSummary"
+      parameters:
+        - name: "idType"
+          in: "path"
+          description: "Identifier type"
+          required: true
+          schema:
+            type: "string"
+            enum:
+              - "ISIN"
+              - "CUSIP"
+          example: "ISIN"
+        - name: "id"
+          in: "path"
+          description: "Identifier"
+          required: true
+          schema:
+            type: "string"
+          example: "ES0105093001"
+        - name: "scoringProfileId"
+          in: "query"
+          description: "Scoring Profile ID"
+          required: false
+          schema:
+            type: "string"
+        - name: "investedAmount"
+          in: "query"
+          description: "Invested amount. Default value: 1000000"
+          required: false
+          schema:
+            type: "number"
+            format: "double"
+            default: 1000000
+        - name: "currency"
+          in: "query"
+          description: "Currency. Using the standard ISO 4217 currency code. Examples: USD, EUR, GBP. Default value: USD"
+          required: false
+          schema:
+            type: "string"
+            default: "USD"
+          example: "USD"
+      responses:
+        200:
+          description: "The fund carbon footprint"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FundCarbonFootprintResponse"
+        400:
+          description: "Invalid request:\n\n3000 - Fund ID requested not valid or empty"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n3001 - Fund ID not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/funds/{fundId}/climate/carbon-scores:
+    get:
+      tags:
+        - "Funds Climate"
+      summary: "get Fund Climate scores"
+      description: "Given a Fund ISIN it returns analytic estimated total CO2,analytic CO2 intensity 2025, analytic CO2 intensity 2030, Scope1, Scope2, Scope3, reduction CO2 intensity 2025 scoresand its percentiles along with coverage (number of relevant organizations, relevant weight, reported organizations andreported weight."
+      operationId: "getScoresSummaryWithIsin"
+      parameters:
+        - name: "fundId"
+          in: "path"
+          description: "ISIN"
+          required: true
+          schema:
+            type: "string"
+          example: "ES0105093001"
+        - name: "scoringProfileId"
+          in: "query"
+          description: "Scoring Profile ID"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        200:
+          description: "The fund climate scores"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FundScoresWithIsinResponse"
+        400:
+          description: "Invalid request:\n\n3000 - Fund ID requested not valid or empty"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n3001 - Fund ID not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      deprecated: true
+      security:
+        - JWT: []
+  /public/funds/{fundId}/climate/carbon-footprint:
+    get:
+      tags:
+        - "Funds Climate"
+      summary: "get Fund Carbon Footprint"
+      description: "Given a Fund ISIN it returns weighted average carbon intensity,fund financed emissions / USD M Invested, fund carbon intensity values and its percentiles along with coverage (number of relevant organizations, relevant weight, reported organizations and reported weight."
+      operationId: "getCarbonFootprintSummaryWithIsin"
+      parameters:
+        - name: "fundId"
+          in: "path"
+          description: "ISIN"
+          required: true
+          schema:
+            type: "string"
+          example: "ES0105093001"
+        - name: "scoringProfileId"
+          in: "query"
+          description: "Scoring Profile ID"
+          required: false
+          schema:
+            type: "string"
+        - name: "investedAmount"
+          in: "query"
+          description: "Invested amount. Default value: 1000000"
+          required: false
+          schema:
+            type: "number"
+            format: "double"
+            default: 1000000
+        - name: "currency"
+          in: "query"
+          description: "Currency. Using the standard ISO 4217 currency code. Examples: USD, EUR, GBP. Default value: USD"
+          required: false
+          schema:
+            type: "string"
+            default: "USD"
+          example: "USD"
+      responses:
+        200:
+          description: "The fund carbon footprint"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FundCarbonFootprintWithIsinResponse"
+        400:
+          description: "Invalid request:\n\n3000 - Fund ID requested not valid or empty"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        404:
+          description: "Not found:\n\n3001 - Fund ID not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      deprecated: true
+      security:
+        - JWT: []
+servers:
+  - url: "https://api.clarity.ai/clarity/v1"
+  - url: "https://api.dev.clarity.ai/clarity/v1"
+tags:
+  - name: "Portfolio Climate"
+    description: "Portfolio Climate API"
+  - name: "Funds Climate"
+    description: "Funds Climate API"
+  - name: "Universe download - Asynchronous jobs"
+    description: "Universe download - Asynchronous jobs"
+security:
+  - JWT: []

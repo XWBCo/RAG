@@ -1,0 +1,84 @@
+{
+  "metadata": {
+    "timestamp": "2026-01-09T21:43:05.110479",
+    "total_queries": 9,
+    "tags_filter": [
+      "core"
+    ]
+  },
+  "v1_summary": {
+    "total": 9,
+    "good_count": 0,
+    "fair_count": 7,
+    "poor_count": 2,
+    "good_pct": 0.0,
+    "fair_pct": 77.77777777777779,
+    "poor_pct": 22.22222222222222,
+    "avg_retrieval_score": 0.4400383941144599,
+    "avg_top_retrieval_score": 0.5210563601060638,
+    "avg_topic_coverage": 0.712962962962963,
+    "avg_latency_ms": 3862.852481441223,
+    "worst_queries": [
+      [
+        "monte_carlo_50th_percentile",
+        0.3772243546356398
+      ],
+      [
+        "portfolio_efficient_frontier",
+        0.39809579649929205
+      ],
+      [
+        "risk_tracking_error_interpretation",
+        0.41809367598197955
+      ],
+      [
+        "portfolio_frontier_interpretation",
+        0.42057869091777544
+      ],
+      [
+        "monte_carlo_95th_percentile",
+        0.44716675587026333
+      ]
+    ]
+  },
+  "v2_summary": {
+    "total": 9,
+    "good_count": 9,
+    "fair_count": 0,
+    "poor_count": 0,
+    "good_pct": 100.0,
+    "fair_pct": 0.0,
+    "poor_pct": 0.0,
+    "avg_retrieval_score": 0.899537037037037,
+    "avg_top_retrieval_score": 0.938888888888889,
+    "avg_topic_coverage": 0.712962962962963,
+    "avg_latency_ms": 23835.37291210895,
+    "worst_queries": [
+      [
+        "risk_sharpe_ratio",
+        0.8666666666666666
+      ],
+      [
+        "risk_tracking_error_interpretation",
+        0.8666666666666667
+      ],
+      [
+        "portfolio_efficient_frontier",
+        0.8875000000000001
+      ],
+      [
+        "monte_carlo_5th_percentile",
+        0.9
+      ],
+      [
+        "monte_carlo_95th_percentile",
+        0.9
+      ]
+    ]
+  },
+  "comparison": {
+    "retrieval_diff": 0.45949864292257714,
+    "latency_diff_ms": 19972.520430667726,
+    "topic_coverage_diff": 0.0
+  }
+}

@@ -1,0 +1,93 @@
+components:
+  schemas: {}
+  securitySchemes:
+    JWT:
+      type: "http"
+      scheme: "bearer"
+      bearerFormat: "JWT"
+info:
+  title: "Clarity AI API - Company AI Reports"
+  description: "API to access Clarity AI data services."
+  termsOfService: "https://static.clarity.ai/Clarity_AI_TermsAndConditions.pdf"
+  contact:
+    name: "Clarity AI"
+    url: "https://www.clarity.ai"
+    email: "support@clarity.ai"
+  version: "1.0.0"
+openapi: "3.0.1"
+paths:
+  /public/company-brief/linkout/{base64Data}:
+    get:
+      tags:
+        - "Company AI Reports"
+      summary: "Redirect to widget with Base64 encoded parameters"
+      description: "Redirects to a widget URL using Base64 encoded JSON containing token, ISIN, and language (equity only AND certain companies covered by the reports).\n\n## JSON Structure\nThe Base64 encoded JSON should contain:\n```json\n{\n  \"token\": \"jwt_token\",\n  \"isin\": \"ISIN_CODE\",\n  \"lang\": \"en-US\",\n  \"modules\": [\"ESG_RISK\", \"CONTROVERSIES\"]\n}\n```\n\n## Authentication Token\n**How to get JWT token:**\n- **API Login**: POST `/oauth/token` with API key/secret credentials\n- The token is returned in the response under the `token` field\n- Include the token in the `Authorization: Bearer <token>` header for authenticated requests\n\n## Valid ISINs (equity only and certain companies covered by the reports)\n**Requirements:**\n- **Equity securities only** - Only equity instruments (EQUITY type) are supported\n- **Company coverage** - The company must be covered by our ESG Risk assessment reports\n\n**Coverage Requirements:**\n- The ISIN must be mapped to a valid organization ID in our system\n- The company must be covered by our ESG Risk assessment\n- Non-equity securities and uncovered companies will return 404 errors\n\n## Language Support\n**Supported Language Codes:**\n- `en` - English (generic)\n- `en-US` - English (United States)\n- `de` - German (generic)\n- `de-DE` - German (Germany)\n- `de-CH` - German (Switzerland)\n- `es` - Spanish (generic)\n- `es-ES` - Spanish (Spain)\n- `fr` - French (generic)\n- `fr-FR` - French (France)\n- `fr-CH` - French (Switzerland)\n\n## Modules Support\n**Available Module Types:**\n- `ESG_RISK` - ESG Risk assessment module\n- `CONTROVERSIES` - Controversies and incidents module\n- `CLIMATE` - Climate and carbon footprint module\n\n**Module Array Requirements:**\n- Optional parameter - can be omitted entirely\n- If provided, must be an array of strings\n- Empty arrays or arrays with only empty strings are treated as no modules specified\n- Order of modules is preserved in the final request\n"
+      operationId: "redirectToWidget"
+      parameters:
+        - name: "base64Data"
+          in: "path"
+          description: "Base64 encoded JSON containing:\n- `token`: JWT authentication token (required)\n- `isin`: Valid ISIN code (equity only AND certain companies covered by the reports) (required)\n- `lang`: Language code (optional, no default value)\n- `modules`: Array of module identifiers (optional)\n  - Must be an array of strings\n  - Common modules: \"ESG_RISK\", \"CONTROVERSIES\", \"CLIMATE\"\n  - Empty arrays or arrays with only empty strings are treated as no modules specified\n\nExample JSON before encoding: {\"token\":\"jwt_token_here\",\"isin\":\"US0378331005\",\"lang\":\"en-US\",\"modules\":[\"ESG_RISK\",\"CONTROVERSIES\"]}\n"
+          required: true
+          schema:
+            type: "string"
+          example: "eyJ0b2tlbiI6InRlc3QiLCJpc2luIjoiVVMwMzc4MzMxMDA1IiwibGFuZyI6ImVuLVVTIn0="
+      responses:
+        302:
+          description: "Redirect to widget URL"
+        400:
+          description: "Bad request - Invalid base64 data, invalid token, or invalid language code"
+        500:
+          description: "Internal server error during widget generation"
+      security:
+        - JWT: []
+  /public/company-brief/by-isin/{isin}/download:
+    get:
+      tags:
+        - "Company AI Reports"
+      summary: "Download Company AI Report PDF by ISIN"
+      description: "Returns a PDF file for the specified ISIN (equity only AND certain companies covered by the reports)."
+      operationId: "downloadCompanyBriefByIsin"
+      parameters:
+        - name: "isin"
+          in: "path"
+          description: "ISIN code (equity only AND certain companies covered by the reports)"
+          required: true
+          schema:
+            type: "string"
+          example: "US0378331005"
+        - name: "lang"
+          in: "query"
+          description: "Language code for the response. Supported codes: en, en-US, de, de-DE, de-CH, es, es-ES, fr, fr-FR, fr-CH. Optional parameter."
+          required: false
+          schema:
+            type: "string"
+          example: "en-US"
+        - name: "modules"
+          in: "query"
+          description: "Array of module IDs to include in the company brief. Optional parameter."
+          required: false
+          schema:
+            type: "array"
+            items:
+              type: "string"
+          example: "ESG_RISK"
+      responses:
+        200:
+          description: "OK"
+          content:
+            */*:
+              schema:
+                type: "string"
+                format: "byte"
+      security:
+        - JWT: []
+servers:
+  - url: "https://api.clarity.ai/clarity/v1"
+  - url: "https://api.dev.clarity.ai/clarity/v1"
+tags:
+  - name: "Company AI Reports"
+    description: "Company AI Reports API endpoints"
+  - name: "public"
+    description: "Public endpoints"
+security:
+  - JWT: []

@@ -1,0 +1,466 @@
+components:
+  schemas:
+    SiSecuritiesAsyncRequestBody:
+      type: "object"
+      properties:
+        metricIds:
+          type: "array"
+          description: "IDs of the metrics to be included in the file. If empty, all metrics will be included."
+          example:
+            - "GOOD_GOVERNANCE"
+            - "SI_SUSTAINABLE_INVESTMENT_ENVIRONMENTAL"
+          items:
+            type: "string"
+            description: "IDs of the metrics to be included in the file. If empty, all metrics will be included."
+            example: "[\"GOOD_GOVERNANCE\",\"SI_SUSTAINABLE_INVESTMENT_ENVIRONMENTAL\"]"
+        securityIdsType:
+          type: "string"
+          description: "Defines whether the security IDs passed in the 'securityIds' parameter are of type ISIN or CUSIP."
+          example: "CUSIP"
+          default: "ISIN"
+          enum:
+            - "ISIN"
+            - "CUSIP"
+        securityIds:
+          uniqueItems: true
+          type: "array"
+          description: "List of security ids to retrieve"
+          example: "US0378331005"
+          items:
+            type: "string"
+            description: "List of security ids to retrieve"
+            example: "US0378331005"
+    CreateJobResource:
+      type: "object"
+      properties:
+        uuid:
+          type: "string"
+    APIError:
+      type: "object"
+      properties:
+        code:
+          type: "integer"
+          format: "int32"
+        message:
+          type: "string"
+    SecuritiesValuesAndTotalRequest:
+      type: "object"
+      properties:
+        profile:
+          $ref: "#/components/schemas/ProfileRequest"
+    ProfileRequest:
+      title: "Profile"
+      type: "object"
+      properties:
+        CRITERIA_1:
+          $ref: "#/components/schemas/ProfileCriteria1Request"
+        CRITERIA_2:
+          $ref: "#/components/schemas/ProfileCriteria2Request"
+      description: "Defines the methodology for how organizations contribute to sustainable objectives and the thresholds for failing the DNSH assessment. Uses Clarity AI's default profile if no custom profile is provided."
+    ProfileCriteria1Request:
+      title: "Criteria 1 - Contribution to a Sustainable Objective"
+      type: "object"
+      properties:
+        SI_SUSTAINABLE_REVENUE_ALIGNMENT_CONTRIBUTION:
+          $ref: "#/components/schemas/ProfileSiSustainableRevenueAlignmentContributionRequest"
+        SI_EU_TAXONOMY_ALIGNMENT_CONTRIBUTION:
+          $ref: "#/components/schemas/ProfileSiEuTaxonomyAlignmentContributionRequest"
+        PAI_CONTRIBUTION:
+          $ref: "#/components/schemas/ProfilePaiContributionRequest"
+        SI_SBTI_CONTRIBUTION:
+          $ref: "#/components/schemas/ProfileSiSbtiContributionRequest"
+      description: "Defines the criteria for an organization's contribution to sustainable objectives. At least one criterion must be met for the organization to qualify as sustainable."
+    ProfileSiSustainableRevenueAlignmentContributionRequest:
+      title: "Sustainable Revenue Alignment Contribution"
+      type: "object"
+      properties:
+        contributesToCriteria:
+          type: "boolean"
+          description: "Indicates if the organization must meet the minimum sustainable revenue alignment percentage to be considered a contributor to Criteria 1."
+          default: true
+        minPercentage_SUSTAINABLE_REVENUE_ALIGNMENT:
+          maximum: 100
+          minimum: 0
+          type: "integer"
+          description: "The minimum percentage of an organization's revenue that must be aligned with the UN Sustainable Development Goals (SDGs) to be considered a contributor to Criteria 1."
+          format: "int32"
+          default: 20
+    ProfileSiEuTaxonomyAlignmentContributionRequest:
+      title: "EU Taxonomy Alignment Contribution"
+      type: "object"
+      properties:
+        contributesToCriteria:
+          type: "boolean"
+          description: "Indicates if the organization must meet the minimum percentage of revenue aligned with the EU Taxonomy to be considered a contributor to Criteria 1."
+          default: true
+        minPercentage_EU_TAX_ALIGNMENT:
+          maximum: 100
+          minimum: 0
+          type: "integer"
+          description: "The minimum percentage of an organization's revenue that must be aligned with the EU Taxonomy to be considered a contributor to Criteria 1."
+          format: "int32"
+          default: 0
+    ProfilePaiContributionRequest:
+      title: "Principal Adverse Impact Contribution"
+      type: "object"
+      properties:
+        contributesToCriteria:
+          type: "boolean"
+          description: "Indicates if the organization must be a top performer in the specified number of Principal Adverse Impacts (PAIs) to contribute to Criteria 1."
+          default: true
+        minPaisToPass_SI_PAI_COUNT:
+          minimum: 1
+          type: "integer"
+          description: "The minimum number of PAIs in which an organization must be a top performer to be considered a contributor to Criteria 1."
+          format: "int32"
+          default: 2
+    ProfileSiSbtiContributionRequest:
+      title: "Science Based Targets Initiative Contribution"
+      type: "object"
+      properties:
+        contributesToCriteria:
+          type: "boolean"
+          description: "Indicates if the organization must have approved Science Based Targets (SBTi) to be considered a contributor to Criteria 1."
+          default: false
+    ProfileCriteria2Request:
+      title: "Criteria 2 - DNSH Assessment"
+      type: "object"
+      properties:
+        DNSH:
+          $ref: "#/components/schemas/ProfileDnshRequest"
+      description: "Specifies the Do No Significant Harm (DNSH) assessment criteria. Adjust the minimum number of Principal Adverse Impacts (PAIs) an organization must fail to be considered non-compliant."
+    ProfileDnshRequest:
+      type: "object"
+      properties:
+        contributesToCriteria:
+          type: "boolean"
+          description: "Indicates if the organization must fail the DNSH assessment for the specified number of PAIs to be considered non-compliant."
+          default: true
+        minPaisToFail_SI_DNSH_PAI_COUNT:
+          maximum: 16
+          minimum: 1
+          type: "integer"
+          description: "The minimum number of PAIs an organization must fail to be considered non-compliant with DNSH principles."
+          format: "int32"
+          default: 1
+    PortfolioSecuritiesValuesAndTotalResponse:
+      type: "object"
+      properties:
+        portfolioName:
+          type: "string"
+        total:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/TotalMetricResponse"
+        securities:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/SecurityResponse"
+    TotalMetricResponse:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+        value:
+          type: "number"
+          format: "float"
+        metadata:
+          type: "string"
+    SecurityResponse:
+      type: "object"
+      properties:
+        idType:
+          type: "string"
+        id:
+          type: "string"
+        securityId:
+          type: "string"
+          description: "This field will be removed on February 28, 2025. Use 'id' and 'idType' instead."
+          deprecated: true
+        name:
+          type: "string"
+        securityType:
+          type: "string"
+        portfolioWeight:
+          type: "number"
+          format: "double"
+        metrics:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/MetricResponse"
+    MetricResponse:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+        value:
+          type: "number"
+          format: "float"
+        metadata:
+          type: "string"
+    OrganizationsValuesAndTotalRequest:
+      type: "object"
+      properties:
+        profile:
+          $ref: "#/components/schemas/ProfileRequest"
+    PortfolioOrganizationsValuesAndTotalResponse:
+      type: "object"
+      properties:
+        portfolioName:
+          type: "string"
+        total:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/TotalMetricResponse"
+        organizations:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrganizationResponse"
+    OrganizationResponse:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        portfolioWeight:
+          type: "number"
+          format: "double"
+        metrics:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/MetricResponse"
+    SiOrganizationsAsyncRequestBody:
+      type: "object"
+      properties:
+        metricIds:
+          type: "array"
+          description: "IDs of the metrics to be included in the file. If empty, all metrics will be included."
+          example:
+            - "GOOD_GOVERNANCE"
+            - "SI_SUSTAINABLE_INVESTMENT_ENVIRONMENTAL"
+          items:
+            type: "string"
+            description: "IDs of the metrics to be included in the file. If empty, all metrics will be included."
+            example: "[\"GOOD_GOVERNANCE\",\"SI_SUSTAINABLE_INVESTMENT_ENVIRONMENTAL\"]"
+        permIds:
+          uniqueItems: true
+          type: "array"
+          description: "List of organizations, identified by permId, to retrieve information from. If this parameter is not present, all available organizations will be returned"
+          example: 5000038958
+          items:
+            type: "string"
+            description: "List of organizations, identified by permId, to retrieve information from. If this parameter is not present, all available organizations will be returned"
+            example: "5000038958"
+  securitySchemes:
+    JWT:
+      type: "http"
+      scheme: "bearer"
+      bearerFormat: "JWT"
+info:
+  title: "Clarity AI API - Sustainable Investment"
+  description: "API to access Clarity AI data services."
+  termsOfService: "https://static.clarity.ai/Clarity_AI_TermsAndConditions.pdf"
+  contact:
+    name: "Clarity AI"
+    url: "https://www.clarity.ai"
+    email: "support@clarity.ai"
+  version: "1.0.0"
+openapi: "3.0.1"
+paths:
+  /public/securities/sustainable-investment/metric-by-id/async:
+    post:
+      tags:
+        - "Universe download - Asynchronous jobs"
+      summary: "Async Job - Request Sustainable Investment values for securities"
+      description: "This endpoint will make a request to asynchronously retrieve extensive Sustainable Investment information.\n\nThe asynchronous process will generate a file with Sustainable Investment values for the whole universe of securities.\n\n<b>Please note</b>:\n\nThis call will only return the identifier (uuid) for this task. You'll need this value to:\n - Know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>)\n - Download your file when ready (see <a href=\"./asyncdownloadcompressedfile\">Async Job - Download compressed result file</a>)\n\nPlease refer to <a href=\"/docs/universe-api-async-jobs\">Universe API's Technical documentation</a> for a complete explanation of the workflow for these asynchronous job endpoints.\n"
+      operationId: "asyncSustainableInvestmentSecuritiesGetValues"
+      parameters:
+        - name: "useEetData"
+          in: "query"
+          description: "If set to 'true', will use EET funds data when available"
+          required: false
+          schema:
+            type: "boolean"
+            default: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SiSecuritiesAsyncRequestBody"
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/portfolios/{portfolioId}/sustainable-investment/securities/values:
+    post:
+      tags:
+        - "Portfolio Sustainable Investment"
+      summary: "Get Portfolio Values By Securities and Totals"
+      description: " Given a portfolio id, returns portfolio name, total SI's values for the portfolio, and SI values for each security in the portfolio.\n It is possible to customize SI methodology using profile.\n"
+      operationId: "siPortfolioSecuritiesValuesAndTotalCustom"
+      parameters:
+        - name: "portfolioId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "useEetData"
+          in: "query"
+          description: "If set to 'true', will use EET funds data when available"
+          required: false
+          schema:
+            type: "boolean"
+            default: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SecuritiesValuesAndTotalRequest"
+      responses:
+        200:
+          description: "Portfolio SI values by securities and totals"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortfolioSecuritiesValuesAndTotalResponse"
+        400:
+          description: "Invalid request:\n\n2007 - The portfolio id does not exist or does not belong to the user"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/portfolios/{portfolioId}/sustainable-investment/organizations/values:
+    post:
+      tags:
+        - "Portfolio Sustainable Investment"
+      summary: "Get Portfolio Values By Organizations and Totals"
+      description: " Given a portfolio id, returns portfolio name, total SI's values for the portfolio, and SI values for each organization in the portfolio.\n It is possible to customize SI methodology using profile\n"
+      operationId: "siPortfolioOrganizationsValuesAndTotalCustom"
+      parameters:
+        - name: "portfolioId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "useEetData"
+          in: "query"
+          description: "If set to 'true', will use EET funds data when available (affects the calculation of the portfolio's totals values)"
+          required: false
+          schema:
+            type: "boolean"
+            default: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrganizationsValuesAndTotalRequest"
+      responses:
+        200:
+          description: "Portfolio SI values by organizations and totals"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortfolioOrganizationsValuesAndTotalResponse"
+        400:
+          description: "Invalid request:\n\n2007 - The portfolio id does not exist or does not belong to the user"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+  /public/organizations/sustainable-investment/metric-by-id/async:
+    post:
+      tags:
+        - "Universe download - Asynchronous jobs"
+      summary: "Async Job - Request Sustainable Investment values for organizations"
+      description: "This endpoint will make a request to asynchronously retrieve extensive Sustainable Investment information.\n\nThe asynchronous process will generate a file with Sustainable Investment values for the whole universe of organizations.\n\n<b>Please note</b>:\n\nThis call will only return the identifier (uuid) for this task. You'll need this value to:\n - Know the status of your job (see <a href=\"./asyncjobstatus\">Async Job - Get job status</a>)\n - Download your file when ready (see <a href=\"./asyncdownloadcompressedfile\">Async Job - Download compressed result file</a>)\n\nPlease refer to <a href=\"/docs/universe-api-async-jobs\">Universe API's Technical documentation</a> for a complete explanation of the workflow for these asynchronous job endpoints.\n"
+      operationId: "asyncSustainableInvestmentOrganizationsGetValues"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SiOrganizationsAsyncRequestBody"
+      responses:
+        200:
+          description: "The jobs request has been accepted, uuid follows"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobResource"
+        400:
+          description: "Bad parameters on request:\n\n2200 - The job was accepted but some error happened while processing\n\n2006 - At least one of the scores requested does not exist or this account does not have permission to access it"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        401:
+          description: "Invalid grant:\n\n1000 - Invalid authentication token or expired"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        403:
+          description: "Forbidden:\n\n1001 - This account does not have permission to access this resource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - JWT: []
+servers:
+  - url: "https://api.clarity.ai/clarity/v1"
+  - url: "https://api.dev.clarity.ai/clarity/v1"
+tags:
+  - name: "Universe download - Asynchronous jobs"
+    description: "Sustainable Investment Asynchronous Jobs"
+security:
+  - JWT: []

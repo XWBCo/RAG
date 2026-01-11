@@ -10,8 +10,8 @@ venv/
 .venv/
 *.egg-info/
 
-# Vector DB (too large, recreate from data/)
-chroma_db/
+# Vector DB - included for easy deployment
+# chroma_db/
 
 # IDE
 .idea/

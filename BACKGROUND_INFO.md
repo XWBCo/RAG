@@ -323,6 +323,11 @@ POST /api/v1/v2/query
 - [x] FAQ Content: FAQ_General.md with 7 cross-domain sections (899 total docs)
 - [x] Command Palette: Feedback UI (checkmark/X icons, optional text input)
 - [x] Feedback logging: `[FEEDBACK]` and `[FEEDBACK-DETAIL]` entries in app logs
+- [x] **Production deployment:** AI features migrated to Windows prod Dashboard
+- [x] **FAB visibility callback:** Only shows for authenticated + authorized users
+- [x] **Login background:** Updated to architectural image with AlTi brand colors
+- [x] **GitHub repo:** RAG service pushed to https://github.com/XWBCo/alti-rag-service
+- [x] **Vector DB included:** `chroma_db/` (70MB, 456 docs) in repo for easy deployment
 
 ---
 
@@ -493,4 +498,4 @@ app_education_docs (74 docs):
 
 ---
 
-*Last updated: 2026-01-11 (All pill restored, FAQ_General.md, feedback UI with logging)*
+*Last updated: 2026-01-12 (Production deployment, FAB visibility callback, GitHub repo with chroma_db)*

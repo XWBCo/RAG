@@ -1,5 +1,9 @@
 """AlTi RAG Service - FastAPI Application."""
 
+# SSL trust for corporate environments (must be first!)
+import truststore
+truststore.inject_into_ssl()
+
 import logging
 import sys
 from contextlib import asynccontextmanager
@@ -31,6 +35,42 @@ logs_dir.mkdir(parents=True, exist_ok=True)
 setup_structured_logging(log_file=str(logs_dir / "metrics.jsonl"))
 
 
+async def warmup_service():
+    """Pre-initialize expensive components to avoid cold start latency."""
+    import time
+    start = time.time()
+    logger.info("Warming up service components...")
+
+    try:
+        # 1. Initialize ChromaDB and retrieval engine
+        logger.info("  [1/3] Initializing ChromaDB retrieval engine...")
+        from api.routes import get_retrieval_engine
+        engine = get_retrieval_engine("app_education")
+        logger.info(f"        Retrieval engine ready")
+
+        # 2. Compile LangGraph workflow
+        logger.info("  [2/3] Compiling LangGraph workflow...")
+        from graph.workflow import compile_app
+        prism_app = compile_app()
+        logger.info(f"        LangGraph workflow compiled")
+
+        # 3. Run a minimal warmup query to initialize OpenAI connection
+        logger.info("  [3/3] Warming up OpenAI connection...")
+        from graph.workflow import invoke_prism_sync
+        result = invoke_prism_sync(
+            query="warmup",
+            domain="app_education",
+            thread_id="warmup_thread"
+        )
+        logger.info(f"        OpenAI connection ready")
+
+        elapsed = time.time() - start
+        logger.info(f"Warmup complete in {elapsed:.1f}s - service ready for queries!")
+
+    except Exception as e:
+        logger.warning(f"Warmup failed (service will still start): {e}")
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Application lifespan handler."""
@@ -40,6 +80,10 @@ async def lifespan(app: FastAPI):
     logger.info(f"Chroma persist dir: {get_chroma_dir()}")
     logger.info(f"Log dir: {get_log_dir()}")
     logger.info(f"Legacy data dir: {settings.legacy_data_dir}")
+
+    # Warmup to avoid cold start latency on first real query
+    await warmup_service()
+
     yield
     logger.info("Shutting down...")
 

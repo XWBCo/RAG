@@ -328,6 +328,9 @@ POST /api/v1/v2/query
 - [x] **Login background:** Updated to architectural image with AlTi brand colors
 - [x] **GitHub repo:** RAG service pushed to https://github.com/XWBCo/alti-rag-service
 - [x] **Vector DB included:** `chroma_db/` (70MB, 456 docs) in repo for easy deployment
+- [x] **SSL fix (truststore):** Corporate proxy SSL inspection now works via truststore package
+- [x] **Cold start warmup:** Service pre-initializes ChromaDB + LangGraph + OpenAI on startup
+- [x] **MCS context fix:** `mcs-results-store` now populated with simulation results for RAG context
 
 ---
 
@@ -498,4 +501,4 @@ app_education_docs (74 docs):
 
 ---
 
-*Last updated: 2026-01-12 (Production deployment, FAB visibility callback, GitHub repo with chroma_db)*
+*Last updated: 2026-01-12 (SSL fix, cold start warmup, MCS context fix)*

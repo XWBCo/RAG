@@ -1,8 +1,15 @@
 """AlTi RAG Service - FastAPI Application."""
 
-# SSL trust for corporate environments (must be first!)
-import truststore
-truststore.inject_into_ssl()
+# SSL trust for corporate environments (Windows prod with SSL inspection)
+# Only load on Windows or when USE_TRUSTSTORE=1 is set
+import os
+import platform
+if platform.system() == "Windows" or os.getenv("USE_TRUSTSTORE", "0") == "1":
+    try:
+        import truststore
+        truststore.inject_into_ssl()
+    except ImportError:
+        pass  # truststore not installed, skip
 
 import logging
 import sys

@@ -23,7 +23,8 @@ def load_v1_prompt(prompt_name: str) -> Optional[ChatPromptTemplate]:
     V1 prompts use LlamaIndex placeholders: {context_str}, {query_str}
     V2 uses LangChain placeholders: {context}, {query}
 
-    IMPORTANT: Injects brevity constraints to match V2's concise response style.
+    NOTE: Contextual interpreter prompts (those explaining user's computed results)
+    are exempt from brevity constraints - they need more space to explain causation.
     """
     try:
         from retrieval.prompts import PROMPTS
@@ -42,16 +43,40 @@ def load_v1_prompt(prompt_name: str) -> Optional[ChatPromptTemplate]:
         # Extract system content (before "User Question:" if present)
         system_content = template.split("User Question:")[0] if "User Question:" in template else template
 
-        # Inject brevity constraints to match V2 concise style
-        brevity_suffix = """
+        # Contextual interpreter prompts need more space for causal explanations
+        # Don't apply strict brevity limits to these
+        contextual_prompts = {
+            "monte_carlo_interpreter_cited",
+            "risk_metrics_interpreter_cited",
+            "results_interpreter_contextual",
+            "mcs_results_interpreter",
+            "risk_results_interpreter",
+            "portfolio_interpreter_contextual",
+            "esg_analysis_cited",
+            # Flexible results-aware prompts
+            "risk_interpreter_contextual",
+            "eval_interpreter_contextual",
+        }
+
+        if prompt_name not in contextual_prompts:
+            # Inject brevity constraints for non-contextual prompts
+            brevity_suffix = """
 
 RESPONSE LENGTH (STRICT):
 - Maximum 80 words. No exceptions.
 - Lead with the key insight or number.
 - Skip preamble ("Based on...", "According to...", "The context shows...").
 - Users can ask follow-up questions for more detail."""
+            system_content = system_content.rstrip() + brevity_suffix
+        else:
+            # Contextual prompts: allow longer responses but still encourage conciseness
+            contextual_suffix = """
 
-        system_content = system_content.rstrip() + brevity_suffix
+RESPONSE STYLE:
+- Be concise but complete - explain causation clearly.
+- Skip preamble ("Based on...", "According to...").
+- Lead with the most important insight."""
+            system_content = system_content.rstrip() + contextual_suffix
 
         # Build ChatPromptTemplate from the V1 template
         return ChatPromptTemplate.from_messages([

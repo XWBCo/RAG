@@ -341,32 +341,37 @@ Interpretation (with citations): """,
 register_prompt(PromptConfig(
     name="monte_carlo_interpreter_cited",
     template="""You are explaining Monte Carlo simulation results to a wealth management client.
-The user is currently viewing their Monte Carlo simulation app and asking about their specific results.
+The user ran simulations and is viewing the "Portfolio Values Over Time" chart.
 
 Reference documentation:
 ---------------------
 {context_str}
 ---------------------
 
-IMPORTANT:
-- Use "your" language - the user is looking at THEIR simulation results.
-- CITE your sources using [1], [2], etc. corresponding to the numbered sources above.
-- Include citations for key explanations and concepts.
-- DO NOT use markdown formatting (no ###, **, or other markup). Use plain text only.
-- Use numbered lists (1. 2. 3.) or simple dashes (-) for structure.
+RESPONSE GUIDELINES:
+- Focus on the "Portfolio Values Over Time" chart outcomes:
+  • Range of median values across simulations (e.g., "Sim 1 median: $3.2M vs Sim 3: $4.8M")
+  • Total range of outcomes (5th to 95th percentile spread)
+  • How the percentile bands widen or narrow over the projection period
+- Explain outcomes in context of:
+  • Global parameters (initial portfolio value, inflation assumption, currency)
+  • Simulation-specific inputs (Return %, Risk %, Duration, Spending rate)
+  • Drawdown template if applicable
+- Reference THEIR specific numbers from the results provided below
+- Avoid probability metrics (e.g., "outperform inflation") unless specifically asked
+- Match UI terms: "Return" and "Risk" (not "annual return"/"expected return")
 
-RESPONSE STRUCTURE (follow this order):
-1. LEAD WITH MEDIAN: Start with the most likely outcome (50th percentile/median)
-2. SUCCESS PROBABILITY: Mention their probability of outperforming inflation
-3. RANGE: Present the full range neutrally - "from [5th] to [95th]" without emphasizing either extreme
-4. INSIGHT: One actionable takeaway based on their specific numbers
-
-AVOID: Do not lead with pessimistic scenarios or worst-case outcomes. Present data neutrally.
+FORMATTING:
+- Use <b>bold</b> for key dollar amounts and percentages
+- Use <br> for paragraph breaks
+- Write in flowing sentences, avoid bullet lists unless comparing 3+ items
+- Keep response practical and actionable
+- Under 200 words maximum; adjust length to query complexity
 
 User Question: {query_str}
 
-Explanation (with citations): """,
-    description="Monte Carlo interpreter with inline source citations",
+Response: """,
+    description="Monte Carlo interpreter - focuses on Portfolio Values Over Time chart in context of inputs",
     use_case="qa",
     audience="beginner"
 ))
@@ -401,6 +406,45 @@ Explanation (with citations): """,
     description="Risk metrics interpreter with inline source citations",
     use_case="qa",
     audience="beginner"
+))
+
+# Risk Analytics contextual interpreter (results-aware)
+register_prompt(PromptConfig(
+    name="risk_interpreter_contextual",
+    template="""You are explaining risk analytics to a wealth management client viewing their portfolio analysis.
+The user is viewing the Portfolio vs Benchmark indexed performance chart (base=100).
+
+Reference documentation:
+---------------------
+{context_str}
+---------------------
+
+RESPONSE GUIDELINES:
+- Focus on the Portfolio vs Benchmark indexed chart:
+  • How the portfolio tracks (or diverges from) the benchmark over time
+  • Key periods of outperformance or underperformance visible in the chart
+  • Volatility differences (wider swings vs smoother line)
+- Explain in context of:
+  • Portfolio and benchmark composition (the holdings driving behavior)
+  • How changing specific holdings would affect tracking/divergence
+  • Factor exposures (growth vs defensive tilts) driving visible patterns
+- Connect chart patterns to risk metrics (tracking error, beta, volatility)
+- Reference THEIR specific numbers from the results provided below
+- Skip generic definitions unless asked - focus on THEIR specific situation
+
+FORMATTING:
+- Use <b>bold</b> for key metrics and percentages
+- Use <br> for paragraph breaks
+- Write in flowing sentences, avoid bullet lists unless comparing 3+ items
+- Keep response practical and actionable
+- Under 200 words maximum; adjust length to query complexity
+
+User Question: {query_str}
+
+Response: """,
+    description="Risk analytics interpreter - focuses on Portfolio vs Benchmark chart in context of inputs",
+    use_case="qa",
+    audience="general"
 ))
 
 register_prompt(PromptConfig(
@@ -606,6 +650,50 @@ Query (includes optimization results):
 
 INTERPRETATION:""",
     description="Portfolio optimization result interpreter",
+    use_case="qa",
+    audience="general"
+))
+
+# Portfolio Evaluation contextual interpreter (results-aware, flexible structure)
+register_prompt(PromptConfig(
+    name="eval_interpreter_contextual",
+    template="""You are explaining portfolio optimization results to a wealth management client.
+The user is viewing the Efficient Frontier visualization.
+
+Reference documentation:
+---------------------
+{context_str}
+---------------------
+
+RESPONSE GUIDELINES:
+- Focus on the Efficient Frontier visualization:
+  • Where the user's portfolios sit relative to the frontier curves
+  • Risk/return tradeoffs visible in the scatter (e.g., "moving right adds X% return for Y% more risk")
+  • Differences between Core, Core+Private, and Unconstrained frontiers
+- Explain in context of:
+  • Constraint template applied (Conservative/Moderate/Aggressive caps)
+  • Asset allocation inputs driving the frontier shape
+  • How changing constraints or adding asset classes would shift the frontier
+- Connect frontier position to Sharpe ratio and practical allocation decisions
+- Reference THEIR specific numbers from the results provided below
+- Skip generic efficient frontier definitions - focus on THEIR results
+
+KEY TERMS (use only when relevant):
+- Sharpe Ratio: Risk-adjusted return (higher = better)
+- Core vs Core+Private: Private assets may improve efficiency but reduce liquidity
+- Unconstrained: Theoretical maximum without practical limits
+
+FORMATTING:
+- Use <b>bold</b> for key metrics and percentages
+- Use <br> for paragraph breaks
+- Write in flowing sentences, avoid bullet lists unless comparing 3+ items
+- Keep response practical and actionable
+- Under 200 words maximum; adjust length to query complexity
+
+User Question: {query_str}
+
+Response: """,
+    description="Portfolio evaluation interpreter - focuses on Efficient Frontier chart in context of inputs",
     use_case="qa",
     audience="general"
 ))

@@ -14,7 +14,7 @@ from config import settings
 from ingestion import IngestionPipeline
 from retrieval import RetrievalEngine
 from retrieval.engine import QueryMode, QueryResult, Source
-from utils.logging import QueryMetrics, get_metrics_logger
+from utils.logging import QueryMetrics, get_metrics_logger, log_full_query
 
 logger = logging.getLogger(__name__)
 metrics_logger = get_metrics_logger()
@@ -51,118 +51,234 @@ def build_contextual_query(query: str, app_context: dict) -> str:
         currency = app_context.get("currency", "USD")
         symbol = {"USD": "$", "GBP": "£", "EUR": "€"}.get(currency, "$")
         sims = app_context.get("simulations", {})
+        inflation_rate = app_context.get('inflation_rate_pct', 0)
 
         results_text = f"""
-USER'S CURRENT MONTE CARLO SIMULATION RESULTS:
-===============================================
-Initial Portfolio: {format_currency(initial, symbol)}
-Number of Simulations: {app_context.get('num_simulations', 1000):,}
-Inflation Rate: {app_context.get('inflation_rate_pct', 0):.1f}%
+USER'S MONTE CARLO SIMULATION RESULTS
+=====================================
+
+GLOBAL PARAMETERS:
+• Initial Portfolio: {format_currency(initial, symbol)}
+• Inflation Assumption: {inflation_rate:.1f}%
+• Simulations Run: {app_context.get('num_simulations', 1000):,}
+
+SIMULATION INPUTS & OUTCOMES:
 """
+        # Collect simulation data for comparison summary
+        sim_list = []
         for sim_key, sim_data in sims.items():
             if sim_data:
                 name = sim_data.get("name", sim_key)
                 duration = sim_data.get("duration_years", 0)
+                ret = sim_data.get("annual_return_pct", 0)
+                risk = sim_data.get("annual_risk_pct", 0)
                 p5 = sim_data.get("percentile_5th", 0)
                 p50 = sim_data.get("percentile_50th", 0)
                 p95 = sim_data.get("percentile_95th", 0)
+                fixed_spend = sim_data.get("quarterly_fixed_spending", 0)
+                pct_spend = sim_data.get("quarterly_percent_spending", 0)
+                custom_spend_total = sim_data.get("custom_spending_total", 0)
+                custom_spend_quarters = sim_data.get("custom_spending_quarters", 0)
                 prob_out = sim_data.get("prob_outperform_inflation", 0)
-                prob_loss = sim_data.get("prob_loss_50pct", 0)
-                ret = sim_data.get("annual_return_pct", 0)
-                risk = sim_data.get("annual_risk_pct", 0)
+
+                # Build spending description
+                spend_parts = []
+                if fixed_spend > 0:
+                    spend_parts.append(f"{format_currency(fixed_spend, symbol)}/quarter fixed")
+                if pct_spend > 0:
+                    spend_parts.append(f"{pct_spend:.1%} of portfolio/quarter")
+                if custom_spend_total > 0:
+                    spend_parts.append(f"{format_currency(custom_spend_total, symbol)} custom ({custom_spend_quarters} quarters)")
+
+                if spend_parts:
+                    spending_desc = " + ".join(spend_parts)
+                else:
+                    spending_desc = "No withdrawals configured"
+
+                sim_list.append({
+                    "name": name, "duration": duration, "ret": ret, "risk": risk,
+                    "p5": p5, "p50": p50, "p95": p95, "spending": spending_desc,
+                    "prob_out": prob_out
+                })
 
                 results_text += f"""
-{name.upper()} ({duration:.0f} years, {ret}% return, {risk}% risk):
-  - 5th Percentile (pessimistic): {format_currency(p5, symbol)}
-  - 50th Percentile (median): {format_currency(p50, symbol)}
-  - 95th Percentile (optimistic): {format_currency(p95, symbol)}
-  - Probability of outperforming inflation: {prob_out:.1f}%
-  - Probability of >50% loss: {prob_loss:.1f}%
+{name}:
+  Inputs: {duration:.0f} years | Return: {ret}% | Risk: {risk}% | Spending: {spending_desc}
+  Outcomes: Median {format_currency(p50, symbol)} | Range: {format_currency(p5, symbol)} to {format_currency(p95, symbol)}
 """
+
+        # Add comparison summary to help LLM explain differences
+        if len(sim_list) > 1:
+            results_text += "\nCOMPARISON SUMMARY (for explaining differences):\n"
+            sorted_by_median = sorted(sim_list, key=lambda x: x["p50"], reverse=True)
+            results_text += f"• Highest median: {sorted_by_median[0]['name']} ({format_currency(sorted_by_median[0]['p50'], symbol)})\n"
+            results_text += f"• Lowest median: {sorted_by_median[-1]['name']} ({format_currency(sorted_by_median[-1]['p50'], symbol)})\n"
+            # Note key input differences
+            returns = [s["ret"] for s in sim_list]
+            risks = [s["risk"] for s in sim_list]
+            durations = [s["duration"] for s in sim_list]
+            if max(returns) != min(returns):
+                results_text += f"• Return assumptions vary: {min(returns)}% to {max(returns)}%\n"
+            if max(risks) != min(risks):
+                results_text += f"• Risk assumptions vary: {min(risks)}% to {max(risks)}%\n"
+            if max(durations) != min(durations):
+                results_text += f"• Durations vary: {min(durations):.0f} to {max(durations):.0f} years\n"
+
         results_text += f"\nUSER QUESTION: {query}"
         return results_text
 
     elif page == "risk_analytics":
-        # Risk analytics results
+        # Risk analytics results - enhanced with comparison summary
+        portfolio_name = app_context.get('portfolio_name', 'Portfolio')
+        benchmark_name = app_context.get('benchmark_name', 'Benchmark')
+        port_vol = app_context.get('portfolio_volatility_pct', 0)
+        bmk_vol = app_context.get('benchmark_volatility_pct', 0)
+        port_sharpe = app_context.get('portfolio_sharpe', 0)
+        bmk_sharpe = app_context.get('benchmark_sharpe', 0)
+        te_pct = app_context.get('tracking_error_pct', 0)
+        factor_explained = app_context.get('factor_explained_pct', 0)
+        idiosyncratic = app_context.get('idiosyncratic_pct', 0)
+
+        # Generate interpretation hints
+        vol_comparison = "more volatile" if port_vol > bmk_vol else "less volatile"
+        sharpe_comparison = "better" if port_sharpe > bmk_sharpe else "worse"
+        te_interpretation = "low active management" if te_pct < 2 else "moderate active management" if te_pct < 5 else "high active management"
+
         results_text = f"""
-USER'S CURRENT RISK ANALYTICS RESULTS:
-======================================
-Portfolio: {app_context.get('portfolio_name', 'N/A')}
-Benchmark: {app_context.get('benchmark_name', 'N/A')}
+USER'S RISK ANALYTICS RESULTS
+=============================
 
-KEY METRICS:
-- Portfolio Volatility: {app_context.get('portfolio_volatility_pct', 0):.2f}%
-- Benchmark Volatility: {app_context.get('benchmark_volatility_pct', 0):.2f}%
-- Tracking Error: {app_context.get('tracking_error_pct', 0):.2f}%
-- Factor Explained: {app_context.get('factor_explained_pct', 0):.1f}%
-- Idiosyncratic Risk: {app_context.get('idiosyncratic_pct', 0):.1f}%
+PORTFOLIO VS BENCHMARK COMPARISON:
+• {portfolio_name}: {port_vol:.2f}% volatility | Sharpe {port_sharpe:.2f}
+• {benchmark_name}: {bmk_vol:.2f}% volatility | Sharpe {bmk_sharpe:.2f}
+• Active Risk (Tracking Error): {te_pct:.2f}%
 
-PERFORMANCE:
-- Portfolio CAGR: {app_context.get('portfolio_cagr_pct', 0):.2f}%
-- Benchmark CAGR: {app_context.get('benchmark_cagr_pct', 0):.2f}%
-- Portfolio Sharpe Ratio: {app_context.get('portfolio_sharpe', 0):.2f}
-- Benchmark Sharpe Ratio: {app_context.get('benchmark_sharpe', 0):.2f}
-- Portfolio Max Drawdown: {app_context.get('portfolio_max_dd_pct', 0):.2f}%
-
-BETA ANALYSIS:
-- Total Beta: {app_context.get('total_beta', 0):.3f}
-- Growth Beta: {app_context.get('growth_beta', 0):.3f}
-- Defensive Beta: {app_context.get('defensive_beta', 0):.3f}
-
-DIVERSIFICATION:
-- Average Correlation: {app_context.get('avg_correlation', 0):.2f}
-- Effective N (diversification): {app_context.get('effective_n', 0):.1f}
-- Top 5 Concentration: {app_context.get('concentration_ratio', 0):.1f}%
+WHAT'S DRIVING ACTIVE RISK:
+• Factor-Explained: {factor_explained:.1f}% (systematic bets on factors)
+• Idiosyncratic: {idiosyncratic:.1f}% (stock-specific risk)
+• Growth Beta: {app_context.get('growth_beta', 0):.3f} | Defensive Beta: {app_context.get('defensive_beta', 0):.3f}
 """
-        # Add top risk contributors
+        # Add top risk contributors with emphasis
         contributors = app_context.get('top_risk_contributors', [])
         if contributors:
-            results_text += "\nTOP RISK CONTRIBUTORS:\n"
+            results_text += "\nTOP CONTRIBUTORS TO TRACKING ERROR:\n"
             for i, contrib in enumerate(contributors[:5], 1):
-                results_text += f"  {i}. {contrib.get('security', 'N/A')}: {contrib.get('contribution_pct', 0):.2f}%\n"
+                results_text += f"  {i}. {contrib.get('security', 'N/A')}: {contrib.get('contribution_pct', 0):.2f}% of TE\n"
 
-        results_text += f"\nUSER QUESTION: {query}"
+        results_text += f"""
+DIVERSIFICATION QUALITY:
+• Effective N: {app_context.get('effective_n', 0):.1f} (higher = better diversification)
+• Top 5 Concentration: {app_context.get('concentration_ratio', 0):.1f}%
+• Average Correlation: {app_context.get('avg_correlation', 0):.2f}
+
+PERFORMANCE:
+• Portfolio CAGR: {app_context.get('portfolio_cagr_pct', 0):.2f}% | Benchmark CAGR: {app_context.get('benchmark_cagr_pct', 0):.2f}%
+• Portfolio Max Drawdown: {app_context.get('portfolio_max_dd_pct', 0):.2f}%
+
+COMPARISON SUMMARY (for explaining differences):
+• Portfolio is {vol_comparison} than benchmark ({port_vol:.2f}% vs {bmk_vol:.2f}%)
+• Risk-adjusted performance is {sharpe_comparison} (Sharpe {port_sharpe:.2f} vs {bmk_sharpe:.2f})
+• TE of {te_pct:.2f}% suggests {te_interpretation}
+• Factor exposure explains {factor_explained:.1f}% of active risk
+
+USER QUESTION: {query}"""
         return results_text
 
     elif page == "portfolio_evaluation":
-        # Portfolio optimization/evaluation results
+        # Comprehensive portfolio evaluation context
+        selected_portfolios = app_context.get("selected_portfolios", {})
+        benchmark = app_context.get("benchmark", {})
+        holdings = app_context.get("holdings", {})
+        historical = app_context.get("historical", {})
         frontier_summaries = app_context.get("frontier_summaries", {})
         optimal_alloc = app_context.get("optimal_allocation", {})
-        benchmark = app_context.get("benchmark", {})
         caps_template = app_context.get("caps_template", "standard")
+        has_portfolios = app_context.get("has_portfolios", False)
 
-        results_text = f"""
-USER'S CURRENT PORTFOLIO OPTIMIZATION RESULTS:
-===============================================
-Constraints Template: {caps_template.upper()}
+        results_text = """
+USER'S PORTFOLIO EVALUATION RESULTS
+===================================
 """
-        # Add frontier summaries
+        # 1. Selected portfolios with forecasted metrics (PRIMARY)
+        if selected_portfolios:
+            results_text += "\nSELECTED PORTFOLIOS - FORECASTED METRICS:\n"
+            for port_name, metrics in selected_portfolios.items():
+                results_text += f"\n{port_name}:\n"
+                results_text += f"  • Expected Return: {metrics.get('expected_return_pct', 0):.2f}%\n"
+                results_text += f"  • Risk (Volatility): {metrics.get('risk_pct', 0):.2f}%\n"
+                results_text += f"  • VaR (95%): {metrics.get('var_95_pct', 0):.2f}%\n"
+                results_text += f"  • CVaR (95%): {metrics.get('cvar_95_pct', 0):.2f}%\n"
+                results_text += f"  • Sharpe Ratio: {metrics.get('sharpe_ratio', 0):.3f}\n"
+
+        # 2. Benchmark comparison
+        if benchmark:
+            results_text += f"\nBENCHMARK ({benchmark.get('name', 'Blended')}, {benchmark.get('allocation', '60/40')}):\n"
+            results_text += f"  • Expected Return: {benchmark.get('expected_return_pct', 0):.2f}%\n"
+            results_text += f"  • Risk (Volatility): {benchmark.get('risk_pct', 0):.2f}%\n"
+            results_text += f"  • Sharpe Ratio: {benchmark.get('sharpe_ratio', 0):.3f}\n"
+
+        # 3. Historical performance (if available)
+        if historical:
+            results_text += "\nHISTORICAL PERFORMANCE:\n"
+            for port_name, hist in historical.items():
+                results_text += f"\n{port_name} (Historical):\n"
+                results_text += f"  • CAGR: {hist.get('cagr_pct', 0):.2f}%\n"
+                results_text += f"  • Volatility: {hist.get('volatility_pct', 0):.2f}%\n"
+                results_text += f"  • Max Drawdown: {hist.get('max_drawdown_pct', 0):.2f}%\n"
+
+        # 4. Holdings comparison (allocation differences)
+        if holdings:
+            results_text += "\nASSET ALLOCATION BY PORTFOLIO:\n"
+            all_assets = set()
+            for allocs in holdings.values():
+                all_assets.update(allocs.keys())
+            # Show top assets by average allocation
+            asset_avgs = {}
+            for asset in all_assets:
+                vals = [holdings[p].get(asset, 0) for p in holdings]
+                asset_avgs[asset] = sum(vals) / len(vals) if vals else 0
+            top_assets = sorted(asset_avgs.keys(), key=lambda x: asset_avgs[x], reverse=True)[:8]
+
+            for asset in top_assets:
+                allocations = [f"{p}: {holdings[p].get(asset, 0):.1f}%" for p in holdings if holdings[p].get(asset, 0) > 0.5]
+                if allocations:
+                    results_text += f"  • {asset}: {', '.join(allocations)}\n"
+
+        # 5. Efficient Frontier context (SUPPLEMENTARY)
+        results_text += f"\nEFFICIENT FRONTIER CONTEXT:\n"
+        results_text += f"Constraint Template: {caps_template.upper()}\n"
+
+        frontier_data = []
         for key, summary in frontier_summaries.items():
             if summary:
-                name = summary.get("name", key)
-                results_text += f"""
-{name.upper()} FRONTIER:
-  - Risk Range: {summary.get('min_risk_pct', 0):.2f}% to {summary.get('max_risk_pct', 0):.2f}%
-  - Return Range: {summary.get('min_return_pct', 0):.2f}% to {summary.get('max_return_pct', 0):.2f}%
-  - Optimal Sharpe Ratio: {summary.get('optimal_sharpe', 0):.3f}
-  - Optimal Point: {summary.get('optimal_return_pct', 0):.2f}% return at {summary.get('optimal_risk_pct', 0):.2f}% risk
-"""
+                frontier_data.append({
+                    "name": summary.get("name", key),
+                    "sharpe": summary.get('optimal_sharpe', 0),
+                    "risk": summary.get('optimal_risk_pct', 0),
+                    "return": summary.get('optimal_return_pct', 0),
+                })
+        frontier_data.sort(key=lambda x: x["sharpe"], reverse=True)
 
-        # Add optimal allocation
-        if optimal_alloc:
-            results_text += "\nOPTIMAL ALLOCATION (Core + Private Frontier):\n"
-            sorted_allocs = sorted(optimal_alloc.items(), key=lambda x: x[1], reverse=True)
-            for asset, weight in sorted_allocs:
-                if weight > 0.1:  # Only show allocations > 0.1%
-                    results_text += f"  - {asset}: {weight:.1f}%\n"
+        for f in frontier_data:
+            results_text += f"  • {f['name']}: Sharpe {f['sharpe']:.3f} | {f['return']:.2f}% return at {f['risk']:.2f}% risk\n"
 
-        # Add benchmark comparison if available
-        if benchmark and 'return' in benchmark and 'risk' in benchmark:
-            results_text += f"""
-BENCHMARK COMPARISON:
-  - Benchmark Return: {benchmark.get('return', 0)*100:.2f}%
-  - Benchmark Risk: {benchmark.get('risk', 0)*100:.2f}%
-"""
+        # Private assets impact
+        core_sharpe = next((f["sharpe"] for f in frontier_data if "core" in f["name"].lower() and "private" not in f["name"].lower()), None)
+        cp_sharpe = next((f["sharpe"] for f in frontier_data if "private" in f["name"].lower()), None)
+        if core_sharpe and cp_sharpe:
+            sharpe_diff = cp_sharpe - core_sharpe
+            if sharpe_diff > 0:
+                results_text += f"\n  → Private assets improve Sharpe by {sharpe_diff:.3f}\n"
+            else:
+                results_text += f"\n  → Private assets reduce Sharpe by {abs(sharpe_diff):.3f}\n"
+
+        # 6. Interpretation guidance
+        results_text += "\nINTERPRETATION NOTES:\n"
+        results_text += "• Sharpe > 1.0 is good, > 1.5 is excellent\n"
+        results_text += "• Compare portfolios to benchmark on risk-adjusted basis\n"
+        results_text += "• Efficient frontier shows optimal risk/return tradeoffs\n"
+        if not has_portfolios:
+            results_text += "• No client portfolios uploaded - using frontier analysis only\n"
 
         results_text += f"\nUSER QUESTION: {query}"
         return results_text
@@ -737,6 +853,16 @@ async def prism_query(request: PrismQueryRequest):
 
         # Use thread_id prefix as query_id (matches metrics.jsonl for correlation)
         query_id = thread_id[:8]
+
+        # Log full query/response for detailed audit trail
+        log_full_query(
+            query_id=query_id,
+            query_text=query,  # Full enhanced query (includes context)
+            response_text=result.get("answer", ""),
+            app_context_page=request.app_context.get("page") if request.app_context else None,
+            prompt_name=request.prompt_name,
+            duration_ms=elapsed_ms,
+        )
 
         return PrismQueryResponse(
             answer=result["answer"],

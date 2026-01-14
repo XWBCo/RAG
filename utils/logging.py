@@ -46,6 +46,11 @@ class QueryMetrics:
     # Errors
     error: Optional[str] = None
 
+    # Full content logging (for detailed audit trail)
+    full_query: Optional[str] = None  # Complete query text (no truncation)
+    full_response: Optional[str] = None  # Complete LLM response
+    app_context_page: Optional[str] = None  # Page context: mcs, risk, eval
+
     def to_json(self) -> str:
         """Serialize metrics to JSON."""
         return json.dumps(asdict(self), indent=2)
@@ -183,3 +188,65 @@ def setup_structured_logging(
 def get_metrics_logger():
     """Get the metrics logger instance."""
     return logging.getLogger("rag.metrics")
+
+
+# Dedicated full query logger (separate from metrics for detailed audit trail)
+_full_query_logger: Optional[logging.Logger] = None
+
+
+def get_full_query_logger(log_dir: str = "logs") -> logging.Logger:
+    """
+    Get a dedicated logger for full query/response pairs.
+
+    Writes to logs/queries_full.jsonl with complete query text and LLM responses.
+    Useful for debugging, training data collection, and audit trails.
+    """
+    global _full_query_logger
+    if _full_query_logger is None:
+        from pathlib import Path
+
+        log_path = Path(log_dir)
+        log_path.mkdir(exist_ok=True)
+
+        _full_query_logger = logging.getLogger("rag.queries_full")
+        _full_query_logger.setLevel(logging.INFO)
+        _full_query_logger.propagate = False  # Don't bubble up to root logger
+
+        # File handler for full queries
+        file_handler = logging.FileHandler(log_path / "queries_full.jsonl")
+        file_handler.setFormatter(logging.Formatter("%(message)s"))
+        _full_query_logger.addHandler(file_handler)
+
+    return _full_query_logger
+
+
+def log_full_query(
+    query_id: str,
+    query_text: str,
+    response_text: str,
+    app_context_page: Optional[str] = None,
+    prompt_name: Optional[str] = None,
+    duration_ms: float = 0.0,
+):
+    """
+    Log a complete query/response pair for audit and debugging.
+
+    Args:
+        query_id: Unique identifier for the query
+        query_text: Full query text (including contextual prefix)
+        response_text: Complete LLM response
+        app_context_page: Page context (mcs, risk, eval, etc.)
+        prompt_name: Name of the prompt template used
+        duration_ms: Total query duration in milliseconds
+    """
+    logger = get_full_query_logger()
+    record = {
+        "query_id": query_id,
+        "timestamp": datetime.now().isoformat(),
+        "app_context_page": app_context_page,
+        "prompt_name": prompt_name,
+        "duration_ms": round(duration_ms, 2),
+        "query_text": query_text,
+        "response_text": response_text,
+    }
+    logger.info(json.dumps(record))

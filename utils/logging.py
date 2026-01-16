@@ -161,6 +161,7 @@ def setup_structured_logging(
     """
     metrics_logger = logging.getLogger("rag.metrics")
     metrics_logger.setLevel(level)
+    metrics_logger.propagate = False  # Don't bubble up to root logger (prevents duplicates)
 
     # Create formatter
     if json_format:

@@ -23,7 +23,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse
 
 from api import router, feedback_router
-from config import settings, get_log_dir, get_chroma_dir, validate_environment
+from config import settings, get_log_dir, get_chroma_dir, validate_environment, configure_langsmith
 from utils.logging import setup_structured_logging
 
 # Load environment variables
@@ -87,6 +87,10 @@ async def lifespan(app: FastAPI):
     logger.info(f"Chroma persist dir: {get_chroma_dir()}")
     logger.info(f"Log dir: {get_log_dir()}")
     logger.info(f"Legacy data dir: {settings.legacy_data_dir}")
+
+    # Configure LangSmith tracing (if API key is set)
+    langsmith_enabled = configure_langsmith()
+    logger.info(f"LangSmith tracing: {'enabled' if langsmith_enabled else 'disabled'}")
 
     # Warmup to avoid cold start latency on first real query
     await warmup_service()

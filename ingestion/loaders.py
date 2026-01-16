@@ -511,79 +511,282 @@ Top Holdings:
     return documents
 
 
-def load_cma_excel(file_path: Path) -> List[Document]:
+def _detect_cma_sheet_type(sheet_name: str, df: pd.DataFrame) -> str:
     """
-    Load Capital Market Assumptions from Excel files.
+    Detect the type of CMA data in a sheet using name and content analysis.
 
-    Handles multi-sheet Excel files with returns, correlations,
-    and time series data.
+    Returns: 'returns_risk', 'correlation', 'time_series', or 'generic'
+    """
+    name_upper = sheet_name.upper()
+
+    # Name-based detection
+    if any(x in name_upper for x in ["RR", "RETURN", "RISK", "ASSUMPTIONS", "EXPECTED"]):
+        return "returns_risk"
+    elif any(x in name_upper for x in ["CORR", "CORRELATION"]):
+        return "correlation"
+    elif any(x in name_upper for x in ["TS", "TIME", "SERIES", "HISTORY", "RETURNS_TS"]):
+        return "time_series"
+
+    # Content-based detection for unlabeled sheets
+    if df.shape[0] == df.shape[1] and df.shape[0] > 3:
+        # Square matrix likely correlation
+        return "correlation"
+
+    # Check if first column looks like dates
+    if not df.empty and df.shape[0] > 10:
+        first_col = df.iloc[:, 0]
+        try:
+            pd.to_datetime(first_col, errors='raise')
+            return "time_series"
+        except Exception:
+            pass
+
+    return "generic"
+
+
+def _process_returns_risk_sheet(
+    df: pd.DataFrame, sheet_name: str, file_path: Path, base_metadata: dict
+) -> List[Document]:
+    """Process returns and risk assumptions sheet - create document per asset class."""
+    documents = []
+
+    # Find header row (usually first row with meaningful data)
+    header_row = 0
+    for i in range(min(5, len(df))):
+        if df.iloc[i].notna().sum() > 2:
+            header_row = i
+            break
+
+    # Use this row as header if it contains text
+    if header_row > 0:
+        df.columns = df.iloc[header_row]
+        df = df.iloc[header_row + 1:].reset_index(drop=True)
+
+    # Create a document for each asset class row
+    for _, row in df.iterrows():
+        asset_class = row.iloc[0]
+        if pd.isna(asset_class) or not str(asset_class).strip():
+            continue
+
+        asset_class = str(asset_class).strip()
+
+        # Build metrics list
+        metrics = []
+        for col, val in row.items():
+            if pd.notna(val) and str(col) != asset_class:
+                # Format percentages nicely
+                if isinstance(val, float) and abs(val) < 1:
+                    metrics.append(f"{col}: {val:.2%}")
+                else:
+                    metrics.append(f"{col}: {val}")
+
+        text = f"""Capital Market Assumption: {asset_class}
+Source: {file_path.name} / {sheet_name}
+
+Metrics:
+{chr(10).join(f'- {m}' for m in metrics)}
+
+This asset class is used in portfolio construction with the above expected returns and risk characteristics."""
+
+        documents.append(Document(
+            text=text,
+            metadata={
+                **base_metadata,
+                "sheet_name": sheet_name,
+                "document_type": "cma_assumptions",
+                "asset_class": asset_class,
+            }
+        ))
+
+    return documents
+
+
+def _process_correlation_sheet(
+    df: pd.DataFrame, sheet_name: str, file_path: Path, base_metadata: dict
+) -> List[Document]:
+    """Process correlation matrix with structure preservation."""
+    # Get asset class names from first row/column
+    asset_classes = []
+    for col in df.columns:
+        if pd.notna(col) and str(col).strip():
+            asset_classes.append(str(col).strip())
+    asset_classes = asset_classes[:15]  # Limit for readability
+
+    # Find notable correlations (high positive or negative)
+    notable_correlations = []
+    try:
+        numeric_df = df.select_dtypes(include=['float64', 'int64'])
+        for i, row_label in enumerate(numeric_df.index[:10]):
+            for j, col_label in enumerate(numeric_df.columns[:10]):
+                if i < j:  # Upper triangle only
+                    val = numeric_df.iloc[i, j]
+                    if pd.notna(val) and abs(val) > 0.7:
+                        notable_correlations.append(f"- {row_label} vs {col_label}: {val:.2f}")
+    except Exception:
+        pass
+
+    notable_section = ""
+    if notable_correlations:
+        notable_section = f"\n\nNotable Correlations (|r| > 0.7):\n" + "\n".join(notable_correlations[:10])
+
+    text = f"""Correlation Matrix: {sheet_name}
+Source: {file_path.name}
+
+Asset Classes ({len(asset_classes)} total):
+{', '.join(asset_classes)}
+
+Matrix Dimensions: {df.shape[0]} x {df.shape[1]}
+
+Correlations range from -1 (perfect negative) to +1 (perfect positive).
+Zero indicates no linear relationship.{notable_section}"""
+
+    return [Document(
+        text=text,
+        metadata={
+            **base_metadata,
+            "sheet_name": sheet_name,
+            "document_type": "cma_correlation",
+            "num_assets": len(asset_classes),
+        }
+    )]
+
+
+def _process_time_series_sheet(
+    df: pd.DataFrame, sheet_name: str, file_path: Path, base_metadata: dict
+) -> List[Document]:
+    """Process time series sheet with summary statistics."""
+    # Get numeric columns
+    numeric_cols = df.select_dtypes(include=['float64', 'int64']).columns.tolist()
+
+    if not numeric_cols:
+        return []
+
+    # Calculate summary statistics
+    stats_lines = []
+    for col in numeric_cols[:15]:  # Limit to 15 series
+        mean_val = df[col].mean()
+        std_val = df[col].std()
+        min_val = df[col].min()
+        max_val = df[col].max()
+
+        # Format as percentage if values look like returns
+        if abs(mean_val) < 1 and abs(std_val) < 1:
+            stats_lines.append(f"- {col}: Mean {mean_val:.2%}, Vol {std_val:.2%}, Range [{min_val:.2%}, {max_val:.2%}]")
+        else:
+            stats_lines.append(f"- {col}: Mean {mean_val:.2f}, Std {std_val:.2f}, Range [{min_val:.2f}, {max_val:.2f}]")
+
+    # Try to detect date range
+    date_range = ""
+    try:
+        first_col = df.iloc[:, 0]
+        dates = pd.to_datetime(first_col, errors='coerce')
+        valid_dates = dates.dropna()
+        if len(valid_dates) > 0:
+            date_range = f"\nPeriod: {valid_dates.min().strftime('%Y-%m-%d')} to {valid_dates.max().strftime('%Y-%m-%d')}"
+    except Exception:
+        pass
+
+    text = f"""Time Series Data: {sheet_name}
+Source: {file_path.name}
+{date_range}
+Observations: {len(df)}
+Series: {len(numeric_cols)}
+
+Summary Statistics:
+{chr(10).join(stats_lines)}
+
+This sheet contains historical data for portfolio analysis and backtesting."""
+
+    return [Document(
+        text=text,
+        metadata={
+            **base_metadata,
+            "sheet_name": sheet_name,
+            "document_type": "cma_time_series",
+            "num_series": len(numeric_cols),
+            "num_observations": len(df),
+        }
+    )]
+
+
+def load_cma_excel(file_path: Path, priority: str = "normal") -> List[Document]:
+    """
+    Load Capital Market Assumptions from Excel files with enhanced structure preservation.
+
+    Handles multi-sheet Excel files with intelligent sheet type detection:
+    - Returns/Risk assumptions → Document per asset class
+    - Correlation matrices → Notable correlations highlighted
+    - Time series → Summary statistics with date ranges
+    - Generic sheets → Structured text representation
+
+    Args:
+        file_path: Path to Excel file
+        priority: Document priority (critical, high, normal, low)
+
+    Returns:
+        List of Document objects
     """
     documents = []
-    xl = pd.ExcelFile(file_path)
+    priority_scores = {"critical": 1.0, "high": 0.85, "normal": 0.5, "low": 0.3}
+
+    base_metadata = {
+        "source": str(file_path),
+        "file_name": file_path.name,
+        "priority": priority,
+        "priority_score": priority_scores.get(priority, 0.5),
+        "is_priority_document": priority in ("critical", "high"),
+    }
+
+    try:
+        xl = pd.ExcelFile(file_path, engine='openpyxl')
+    except Exception as e:
+        print(f"Warning: Failed to open Excel file {file_path}: {e}")
+        return documents
 
     for sheet_name in xl.sheet_names:
         try:
-            df = pd.read_excel(xl, sheet_name=sheet_name)
+            # Read with header=None to preserve structure
+            df = pd.read_excel(xl, sheet_name=sheet_name, header=None)
 
             # Skip empty sheets
-            if df.empty:
+            if df.empty or df.isna().all().all():
                 continue
 
-            # Create document based on sheet type
-            if sheet_name.upper() in ["RR", "RETURNS_RISK", "ASSUMPTIONS"]:
-                # Returns and Risk sheet - asset class assumptions
-                text_parts = [f"Capital Market Assumptions - {sheet_name}:\n"]
+            # Also read with default header for some processing
+            df_with_header = pd.read_excel(xl, sheet_name=sheet_name)
 
-                for _, row in df.iterrows():
-                    asset_class = row.iloc[0] if len(row) > 0 else "Unknown"
-                    values = ", ".join([f"{col}: {val}" for col, val in row.items() if pd.notna(val)])
-                    text_parts.append(f"- {asset_class}: {values}")
+            # Detect sheet type
+            sheet_type = _detect_cma_sheet_type(sheet_name, df_with_header)
 
-                documents.append(Document(
-                    text="\n".join(text_parts),
-                    metadata={
-                        "source": str(file_path),
-                        "file_name": file_path.name,
-                        "sheet_name": sheet_name,
-                        "document_type": "cma_assumptions",
-                    }
-                ))
-
-            elif sheet_name.upper() in ["CORR", "CORRELATION", "CORRELATIONS"]:
-                # Correlation matrix - summarize key relationships
-                text = f"Correlation Matrix ({sheet_name}):\n"
-                text += f"Asset classes covered: {', '.join(df.columns[:10].tolist())}...\n"
-                text += f"Matrix dimensions: {df.shape[0]} x {df.shape[1]}"
-
-                documents.append(Document(
-                    text=text,
-                    metadata={
-                        "source": str(file_path),
-                        "file_name": file_path.name,
-                        "sheet_name": sheet_name,
-                        "document_type": "cma_correlation",
-                    }
-                ))
-
+            # Process based on type
+            if sheet_type == "returns_risk":
+                docs = _process_returns_risk_sheet(df_with_header, sheet_name, file_path, base_metadata)
+            elif sheet_type == "correlation":
+                docs = _process_correlation_sheet(df_with_header, sheet_name, file_path, base_metadata)
+            elif sheet_type == "time_series":
+                docs = _process_time_series_sheet(df_with_header, sheet_name, file_path, base_metadata)
             else:
-                # Generic sheet - convert to text
+                # Generic processing
                 text = f"CMA Data - {sheet_name}:\n"
-                text += df.head(20).to_string()
+                text += f"Source: {file_path.name}\n\n"
+                text += df_with_header.head(25).to_string()
 
-                documents.append(Document(
+                docs = [Document(
                     text=text,
                     metadata={
-                        "source": str(file_path),
-                        "file_name": file_path.name,
+                        **base_metadata,
                         "sheet_name": sheet_name,
                         "document_type": "cma_data",
                     }
-                ))
+                )]
+
+            documents.extend(docs)
 
         except Exception as e:
             print(f"Warning: Could not process sheet {sheet_name}: {e}")
             continue
 
+    print(f"Loaded {len(documents)} documents from CMA Excel: {file_path.name}")
     return documents
 
 
@@ -628,36 +831,121 @@ def load_returns_csv(file_path: Path) -> List[Document]:
     return documents
 
 
-def load_pdf_documents(file_path: Path) -> List[Document]:
+def extract_tables_from_pdf_page(page) -> List[str]:
     """
-    Load PDF documents (research reports, client documents).
+    Extract tables from a PDF page using PyMuPDF's table detection.
 
-    Uses PyMuPDF for robust PDF parsing with page-level metadata.
-    Preprocesses text to improve chunking quality.
+    Returns tables formatted as markdown for better semantic search.
     """
-    reader = PyMuPDFReader()
-    raw_documents = reader.load(file_path=file_path)
+    tables = []
+    try:
+        # PyMuPDF 1.24+ has find_tables() method
+        if hasattr(page, 'find_tables'):
+            table_finder = page.find_tables()
+            for table in table_finder.tables:
+                rows = table.extract()
+                if not rows or len(rows) < 2:
+                    continue
+
+                # Format as markdown table
+                header = rows[0]
+                table_lines = []
+
+                # Header row
+                header_str = "| " + " | ".join(str(h) if h else "" for h in header) + " |"
+                table_lines.append(header_str)
+
+                # Separator
+                sep_str = "|" + "|".join(["---"] * len(header)) + "|"
+                table_lines.append(sep_str)
+
+                # Data rows
+                for row in rows[1:]:
+                    row_str = "| " + " | ".join(str(cell) if cell else "" for cell in row) + " |"
+                    table_lines.append(row_str)
+
+                tables.append("\n".join(table_lines))
+
+    except Exception as e:
+        # Table extraction failed - not critical, just skip
+        pass
+
+    return tables
+
+
+def load_pdf_documents(file_path: Path, priority: str = "normal") -> List[Document]:
+    """
+    Load PDF documents with enhanced table and financial figure extraction.
+
+    Uses PyMuPDF (fitz) for robust parsing with:
+    - Table detection and markdown conversion
+    - Header/footer removal
+    - Financial figure preservation
+    - Page-level metadata
+
+    Args:
+        file_path: Path to PDF file
+        priority: Document priority (critical, high, normal, low)
+
+    Returns:
+        List of Document objects, one per page
+    """
+    import fitz  # PyMuPDF
 
     documents = []
-    for i, doc in enumerate(raw_documents):
-        # Preprocess text for better chunking
-        cleaned_text = preprocess_pdf_text(doc.text)
+    priority_scores = {"critical": 1.0, "high": 0.85, "normal": 0.5, "low": 0.3}
 
-        # Skip empty pages
+    try:
+        doc = fitz.open(file_path)
+    except Exception as e:
+        print(f"Warning: Failed to open PDF {file_path}: {e}")
+        return documents
+
+    total_pages = len(doc)
+
+    for page_num in range(total_pages):
+        page = doc[page_num]
+
+        # Extract text content
+        text = page.get_text("text")
+
+        # Extract tables separately
+        tables = extract_tables_from_pdf_page(page)
+
+        # Preprocess main text (clean headers/footers, merge broken lines)
+        cleaned_text = preprocess_pdf_text(text)
+
+        # Skip nearly empty pages
         if not cleaned_text or len(cleaned_text.strip()) < 50:
-            continue
+            if not tables:
+                continue
+
+        # Build full content with tables
+        full_content = f"Document: {file_path.stem}\nPage {page_num + 1} of {total_pages}\n\n"
+        full_content += cleaned_text
+
+        if tables:
+            full_content += "\n\n--- Tables ---\n"
+            full_content += "\n\n".join(tables)
 
         documents.append(Document(
-            text=cleaned_text,
+            text=full_content,
             metadata={
                 "source": str(file_path),
                 "file_name": file_path.name,
                 "document_type": "pdf_document",
-                "page_number": i + 1,
-                "priority": "normal",
+                "page_number": page_num + 1,
+                "total_pages": total_pages,
+                "has_tables": len(tables) > 0,
+                "table_count": len(tables),
+                "priority": priority,
+                "priority_score": priority_scores.get(priority, 0.5),
+                "is_priority_document": priority in ("critical", "high"),
             }
         ))
 
+    doc.close()
+    print(f"Loaded {len(documents)} pages from PDF: {file_path.name}")
     return documents
 
 

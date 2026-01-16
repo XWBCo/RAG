@@ -249,7 +249,6 @@ def rerank_documents(state: PrismState) -> PrismState:
     if cohere_key and len(relevant_docs) > 1:
         try:
             from langchain_cohere import CohereRerank
-            from langchain.retrievers.document_compressors import DocumentCompressorPipeline
 
             reranker = CohereRerank(
                 model="rerank-english-v3.0",

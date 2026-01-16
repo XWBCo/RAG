@@ -15,6 +15,13 @@ from ingestion import IngestionPipeline
 from retrieval import RetrievalEngine
 from retrieval.engine import QueryMode, QueryResult, Source
 from utils.logging import QueryMetrics, get_metrics_logger, log_full_query
+from utils.cache import get_response_cache, get_cache_stats, invalidate_cache
+from utils.resilience import (
+    CircuitBreakerOpenError,
+    get_circuit_breaker,
+    get_all_circuit_breaker_status,
+    reset_circuit_breaker,
+)
 
 logger = logging.getLogger(__name__)
 metrics_logger = get_metrics_logger()
@@ -778,35 +785,41 @@ async def prism_query(request: PrismQueryRequest):
     Query using the new LangGraph agentic RAG workflow.
 
     Features:
+    - Response caching (skipped when app_context provided)
+    - Circuit breaker with V1 fallback
     - Intent routing (archetype, pipeline, clarity, general)
     - Hybrid retrieval (BM25 + semantic)
     - CRAG document grading
     - Self-RAG hallucination checking
     - Conversation memory (via thread_id)
     """
+    # Check cache first (skip if app_context is provided - dynamic results)
+    cache = get_response_cache()
+    cached = cache.get(
+        query=request.query,
+        domain=request.domain,
+        prompt_name=request.prompt_name,
+        app_context=request.app_context,
+    )
+
+    if cached:
+        logger.info(f"Cache hit for query: {request.query[:50]}...")
+        return PrismQueryResponse(**cached)
+
+    # Check circuit breaker before attempting V2
+    circuit = get_circuit_breaker("v2_langgraph", threshold=5, reset_timeout=60)
+
     try:
+        if not circuit.should_allow_request():
+            logger.warning("V2 circuit breaker open, falling back to V1")
+            return await _fallback_to_v1(request)
+
         prism_app = get_prism_app()
 
         if prism_app is None:
             # Fallback to legacy engine
             logger.info("Using legacy retrieval (LangGraph not available)")
-            engine = get_retrieval_engine()
-            result = engine.query(
-                query_text=request.query,
-                mode=QueryMode.COMPACT,
-                top_k=5,
-                min_similarity=0.3,
-            )
-            fallback_thread_id = request.thread_id or str(uuid.uuid4())
-            return PrismQueryResponse(
-                answer=result.answer,
-                sources=[s.model_dump() for s in result.sources],
-                intent="general",
-                retrieval_quality="unknown",
-                turn_count=1,
-                thread_id=fallback_thread_id,
-                query_id=fallback_thread_id[:8],
-            )
+            return await _fallback_to_v1(request)
 
         # Use LangGraph workflow
         from graph.workflow import invoke_prism_sync
@@ -832,6 +845,9 @@ async def prism_query(request: PrismQueryRequest):
             app_context=request.app_context,
         )
         elapsed_ms = (time.time() - start_time) * 1000
+
+        # Record success for circuit breaker
+        circuit.record_success()
 
         # Log v2 query metrics for feedback loop
         metrics = QueryMetrics(
@@ -864,7 +880,7 @@ async def prism_query(request: PrismQueryRequest):
             duration_ms=elapsed_ms,
         )
 
-        return PrismQueryResponse(
+        response = PrismQueryResponse(
             answer=result["answer"],
             sources=result["sources"],
             intent=result["intent"],
@@ -874,9 +890,62 @@ async def prism_query(request: PrismQueryRequest):
             query_id=query_id,
         )
 
+        # Cache the result (only if no app_context - static queries)
+        if not request.app_context:
+            cache.set(
+                query=request.query,
+                domain=request.domain,
+                response=response.model_dump(),
+                prompt_name=request.prompt_name,
+                ttl=3600,  # 1 hour for educational content
+            )
+
+        return response
+
+    except CircuitBreakerOpenError:
+        logger.info("Circuit breaker triggered fallback to V1")
+        return await _fallback_to_v1(request)
     except Exception as e:
+        # Record failure for circuit breaker
+        circuit.record_failure()
         logger.error(f"Prism query failed: {e}")
+        # If circuit is now open, try V1 fallback
+        if circuit.state == "open":
+            logger.info("Circuit opened, attempting V1 fallback")
+            try:
+                return await _fallback_to_v1(request)
+            except Exception as fallback_error:
+                logger.error(f"V1 fallback also failed: {fallback_error}")
         raise HTTPException(status_code=500, detail=str(e))
+
+
+async def _fallback_to_v1(request: PrismQueryRequest) -> PrismQueryResponse:
+    """Fallback to V1 retrieval engine when V2 is unavailable."""
+    engine = get_retrieval_engine(domain=request.domain)
+
+    query_text = request.query
+    if request.app_context:
+        query_text = build_contextual_query(request.query, request.app_context)
+
+    result = engine.query_with_prompt(
+        query_text=query_text,
+        prompt_name=request.prompt_name or "standard_qa",
+        mode=QueryMode.COMPACT,
+        top_k=5,
+        min_similarity=0.3,
+    )
+
+    fallback_thread_id = request.thread_id or str(uuid.uuid4())
+
+    return PrismQueryResponse(
+        answer=result.answer,
+        sources=[s.model_dump() for s in result.sources],
+        intent="general",
+        retrieval_quality="fallback",
+        turn_count=1,
+        thread_id=fallback_thread_id,
+        query_id=fallback_thread_id[:8],
+    )
 
 
 @router.post("/v2/query/stream")
@@ -965,3 +1034,36 @@ async def prism_health():
             "memory": True,
         },
     }
+
+
+# =============================================================================
+# Cache and Circuit Breaker Management Endpoints
+# =============================================================================
+
+
+@router.get("/cache/stats")
+async def cache_stats():
+    """Get cache statistics including hit rate."""
+    return get_cache_stats()
+
+
+@router.post("/cache/invalidate")
+async def cache_invalidate():
+    """Invalidate all cached responses."""
+    count = invalidate_cache()
+    return {"status": "ok", "entries_cleared": count}
+
+
+@router.get("/circuit-breaker/status")
+async def circuit_breaker_status():
+    """Get status of all circuit breakers."""
+    return get_all_circuit_breaker_status()
+
+
+@router.post("/circuit-breaker/reset/{name}")
+async def circuit_breaker_reset(name: str):
+    """Manually reset a circuit breaker to closed state."""
+    success = reset_circuit_breaker(name)
+    if success:
+        return {"status": "ok", "circuit": name, "state": "closed"}
+    raise HTTPException(status_code=404, detail=f"Circuit breaker '{name}' not found")

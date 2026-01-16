@@ -73,6 +73,24 @@ class Settings(BaseSettings):
         "https://plotly.alti-global.com",  # Production dashboard
     ]
 
+    # Response Caching
+    cache_enabled: bool = True
+    cache_default_ttl: int = 3600  # 1 hour for educational content
+    cache_max_size: int = 1000
+
+    # Circuit Breaker
+    circuit_breaker_threshold: int = 5  # Failures before opening
+    circuit_breaker_reset_timeout: int = 60  # Seconds before half-open test
+
+    # Hybrid Retrieval Weights
+    bm25_weight: float = 0.4  # Lexical matching for exact terms
+    semantic_weight: float = 0.6  # Semantic similarity
+
+    # LangSmith Tracing (optional - for observability)
+    # Set LANGSMITH_API_KEY in .env to enable
+    langsmith_api_key: str = ""
+    langsmith_project: str = "alti-rag-service"
+
     # Windows Production Paths (used when ENVIRONMENT=production)
     windows_chroma_dir: str = r"D:\App\rag-service\chroma_db"
     windows_log_dir: str = r"D:\App\rag-service\logs"
@@ -148,6 +166,34 @@ def validate_environment() -> list[str]:
         errors.append(f"Cannot create log directory {log_dir}: {e}")
 
     return errors
+
+
+def configure_langsmith() -> bool:
+    """
+    Configure LangSmith tracing if API key is set.
+
+    LangSmith provides observability for LangGraph workflows:
+    - Trace visualization
+    - Latency analysis
+    - Audit trails (compliance requirement)
+    - Debugging and replay
+
+    Returns True if tracing is enabled.
+    """
+    import logging
+    logger = logging.getLogger(__name__)
+
+    if not settings.langsmith_api_key:
+        logger.info("LangSmith tracing disabled (no API key)")
+        return False
+
+    # Set environment variables for LangChain/LangGraph tracing
+    os.environ["LANGSMITH_API_KEY"] = settings.langsmith_api_key
+    os.environ["LANGSMITH_PROJECT"] = settings.langsmith_project
+    os.environ["LANGCHAIN_TRACING_V2"] = "true"
+
+    logger.info(f"LangSmith tracing enabled for project: {settings.langsmith_project}")
+    return True
 
 
 # Paths (legacy compatibility)

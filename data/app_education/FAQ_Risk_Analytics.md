@@ -384,3 +384,139 @@ The "factor explained" percentage shows how much of your portfolio's risk can be
 **Client implication:**
 - High factor explained = behaves like the market, easier to predict
 - Low factor explained = more unique behavior, harder to benchmark
+
+---
+
+## Q: What is Marginal Contribution to Risk (MCR) and how do I interpret it?
+
+Marginal Contribution to Risk (MCR) measures how much a single holding or asset class contributes to the portfolio's total risk at the margin. It answers: "If I increased this position slightly, how much would total portfolio risk change?"
+
+**How MCR is calculated:**
+```
+MCR_i = (Covariance of asset i with portfolio) / Portfolio Volatility
+      = Beta_i × Weight_i × Asset Volatility_i
+```
+
+**How to interpret MCR:**
+- **Positive MCR**: Adding to this position increases portfolio risk
+- **High MCR vs. weight**: Asset contributes more risk than its weight suggests (high-risk or correlated)
+- **Low MCR vs. weight**: Asset is diversifying - contributes less risk than weight suggests
+- **Negative MCR** (rare): Asset hedges the portfolio, adding reduces total risk
+
+**MCR vs. Total Contribution:**
+- MCR = marginal (incremental) impact of small changes
+- Total Contribution = actual amount of risk attributed to this holding
+- Sum of all Total Contributions = Portfolio Total Risk
+
+**Example interpretation:**
+- "Private equity has 15% weight but 25% MCR" → High-risk, correlated with portfolio
+- "Bonds have 40% weight but 8% MCR" → Diversifying, low correlation
+- "Gold has 5% weight but -2% MCR" → Acts as a hedge
+
+**Using MCR for portfolio construction:**
+- Reduce positions with high MCR relative to expected return
+- Increase positions with low or negative MCR (diversifiers)
+- MCR helps optimize risk-adjusted returns at the margin
+
+**Client conversation:**
+- "Your private equity allocation contributes more to risk than its weight suggests"
+- "This is because private equity is correlated with your other equity holdings"
+- "Consider if the return potential justifies this concentrated risk exposure"
+
+---
+
+## Q: How does ex-ante VaR compare to realized volatility?
+
+Ex-ante VaR (Value at Risk) and realized volatility measure risk differently:
+
+**Ex-ante VaR:**
+- Forward-looking estimate based on current holdings
+- Uses historical correlations and volatilities
+- Answers: "What's the worst loss I could expect at X% confidence?"
+- Example: "95% VaR of $50,000 means there's a 5% chance of losing more than $50,000"
+
+**Realized Volatility:**
+- Backward-looking measure of actual return dispersion
+- Based on historical returns over a specific period
+- Standard deviation of actual portfolio returns
+- Shows how the portfolio actually behaved
+
+**Why they differ:**
+1. **Time horizon**: Ex-ante is forward-looking; realized is historical
+2. **Regime changes**: Market conditions may have shifted
+3. **Portfolio changes**: Holdings may have changed since measurement period
+4. **Model assumptions**: VaR assumes normal distributions (may miss tail events)
+
+**How to compare:**
+- If realized volatility > ex-ante VaR estimate: Model underestimated risk
+- If realized volatility < ex-ante VaR estimate: Model was conservative
+- Large gaps suggest model calibration issues or market regime changes
+
+**Interpreting the comparison:**
+| Scenario | Implication |
+|----------|-------------|
+| Realized ≈ Ex-ante | Risk model is well-calibrated |
+| Realized >> Ex-ante | Tail events occurred, model underestimated risk |
+| Realized << Ex-ante | Calm period, or portfolio is less risky than expected |
+
+**Client conversation:**
+- "Your ex-ante VaR estimated potential losses, while realized volatility shows what actually happened"
+- "The gap between them tells us how accurate our risk estimates were"
+- "Both measures are useful - one for planning, one for evaluation"
+
+**Limitations:**
+- VaR doesn't capture magnitude of losses beyond the threshold
+- Both assume past behavior predicts future (not always true)
+- Consider using both alongside stress testing and scenario analysis
+
+---
+
+## Q: How should I think about private equity risk in my portfolio?
+
+Private equity (PE) presents unique risk characteristics that differ from public market investments:
+
+**Why PE risk is challenging to measure:**
+1. **Illiquidity**: No daily pricing, valuations are quarterly or less frequent
+2. **Smoothed returns**: Appraisal-based valuations understate true volatility
+3. **J-curve effect**: Early negative returns before value creation kicks in
+4. **Stale pricing**: Reported values lag actual market conditions
+
+**How PE appears in risk analytics:**
+- **Understated volatility**: Reported PE volatility (5-8%) is artificially low
+- **Low correlation**: Appears uncorrelated with public markets (measurement artifact)
+- **Beta seems low**: But true economic exposure to equity risk is high
+
+**Adjusting for true PE risk:**
+- **Unsmoothing**: Statistical adjustment to estimate true volatility
+- **Proxy benchmarks**: Use public equity proxies (small-cap value) for risk modeling
+- **De-lagged correlations**: Account for the lag in PE valuations
+
+**Typical PE risk adjustments:**
+| Metric | Reported | Adjusted |
+|--------|----------|----------|
+| Volatility | 5-8% | 15-25% |
+| Beta to equities | 0.3-0.5 | 0.8-1.2 |
+| Correlation to S&P | 0.3 | 0.7-0.8 |
+
+**Marginal contribution from PE:**
+- Even small PE allocations can contribute significant risk
+- 10% PE allocation might contribute 15-20% of total portfolio risk (adjusted)
+- PE concentrates equity-like risk in illiquid form
+
+**Risk considerations for PE allocations:**
+- **Liquidity risk**: Can't exit during market stress
+- **Commitment risk**: Capital calls may come at worst times
+- **Concentration risk**: Often in specific sectors or vintage years
+- **Manager risk**: Performance varies widely by manager
+
+**Client conversation:**
+- "Your private equity shows low volatility in reports, but the true risk is higher"
+- "PE is essentially leveraged equity exposure in an illiquid wrapper"
+- "The risk analytics may understate PE's contribution to your portfolio risk"
+- "Consider your liquidity needs and ability to stay invested through downturns"
+
+**Best practices:**
+- Use adjusted/unsmoothed PE risk estimates when available
+- Don't over-allocate based on artificially low reported volatility
+- Consider PE as part of overall equity risk budget
+- Ensure sufficient liquidity elsewhere in portfolio

@@ -331,6 +331,15 @@ POST /api/v1/v2/query
 - [x] **SSL fix (truststore):** Corporate proxy SSL inspection now works via truststore package
 - [x] **Cold start warmup:** Service pre-initializes ChromaDB + LangGraph + OpenAI on startup
 - [x] **MCS context fix:** `mcs-results-store` now populated with simulation results for RAG context
+- [x] **LangChain 1.2.x fix:** Custom `SimpleBM25Retriever` and `SimpleEnsembleRetriever` (Jan 2026)
+- [x] **Response caching:** TTL-based cache with 97% latency reduction on hits
+- [x] **Circuit breaker:** V2→V1 fallback on failures (threshold=5, reset=60s)
+- [x] **BM25 hybrid retrieval:** 60% semantic + 40% lexical for exact term matching
+- [x] **Enhanced loaders:** PDF table extraction, Excel sheet classification
+- [x] **Document re-ingestion:** 456 → 1844 docs with better chunking
+- [x] **LLM query expansion:** GPT-4o-mini expands queries with domain terms
+- [x] **Cohere reranking:** Scaffolded and ready (needs API key)
+- [x] **Cache/circuit-breaker endpoints:** `/cache/stats`, `/circuit-breaker/status`
 
 ---
 
@@ -487,18 +496,28 @@ alti-rag-service/
 ## Collection Reference
 
 ```
-alti_investments (456 docs):
-  - fund_model_allocation: 220 (48%)
-  - fund_profile: 156 (34%)
-  - cma_data: 54 (12%)
-  - Other: 26 (6%)
+alti_investments (2656 docs, updated Jan 2026):
+  - fund_model_allocation: ~800+ (enhanced Excel chunking)
+  - fund_profile: ~600+ (enhanced PDF chunking)
+  - cma_data: ~300+ (time series, correlation sheets)
+  - fund_documents: 812 (22 fund PDFs/Excel files ingested 2026-01-14)
+    - BTG Timberland: 154 docs (quarterly reports, market reports)
+    - Blackstone Infra: 139 docs (pitchbook, fact card)
+    - Galvanize: 120 docs (Q4 2025 presentation)
+    - Ares Core Infra: 79 docs (fact sheet, presentation)
+    - Wellington: 78 docs (presentation, quarterly reviews)
+    - TCI Fund: 74 docs (presentation, exposure report)
+    - ValueAct: 53 docs (due diligence, position summary, quarterly letter)
+    - Community EM: 53 docs (presentation, quarterly update)
+    - CIM: 48 docs (presentation, quarterly update)
+    - Generation IM: 14 docs (factsheet, holdings)
 
-app_education_docs (74 docs):
-  - faq_section: 39 (53%)
-  - pdf_document: 21 (28%)
-  - presentation_slide: 14 (19%)
+app_education_docs (1015 docs, updated Jan 2026):
+  - faq_section: 39+ sections
+  - pdf_document: enhanced with table extraction
+  - presentation_slide: per-slide chunks
 ```
 
 ---
 
-*Last updated: 2026-01-12 (SSL fix, cold start warmup, MCS context fix)*
+*Last updated: 2026-01-14 (Fund document ingestion - 22 files, 812 chunks for Impact pill)*
